@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Ksiegarnia.DB;
+using Microsoft.EntityFrameworkCore;
+using Ksiegarnia.Extensions;
 
 namespace Ksiegarnia
 {
@@ -23,6 +26,7 @@ namespace Ksiegarnia
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddDbContext<BookShopContext>(o => o.UseSqlServer(Configuration["ConnectionString:BookShopDB"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
