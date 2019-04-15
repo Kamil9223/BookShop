@@ -13,16 +13,25 @@ namespace Ksiegarnia.Models
         [Key]
         public Guid OrderId { get; protected set; }
         public DateTime Date { get; protected set; }
-        public decimal Price { get; protected set; }
         public Status Status { get; protected set; }
         [ForeignKey("User")]
         public Guid UserId { get; protected set; }
         public User User { get; protected set; }
         public IEnumerable<BookInOrder> BooksInOrder { get; protected set; }
+
+        protected Order() { }
+
+        public Order(Status status)
+        {
+            OrderId = Guid.NewGuid();
+            Date = DateTime.UtcNow;
+            Status = status;
+        }
     }
 
     public enum Status
     {
-
+        New = 0,
+        Realized = 1
     }
 }

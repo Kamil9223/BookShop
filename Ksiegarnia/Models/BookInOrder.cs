@@ -14,9 +14,17 @@ namespace Ksiegarnia.Models
         public Guid OrderId { get; protected set; }
         [Key, Column(Order = 1)]
         public Guid BookId { get; protected set; }
-
         public Order Order { get; protected set; }
         public Book Book { get; protected set; }
         public int NumberOfBooks { get; protected set; }
+
+        protected BookInOrder() { }
+
+        public BookInOrder(Guid orderId, Guid bookId, int numberOfBooks)
+        {
+            OrderId = orderId;
+            BookId = bookId;
+            NumberOfBooks = numberOfBooks;
+        }
     }
 }
