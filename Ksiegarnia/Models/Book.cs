@@ -20,6 +20,20 @@ namespace Ksiegarnia.Models
         public string ShortDescription { get; protected set; }
         public int NumberOfBooks { get; protected set; }
         public IEnumerable<BookInOrder> BooksInOrder { get; protected set; }
+
+        protected Book() { }
+
+        public Book(string title, Category category, decimal price, int numberOfPages, 
+            string shortDescription, int numberOfBooks)
+        {
+            BookId = Guid.NewGuid();
+            Title = title;
+            Category = category;
+            Price = price;
+            NumberOfPages = numberOfPages;
+            ShortDescription = shortDescription;
+            NumberOfBooks = numberOfBooks;
+        }
     }
 
     public enum Category
