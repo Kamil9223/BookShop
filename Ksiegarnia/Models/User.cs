@@ -7,20 +7,16 @@ using System.Threading.Tasks;
 
 namespace Ksiegarnia.Models
 {
-    [Table("Users")]
     public class User
     {
-        [Key]
         public Guid UserId { get; protected set; }
         public string Login { get; protected set; }
         public string Email { get; protected set; }
         public string Password { get; protected set; }
         public string Salt { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
-        public IEnumerable<Order> Orders { get; protected set; }
-        [ForeignKey("Address")]
-        public Guid? AddressId { get; protected set; }
-        public Address Address { get; protected set; }
+        public virtual IEnumerable<Order> Orders { get; protected set; }
+        public virtual Address Address { get; protected set; }
 
         protected User() { }
 

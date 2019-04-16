@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Ksiegarnia.Models
 {
-    [Table("Books")]
     public class Book
     {
-        [Key]
         public Guid BookId { get; protected set; }
         public string Title { get; protected set; }
         public Category Category { get; protected set; }
@@ -19,7 +17,7 @@ namespace Ksiegarnia.Models
         public string Description { get; protected set; }
         public string ShortDescription { get; protected set; }
         public int NumberOfBooks { get; protected set; }
-        public IEnumerable<BookInOrder> BooksInOrder { get; protected set; }
+        public virtual IEnumerable<BookInOrder> BooksInOrder { get; protected set; }
 
         protected Book() { }
 
