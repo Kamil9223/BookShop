@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace Ksiegarnia.Models
 {
-    [Table("Addresses")]
     public class Address
     {
-        [Key]
-        public Guid AddressId { get; protected set; }
+        public Guid UserId { get; protected set; }
+        public virtual User User { get; protected set; }
         public string City { get; protected set; }
         public string Street { get; protected set; }
         public string HouseNumber { get; protected set; }
@@ -20,9 +19,9 @@ namespace Ksiegarnia.Models
 
         protected Address() { }
 
-        public Address(string city, string street, string houseNumber, string zipCode)
+        public Address(Guid userId, string city, string street, string houseNumber, string zipCode)
         {
-            AddressId = Guid.NewGuid();
+            UserId = userId;
             City = city;
             Street = street;
             HouseNumber = houseNumber;

@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Ksiegarnia.Models
 {
-    [Table("History")]
     public class History
     {
-        [Key]
         public Guid HistoryId { get; protected set; }
         public DateTime Date { get; protected set; }
         public decimal Price { get; protected set; }

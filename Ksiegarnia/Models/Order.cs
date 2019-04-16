@@ -7,17 +7,14 @@ using System.Threading.Tasks;
 
 namespace Ksiegarnia.Models
 {
-    [Table("Orders")]
     public class Order
     {
-        [Key]
         public Guid OrderId { get; protected set; }
         public DateTime Date { get; protected set; }
         public Status Status { get; protected set; }
-        [ForeignKey("User")]
         public Guid UserId { get; protected set; }
-        public User User { get; protected set; }
-        public IEnumerable<BookInOrder> BooksInOrder { get; protected set; }
+        public virtual User User { get; protected set; }
+        public virtual IEnumerable<BookInOrder> BooksInOrder { get; protected set; }
 
         protected Order() { }
 

@@ -7,15 +7,12 @@ using System.Threading.Tasks;
 
 namespace Ksiegarnia.Models
 {
-    [Table("BooksInOrder")]
     public class BookInOrder
     {
-        [Key, Column(Order = 0)]
         public Guid OrderId { get; protected set; }
-        [Key, Column(Order = 1)]
         public Guid BookId { get; protected set; }
-        public Order Order { get; protected set; }
-        public Book Book { get; protected set; }
+        public virtual Order Order { get; protected set; }
+        public virtual Book Book { get; protected set; }
         public int NumberOfBooks { get; protected set; }
 
         protected BookInOrder() { }
