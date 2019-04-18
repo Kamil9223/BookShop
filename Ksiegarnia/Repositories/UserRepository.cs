@@ -50,5 +50,17 @@ namespace Ksiegarnia.Repositories
             context.Users.Remove(user);
             context.SaveChanges();
         }
+
+        public void AddAddress(Address address)
+        {
+            context.Addresses.Add(address);
+            context.SaveChanges();
+        }
+
+        public void UpdateAddress(Address address)
+        {
+            context.Addresses.Update(address);
+            context.SaveChanges();
+        }
     }
 }

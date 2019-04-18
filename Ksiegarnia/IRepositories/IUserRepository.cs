@@ -12,7 +12,9 @@ namespace Ksiegarnia.IRepositories
         User GetUser(string email);
         IEnumerable<User> GetUsers();
         void AddUser(User user);
+        void AddAddress(Address address);
         void UpdateUser(User user);
+        void UpdateAddress(Address address);
         void RemoveUser(Guid userId);
     }
 }
