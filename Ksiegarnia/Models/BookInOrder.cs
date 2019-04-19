@@ -9,8 +9,8 @@ namespace Ksiegarnia.Models
 {
     public class BookInOrder
     {
-        public Guid OrderId { get; protected set; }
-        public Guid BookId { get; protected set; }
+        public virtual Guid OrderId { get; protected set; }
+        public virtual Guid BookId { get; protected set; }
         public virtual Order Order { get; protected set; }
         public virtual Book Book { get; protected set; }
         public int NumberOfBooks { get; protected set; }

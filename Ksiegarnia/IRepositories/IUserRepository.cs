@@ -11,6 +11,7 @@ namespace Ksiegarnia.IRepositories
         User GetUser(Guid userId);
         User GetUser(string email);
         IEnumerable<User> GetUsers();
+        Address GetAddress(Guid userId);
         void AddUser(User user);
         void AddAddress(Address address);
         void UpdateUser(User user);

@@ -35,7 +35,7 @@ namespace Ksiegarnia.DB
         {
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<User>().HasKey(k => k.UserId);
-            modelBuilder.Entity<User>().HasOne(a => a.Address).WithOne(u => u.User);
+            //modelBuilder.Entity<User>().HasOne(a => a.Address).WithOne(u => u.User);
             modelBuilder.Entity<User>().Property(p => p.Login).HasMaxLength(20).IsRequired();
             modelBuilder.Entity<User>().Property(p => p.Password).HasMaxLength(800).IsRequired();
             modelBuilder.Entity<User>().Property(p => p.Salt).HasMaxLength(800).IsRequired();
@@ -74,7 +74,8 @@ namespace Ksiegarnia.DB
         private void OnAddressCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Address>().ToTable("Addresses");
-            modelBuilder.Entity<Address>().HasKey(k => k.UserId);
+            modelBuilder.Entity<Address>().HasKey(k => k.AddressId);
+            modelBuilder.Entity<Address>().HasOne(a => a.User);
             modelBuilder.Entity<Address>().Property(p => p.City).HasMaxLength(50).IsRequired();
             modelBuilder.Entity<Address>().Property(p => p.Street).HasMaxLength(80).IsRequired();
             modelBuilder.Entity<Address>().Property(p => p.HouseNumber).HasMaxLength(5).IsRequired();

@@ -16,7 +16,7 @@ namespace Ksiegarnia.Models
         public string Salt { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
         public virtual IEnumerable<Order> Orders { get; protected set; }
-        public virtual Address Address { get; protected set; }
+        //public virtual Address Address { get; protected set; }
 
         protected User() { }
 

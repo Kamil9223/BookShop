@@ -20,9 +20,11 @@ namespace Ksiegarnia.Controllers
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<User> Test()
+        public Address Test()
         {
-            return userRepository.GetUsers();
+            var user = userRepository.GetUser("kamil9223@vp.pl");
+            var address = userRepository.GetAddress(user.UserId);
+            return address;
         }
     }
 }

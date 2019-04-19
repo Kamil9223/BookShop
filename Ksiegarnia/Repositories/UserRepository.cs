@@ -32,6 +32,11 @@ namespace Ksiegarnia.Repositories
             return context.Users.ToList();
         }
 
+        public Address GetAddress(Guid userId)
+        {
+            return context.Addresses.SingleOrDefault(a => a.UserId == userId);
+        }
+
         public void AddUser(User user)
         {
             context.Users.Add(user);
