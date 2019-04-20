@@ -20,7 +20,7 @@ namespace Ksiegarnia.Models
 
         protected Address() { }
 
-        public Address(Guid userId, string city, string street, string houseNumber, string zipCode)
+        public Address(Guid userId, string city, string street, string houseNumber, string zipCode, string flatNumber = null)
         {
             AddressId = Guid.NewGuid();
             UserId = userId;
@@ -28,6 +28,7 @@ namespace Ksiegarnia.Models
             Street = street;
             HouseNumber = houseNumber;
             ZipCode = zipCode;
+            FlatNumber = flatNumber;
         }
     }
 }

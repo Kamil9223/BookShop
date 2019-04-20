@@ -9,7 +9,8 @@ namespace Ksiegarnia.IRepositories
     public interface IUserRepository
     {
         User GetUser(Guid userId);
-        User GetUser(string email);
+        User GetUser(string login);
+        User GetUserByEmail(string email);
         IEnumerable<User> GetUsers();
         Address GetAddress(Guid userId);
         void AddUser(User user);

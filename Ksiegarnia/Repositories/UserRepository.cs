@@ -22,7 +22,12 @@ namespace Ksiegarnia.Repositories
             return context.Users.SingleOrDefault(u => u.UserId == userId);
         }
 
-        public User GetUser(string email)
+        public User GetUser(string login)
+        {
+            return context.Users.SingleOrDefault(u => u.Login == login);
+        }
+
+        public User GetUserByEmail(string email)
         {
             return context.Users.SingleOrDefault(u => u.Email == email.ToLowerInvariant());
         }
