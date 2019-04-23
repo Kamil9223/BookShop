@@ -23,14 +23,8 @@ namespace Ksiegarnia.Controllers
         [HttpGet("[action]")]
         public IActionResult Test()
         {
-            AddressDTO address = new AddressDTO()
-            {
-                City = "Pliskowola",
-                Street = "Długa",
-                HouseNumber = "114b",
-            };
-            userService.Register("Junker2", "xd", "asda", address);
-            var user = userService.Get("Testowy");
+            userService.Login("Junker2", "xd");
+            var user = userService.Get("Junker2");
             return new JsonResult(user);
         }
     }

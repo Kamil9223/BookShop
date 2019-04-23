@@ -12,10 +12,12 @@ namespace Ksiegarnia.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository userRepository;
+        private readonly IEncrypter encrypter;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IEncrypter encrypter)
         {
             this.userRepository = userRepository;
+            this.encrypter = encrypter;
         }
 
         public UserDTO Get(string login)
@@ -37,6 +39,22 @@ namespace Ksiegarnia.Services
             return userDto;
         }
 
+        public void Login(string login, string password)
+        {
+            var user = userRepository.GetUser(login);
+            if (user == null)
+            {
+                throw new Exception("Invalid credentials");
+            }
+
+            string salt = user.Salt;
+            string hash = encrypter.GetHash(password, salt);
+            if (user.Password != hash)
+            {
+                throw new Exception("Invalid credentials");
+            }
+        }
+
         public void Register(string login, string password, string email, AddressDTO addressDto = null)
         {
             var user = userRepository.GetUser(login);
@@ -51,8 +69,9 @@ namespace Ksiegarnia.Services
                 throw new Exception($"User with email: '{email}' already exist.");
             }
 
-            string salt = Guid.NewGuid().ToString();
-            user = new User(login, email, password, salt);
+            string salt = encrypter.GetSalt(password);
+            string hash = encrypter.GetHash(password, salt);
+            user = new User(login, email, hash, salt);
 
             if (addressDto != null)
             {

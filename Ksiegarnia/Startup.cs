@@ -34,6 +34,7 @@ namespace Ksiegarnia
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddSingleton<IEncrypter, Encrypter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
