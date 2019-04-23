@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Ksiegarnia.IServices
 {
-    interface IUserService
+    public interface IUserService
     {
-        void Register(string login, string password, string email, AddressDTO addressDto);
+        void Register(string login, string password, string email, AddressDTO addressDto = null);
         UserDTO Get(string login);
     }
 }

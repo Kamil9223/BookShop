@@ -37,7 +37,7 @@ namespace Ksiegarnia.Services
             return userDto;
         }
 
-        public void Register(string login, string password, string email, AddressDTO addressDto)
+        public void Register(string login, string password, string email, AddressDTO addressDto = null)
         {
             var user = userRepository.GetUser(login);
             if (user != null)
@@ -67,6 +67,7 @@ namespace Ksiegarnia.Services
                 userRepository.AddAddress(address);
             }
             userRepository.AddUser(user);
+            userRepository.SaveChanges();
         }
     }
 }

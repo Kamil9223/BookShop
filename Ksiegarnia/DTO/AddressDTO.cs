@@ -7,10 +7,10 @@ namespace Ksiegarnia.DTO
 {
     public class AddressDTO
     {
-        public string City { get; protected set; }
-        public string Street { get; protected set; }
-        public string HouseNumber { get; protected set; }
-        public string FlatNumber { get; protected set; }
-        public string ZipCode { get; protected set; }
+        public string City { get; set; }
+        public string Street { get; set; }
+        public string HouseNumber { get; set; }
+        public string FlatNumber { get; set; }
+        public string ZipCode { get; set; }
     }
 }

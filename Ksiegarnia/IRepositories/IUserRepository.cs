@@ -18,5 +18,6 @@ namespace Ksiegarnia.IRepositories
         void UpdateUser(User user);
         void UpdateAddress(Address address);
         void RemoveUser(Guid userId);
+        void SaveChanges();
     }
 }
