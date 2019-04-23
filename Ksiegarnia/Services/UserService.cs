@@ -69,7 +69,7 @@ namespace Ksiegarnia.Services
                 throw new Exception($"User with email: '{email}' already exist.");
             }
 
-            string salt = encrypter.GetSalt(password);
+            string salt = encrypter.GetSalt();
             string hash = encrypter.GetHash(password, salt);
             user = new User(login, email, hash, salt);
 

@@ -13,13 +13,8 @@ namespace Ksiegarnia.Services
         private static readonly int DeriveBytesIterationsCount = 10000;
         private static readonly int SaltSize = 50;
 
-        public string GetSalt(string value)
+        public string GetSalt()
         {
-            if (value.Empty())
-            {
-                throw new ArgumentException($"Can't generate salt from an empty value", nameof(value));
-            }
-
             var saltBytes = new byte[SaltSize];
             var rng = RandomNumberGenerator.Create();
             rng.GetBytes(saltBytes);
