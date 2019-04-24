@@ -23,9 +23,8 @@ namespace Ksiegarnia.Controllers
         [HttpGet("[action]")]
         public IActionResult Test()
         {
-            userService.Login("Junker2", "xd");
-            var user = userService.Get("Junker2");
-            return new JsonResult(user);
+            userService.Register("Kamil", "ss", "sds");
+            return new JsonResult("OK");
         }
     }
 }
