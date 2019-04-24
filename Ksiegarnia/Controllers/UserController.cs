@@ -23,7 +23,6 @@ namespace Ksiegarnia.Controllers
         [HttpGet("[action]")]
         public IActionResult Test()
         {
-            userService.Register("Kamil", "ss", "sds");
             return new JsonResult("OK");
         }
     }

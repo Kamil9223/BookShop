@@ -18,36 +18,32 @@ namespace Ksiegarnia.Repositories
         }
 
         public Book GetBook(Guid bookId)
-        {
-            return context.Books.SingleOrDefault(b => b.BookId == bookId);
-        }
+            => context.Books.SingleOrDefault(b => b.BookId == bookId);
 
         public Book GetBook(string title)
-        {
-            return context.Books.SingleOrDefault(b => b.Title == title);
-        }
+            => context.Books.SingleOrDefault(b => b.Title == title);
 
         public IEnumerable<Book> GetBooks()
-        {
-            return context.Books.ToList();
-        }
+            => context.Books.ToList();
 
         public void AddBook(Book book)
         {
             context.Books.Add(book);
-            context.SaveChanges();
         }
 
         public void UpdateBook(Book book)
         {
             context.Books.Update(book);
-            context.SaveChanges();
         }
 
         public void RemoveBook(Guid bookId)
         {
             var book = GetBook(bookId);
             context.Books.Remove(book);
+        }
+
+        public void SaveChanges()
+        {
             context.SaveChanges();
         }
     }
