@@ -4,25 +4,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Ksiegarnia.IRepositories;
 using Ksiegarnia.Models;
+using Ksiegarnia.IServices;
+using Ksiegarnia.DTO;
 
 namespace Ksiegarnia.Controllers
 {
     [Route("api/User")]
     public class UserController : Controller
     {
-        private readonly IUserRepository userRepository;
+        private readonly IUserService userService;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserService userService)
         {
-            this.userRepository = userRepository;
+            this.userService = userService;
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<User> Test()
+        public IActionResult Test()
         {
-            return userRepository.GetUsers();
+            return new JsonResult("OK");
         }
     }
 }

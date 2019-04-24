@@ -18,48 +18,48 @@ namespace Ksiegarnia.Repositories
         }
 
         public User GetUser(Guid userId)
-        {
-            return context.Users.SingleOrDefault(u => u.UserId == userId);
-        }
+            => context.Users.SingleOrDefault(u => u.UserId == userId);
 
-        public User GetUser(string email)
-        {
-            return context.Users.SingleOrDefault(u => u.Email == email.ToLowerInvariant());
-        }
+        public User GetUser(string login)
+            => context.Users.SingleOrDefault(u => u.Login == login);
+
+        public User GetUserByEmail(string email)
+            => context.Users.SingleOrDefault(u => u.Email == email.ToLowerInvariant());
 
         public IEnumerable<User> GetUsers()
-        {
-            return context.Users.ToList();
-        }
+            => context.Users.ToList();
+
+        public Address GetAddress(Guid userId)
+            =>context.Addresses.SingleOrDefault(a => a.UserId == userId);
 
         public void AddUser(User user)
         {
             context.Users.Add(user);
-            context.SaveChanges();
         }
 
         public void UpdateUser(User user)
         {
             context.Users.Update(user);
-            context.SaveChanges();
         }
 
         public void RemoveUser(Guid userId)
         {
             var user = GetUser(userId);
             context.Users.Remove(user);
-            context.SaveChanges();
         }
 
         public void AddAddress(Address address)
         {
             context.Addresses.Add(address);
-            context.SaveChanges();
         }
 
         public void UpdateAddress(Address address)
         {
             context.Addresses.Update(address);
+        }
+
+        public void SaveChanges()
+        {
             context.SaveChanges();
         }
     }

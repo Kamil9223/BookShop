@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Ksiegarnia.Extensions;
 using Ksiegarnia.IRepositories;
 using Ksiegarnia.Repositories;
+using Ksiegarnia.Services;
+using Ksiegarnia.IServices;
 
 namespace Ksiegarnia
 {
@@ -30,6 +32,9 @@ namespace Ksiegarnia
             services.AddMvc();
             services.AddDbContext<BookShopContext>(o => o.UseSqlServer(Configuration["ConnectionString:BookShopDB"]));
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddSingleton<IEncrypter, Encrypter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

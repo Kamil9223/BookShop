@@ -13,5 +13,10 @@ namespace Ksiegarnia.Extensions
                 str = str.Replace(sign, "");
             return str;
         }
+
+        public static bool Empty(this string value)
+        {
+            return String.IsNullOrWhiteSpace(value);
+        }
     }
 }

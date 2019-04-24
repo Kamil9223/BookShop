@@ -14,5 +14,6 @@ namespace Ksiegarnia.IRepositories
         void AddBook(Book book);
         void UpdateBook(Book book);
         void RemoveBook(Guid bookId);
+        void SaveChanges();
     }
 }
