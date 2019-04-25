@@ -13,11 +13,13 @@ namespace Ksiegarnia.Services
     {
         private readonly IUserRepository userRepository;
         private readonly IEncrypter encrypter;
+        private readonly IJwtService jwtService;
 
-        public UserService(IUserRepository userRepository, IEncrypter encrypter)
+        public UserService(IUserRepository userRepository, IEncrypter encrypter, IJwtService jwtService)
         {
             this.userRepository = userRepository;
             this.encrypter = encrypter;
+            this.jwtService = jwtService;
         }
 
         public UserDTO Get(string login)
@@ -53,6 +55,8 @@ namespace Ksiegarnia.Services
             {
                 throw new Exception("Invalid credentials");
             }
+            
+            var jwtToken = jwtService.CreateToken(user.Login, "user");
         }
 
         public void Register(string login, string password, string email, AddressDTO addressDto = null)
