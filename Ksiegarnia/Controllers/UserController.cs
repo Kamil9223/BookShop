@@ -8,6 +8,7 @@ using Ksiegarnia.Models;
 using Ksiegarnia.IServices;
 using Ksiegarnia.DTO;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Ksiegarnia.Controllers
 {
@@ -15,32 +16,31 @@ namespace Ksiegarnia.Controllers
     public class UserController : Controller
     {
         private readonly IUserService userService;
-        private readonly IJwtService jwtService;
+        private readonly IMemoryCache memoryCache;
 
-        public UserController(IUserService userService, IJwtService jwtService)
+        public UserController(IUserService userService, IMemoryCache memoryCache)
         {
             this.userService = userService;
-            this.jwtService = jwtService;
+            this.memoryCache = memoryCache;
         }
 
-        [HttpGet("[action]")]
-        public IActionResult Token()
+        [HttpPost("[action]")]
+        public IActionResult Register(string login, string password, string email, AddressDTO address)
         {
-            var token = jwtService.CreateToken("Kamil", "user");
-            return new JsonResult(token);
+            if (address.City == null && address.Street == null && address.ZipCode == null)
+                address = null;
+
+            userService.Register(login, password, email, address);
+            return new JsonResult(StatusCode(200));
         }
 
-        [Authorize]
-        [HttpGet("[action]")]
-        public IActionResult Test1()
+        [HttpPost("[action]")]
+        public IActionResult Login(string login, string password)
         {
-            return new JsonResult("Success! You got access to authorized test method!");
-        }
+            userService.Login(login, password);
+            var jwt = memoryCache.Get(login);
 
-        [HttpGet("[action]")]
-        public IActionResult Test2()
-        {
-            return new JsonResult("Unauthorized method.");
+            return new JsonResult(jwt);
         }
     }
 }

@@ -42,6 +42,8 @@ namespace Ksiegarnia
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 };
             });
+            services.AddAuthorization(p => p.AddPolicy("admin", pol => pol.RequireRole("admin")));
+            services.AddMemoryCache();
             services.AddMvc();
             services.AddDbContext<BookShopContext>(o => o.UseSqlServer(Configuration["ConnectionString:BookShopDB"]));
             services.AddScoped<IUserRepository, UserRepository>();
