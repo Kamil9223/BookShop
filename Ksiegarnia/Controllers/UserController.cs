@@ -42,5 +42,11 @@ namespace Ksiegarnia.Controllers
 
             return new JsonResult(jwt);
         }
+
+        [HttpGet("[action]")]
+        public IActionResult Test()
+        {
+            return new JsonResult("Sample text!");
+        }
     }
 }

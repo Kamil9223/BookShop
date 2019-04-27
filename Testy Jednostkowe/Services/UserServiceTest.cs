@@ -2,6 +2,7 @@
 using Ksiegarnia.IServices;
 using Ksiegarnia.Models;
 using Ksiegarnia.Services;
+using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,11 @@ namespace Testy_Jednostkowe.Services
         {
             var userRepositoryMock = new Mock<IUserRepository>();
             var encrypterMock = new Mock<IEncrypter>();
+            var jwtService = new Mock<IJwtService>();
+            var memoryCache = new Mock<IMemoryCache>();
 
-            var userService = new UserService(userRepositoryMock.Object, encrypterMock.Object);
+            var userService = new UserService(userRepositoryMock.Object, encrypterMock.Object,
+                jwtService.Object, memoryCache.Object);
 
             userService.Register("Test", "password", "wrongMail");
 
@@ -30,8 +34,11 @@ namespace Testy_Jednostkowe.Services
         {
             var userRepositoryMock = new Mock<IUserRepository>();
             var encrypterMock = new Mock<IEncrypter>();
+            var jwtService = new Mock<IJwtService>();
+            var memoryCache = new Mock<IMemoryCache>();
 
-            var userService = new UserService(userRepositoryMock.Object, encrypterMock.Object);
+            var userService = new UserService(userRepositoryMock.Object, encrypterMock.Object,
+                jwtService.Object, memoryCache.Object);
 
             userService.Register("Test", "password", "wrongMail");
 
