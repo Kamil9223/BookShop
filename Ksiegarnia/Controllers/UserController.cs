@@ -9,6 +9,7 @@ using Ksiegarnia.IServices;
 using Ksiegarnia.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Cors;
 
 namespace Ksiegarnia.Controllers
 {
