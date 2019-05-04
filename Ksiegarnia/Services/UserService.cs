@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Ksiegarnia.DTO;
 using Ksiegarnia.IRepositories;
 using Ksiegarnia.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Ksiegarnia.Services
 {
@@ -13,11 +14,16 @@ namespace Ksiegarnia.Services
     {
         private readonly IUserRepository userRepository;
         private readonly IEncrypter encrypter;
+        private readonly IJwtService jwtService;
+        private readonly IMemoryCache memoryCache;
 
-        public UserService(IUserRepository userRepository, IEncrypter encrypter)
+        public UserService(IUserRepository userRepository, IEncrypter encrypter,
+            IJwtService jwtService, IMemoryCache memoryCache)
         {
             this.userRepository = userRepository;
             this.encrypter = encrypter;
+            this.jwtService = jwtService;
+            this.memoryCache = memoryCache;
         }
 
         public UserDTO Get(string login)
@@ -53,6 +59,9 @@ namespace Ksiegarnia.Services
             {
                 throw new Exception("Invalid credentials");
             }
+            
+            var jwtToken = jwtService.CreateToken(user.Login, "user");
+            memoryCache.Set(user.Login, jwtToken, TimeSpan.FromSeconds(30));
         }
 
         public void Register(string login, string password, string email, AddressDTO addressDto = null)
