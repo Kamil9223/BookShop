@@ -23,8 +23,8 @@ namespace Ksiegarnia.Repositories
         public Book GetBook(string title)
             => context.Books.SingleOrDefault(b => b.Title == title);
 
-        public IEnumerable<Book> GetBooks()
-            => context.Books.ToList();
+        public IEnumerable<Book> GetBooks(int page, int pageSize)
+            => context.Books.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
         public void AddBook(Book book)
         {

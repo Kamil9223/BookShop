@@ -38,6 +38,9 @@ namespace Ksiegarnia.Models
     {
         Novel = 0,
         Detective_Story = 1,
-        Fantasy = 2
+        Fantasy = 2,
+        Poetry = 3,
+        Short_Story = 4,
+        Textbook = 5
     }
 }
