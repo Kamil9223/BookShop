@@ -13,6 +13,7 @@ namespace Ksiegarnia.Models
         public virtual Guid BookId { get; protected set; }
         public virtual Order Order { get; protected set; }
         public virtual Book Book { get; protected set; }
+
         public int NumberOfBooks { get; protected set; }
 
         protected BookInOrder() { }

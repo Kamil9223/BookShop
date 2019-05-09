@@ -4,14 +4,16 @@ using Ksiegarnia.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ksiegarnia.Migrations
 {
     [DbContext(typeof(BookShopContext))]
-    partial class BookShopContextModelSnapshot : ModelSnapshot
+    [Migration("20190509192239_Categories")]
+    partial class Categories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,9 +62,6 @@ namespace Ksiegarnia.Migrations
                     b.Property<int>("NumberOfPages");
 
                     b.Property<int>("NumberOfPieces");
-
-                    b.Property<string>("PhotoUrl")
-                        .HasMaxLength(400);
 
                     b.Property<decimal>("Price");
 

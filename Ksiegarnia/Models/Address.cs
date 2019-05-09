@@ -10,13 +10,14 @@ namespace Ksiegarnia.Models
     public class Address
     {
         public Guid AddressId { get; protected set; }
-        public virtual Guid UserId { get; protected set; }
-        public virtual User User { get; protected set; }
         public string City { get; protected set; }
         public string Street { get; protected set; }
         public string HouseNumber { get; protected set; }
         public string FlatNumber { get; protected set; }
         public string ZipCode { get; protected set; }
+
+        public virtual Guid UserId { get; protected set; }
+        public virtual User User { get; protected set; }
 
         protected Address() { }
 
