@@ -60,6 +60,7 @@ namespace Ksiegarnia
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IBookService, BookService>();
             services.AddSingleton<IEncrypter, Encrypter>();
             services.AddSingleton<IJwtService, JwtService>();
         }

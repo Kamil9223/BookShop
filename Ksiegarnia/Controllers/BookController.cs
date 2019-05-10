@@ -1,18 +1,18 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using Ksiegarnia.IRepositories;
 using Ksiegarnia.Models;
+using Ksiegarnia.IServices;
 
 namespace Ksiegarnia.Controllers
 {
     [Route("api/Book")]
     public class BookController : Controller
     {
-        private readonly IBookRepository bookRepository;
+        private readonly IBookService bookService;
 
-        public BookController(IBookRepository bookRepository)
+        public BookController(IBookService bookService)
         {
-            this.bookRepository = bookRepository;
+            this.bookService = bookService;
         }
 
         [HttpGet("[action]")]
@@ -22,14 +22,14 @@ namespace Ksiegarnia.Controllers
             {
                 return BadRequest();
             }
-            var books = bookRepository.GetBooks(page, pageSize);
+            var books = bookService.GetBooks(page, pageSize);
             return new JsonResult(books);
         }
 
         [HttpGet("[action]")]
         public IActionResult GetBook(Guid bookId)
         {
-            var book = bookRepository.GetBook(bookId);
+            var book = bookService.ShowBookDetails(bookId);
             return new JsonResult(book);
         }
     }
