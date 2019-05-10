@@ -44,11 +44,23 @@ namespace Ksiegarnia
             });
             services.AddAuthorization(p => p.AddPolicy("admin", pol => pol.RequireRole("admin")));
             services.AddMemoryCache();
+            services.AddCors(
+                options => options.AddPolicy("AllowCors",
+                builder =>
+                {
+                    builder
+                    //.AllowAnyOrigin()
+                    .WithOrigins("http://localhost:4200")
+                    .WithMethods("GET", "PUT", "POST", "DELETE")
+                    .AllowAnyHeader();
+                })
+            );
             services.AddMvc();
             services.AddDbContext<BookShopContext>(o => o.UseSqlServer(Configuration["ConnectionString:BookShopDB"]));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IBookService, BookService>();
             services.AddSingleton<IEncrypter, Encrypter>();
             services.AddSingleton<IJwtService, JwtService>();
         }
@@ -68,6 +80,7 @@ namespace Ksiegarnia
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            app.UseCors("AllowCors");
 
             app.UseStaticFiles();
             app.UseAuthentication();
