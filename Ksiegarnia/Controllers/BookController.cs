@@ -32,5 +32,11 @@ namespace Ksiegarnia.Controllers
             var book = bookService.ShowBookDetails(bookId);
             return new JsonResult(book);
         }
+
+        [HttpGet("[action]")]
+        public void ProvideData()
+        {
+
+        }
     }
 }

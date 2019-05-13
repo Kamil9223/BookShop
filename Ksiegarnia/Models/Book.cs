@@ -36,15 +36,4 @@ namespace Ksiegarnia.Models
             TypeCategoryId = typeCategoryId;
         }
     }
-
-    //public enum Category
-    //{
-    //    Novel = 0,
-    //    Detective_Story = 1,
-    //    Fantasy = 2,
-    //    Poetry = 3,
-    //    Short_Story = 4,
-    //    Comedy = 5,
-    //    Thriller = 6
-    //}
 }

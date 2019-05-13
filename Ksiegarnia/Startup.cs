@@ -59,6 +59,9 @@ namespace Ksiegarnia
             services.AddDbContext<BookShopContext>(o => o.UseSqlServer(Configuration["ConnectionString:BookShopDB"]));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ITypeRepository, TypeRepository>();
+            services.AddScoped<ITypeCategoryRepository, TypeCategoryRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBookService, BookService>();
             services.AddSingleton<IEncrypter, Encrypter>();
