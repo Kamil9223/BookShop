@@ -12,13 +12,16 @@ namespace Ksiegarnia.Repositories
     {
         private readonly BookShopContext context;
 
-        TypeCategoryRepository(BookShopContext context)
+        public TypeCategoryRepository(BookShopContext context)
         {
             this.context = context;
         }
 
         public TypeCategory GetTypeCategoryRelation(Guid relationId)
             => context.TypeCategories.SingleOrDefault(tp => tp.TypeCategoryId == relationId);
+
+        public Guid GetExistingRelation(Guid categoryId, Guid typeId)
+            => context.TypeCategories.SingleOrDefault(x => x.CategoryId == categoryId && x.TypeId == typeId).TypeCategoryId;
 
         public void AddTypeCategoryRelation(TypeCategory relation)
         {

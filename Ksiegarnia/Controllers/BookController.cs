@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Ksiegarnia.Models;
 using Ksiegarnia.IServices;
+using Ksiegarnia.IRepositories;
 
 namespace Ksiegarnia.Controllers
 {
@@ -34,9 +35,11 @@ namespace Ksiegarnia.Controllers
         }
 
         [HttpGet("[action]")]
-        public void ProvideData()
-        {
-
+        public IActionResult test()
+        {//testowa
+            var type = bookService.TypeRepository.GetType(Guid.Parse("74191B2B-C2BC-4E6D-9589-0E50AA73A543"));
+            var categories = bookService.CategoryRepository.GetCategoriesByType(type.TypeId);
+            return new JsonResult(categories);
         }
     }
 }

@@ -23,6 +23,13 @@ namespace Ksiegarnia.Repositories
         public IEnumerable<Category> GetCategories()
             => context.Categories.ToList();
 
+        public IEnumerable<Category> GetCategoriesByType(Guid typeId)
+        {
+            var categoryIds = context.TypeCategories.Where(x => x.TypeId == typeId).Select(x => x.CategoryId).ToList();
+            var categories = context.Categories.Where(x => categoryIds.Contains(x.CategoryId));
+            return categories;
+        }
+
         public void AddCategory(Category category)
         {
             context.Categories.Add(category);

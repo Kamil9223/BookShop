@@ -10,6 +10,7 @@ namespace Ksiegarnia.IRepositories
     {
         Category GetCategory(Guid categoryId);
         IEnumerable<Category> GetCategories();
+        IEnumerable<Category> GetCategoriesByType(Guid typeId);
         void AddCategory(Category category);
         void UpdateCategory(Category category);
         void RemoveCategory(Guid categoryId);

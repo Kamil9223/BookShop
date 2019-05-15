@@ -57,11 +57,13 @@ namespace Ksiegarnia
             );
             services.AddMvc();
             services.AddDbContext<BookShopContext>(o => o.UseSqlServer(Configuration["ConnectionString:BookShopDB"]));
+            //Repositories
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITypeRepository, TypeRepository>();
             services.AddScoped<ITypeCategoryRepository, TypeCategoryRepository>();
+            //Services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBookService, BookService>();
             services.AddSingleton<IEncrypter, Encrypter>();
