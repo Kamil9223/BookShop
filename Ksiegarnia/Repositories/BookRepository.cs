@@ -27,14 +27,14 @@ namespace Ksiegarnia.Repositories
             => context.Books.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
         public IEnumerable<Book> GetBooksByType(Guid typeId, int page, int pageSize)
-        {//??
+        {
             var ids = context.TypeCategories.Where(x => x.TypeId == typeId).Select(x => x.TypeCategoryId).ToList();
             var books = context.Books.Where(x => ids.Contains(x.TypeCategoryId)).Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return books;
         }
 
         public IEnumerable<Book> GetBooksByTypeAndCategory(Guid typeId, Guid categoryId, int page, int pageSize)
-        {//??
+        {
             var id = context.TypeCategories.SingleOrDefault(x => x.TypeId == typeId && x.CategoryId == categoryId).TypeCategoryId;
             var books = context.Books.Where(x => x.TypeCategoryId == id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return books;

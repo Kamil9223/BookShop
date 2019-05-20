@@ -50,18 +50,5 @@ namespace Ksiegarnia.Repositories
         {
             context.SaveChanges();
         }
-
-        public void test()
-        {
-            //id kategorii powiesc z bazy
-            var novelCatId = context.Categories.SingleOrDefault(x => x.CategoryName == "Novel").CategoryId;
-            //id typu książka z bazy
-            var BookTypeId = context.Types.SingleOrDefault(x => x.TypeName == "Book").TypeId;
-            //id relacji o powyzszych typie i kateogrii
-            var tcId = context.TypeCategories.SingleOrDefault(x => x.CategoryId == novelCatId && x.TypeId == BookTypeId).TypeCategoryId;
-            //wszystkie książki o typie book
-            var tcIds = context.TypeCategories.Where(x => x.TypeId == BookTypeId).ToList();
-            //var books = context.Books.Where(x => x.TypeCategoryId == tcIds);
-        }
     }
 }
