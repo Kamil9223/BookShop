@@ -16,9 +16,6 @@ namespace Ksiegarnia.Services
         private readonly ITypeRepository typeRepository;
         private readonly ITypeCategoryRepository typeCategoryRepository;
 
-        public ICategoryRepository CategoryRepository { get { return categoryRepository; } }
-        public ITypeRepository TypeRepository { get { return typeRepository; } }
-
         public BookService(IBookRepository bookRepository, ICategoryRepository categoryRepository,
             ITypeRepository typeRepository, ITypeCategoryRepository typeCategoryRepository)
         {
@@ -49,6 +46,87 @@ namespace Ksiegarnia.Services
             return booksDto;
         }
 
+        public IEnumerable<BookDTO> GetBooksByType(int page, int pageSize, Guid typeId)
+        {
+            var books = bookRepository.GetBooksByType(typeId, page, pageSize);
+            if (books == null)
+                throw new Exception("Can not find books collection with provided type Id.");
+
+            var booksDto = new List<BookDTO>();
+
+            foreach (Book book in books)
+            {
+                booksDto.Add(new BookDTO()
+                {
+                    BookId = book.BookId,
+                    Title = book.Title,
+                    PhotoUrl = book.PhotoUrl,
+                    Price = book.Price,
+                    TypeCategoryId = book.TypeCategoryId,
+                    TypeCategory = book.TypeCategory
+                });
+            }
+
+            return booksDto;
+        }
+
+        public IEnumerable<BookDTO> GetBooksByTypeAndCategory(int page, int pageSize, Guid typeId, Guid categoryId)
+        {
+            var books = bookRepository.GetBooksByTypeAndCategory(typeId, categoryId, page, pageSize);
+            if (books == null)
+                throw new Exception("Can not find books collection with provided type Id and category Id.");
+
+            var booksDto = new List<BookDTO>();
+
+            foreach (Book book in books)
+            {
+                booksDto.Add(new BookDTO()
+                {
+                    BookId = book.BookId,
+                    Title = book.Title,
+                    PhotoUrl = book.PhotoUrl,
+                    Price = book.Price,
+                    TypeCategoryId = book.TypeCategoryId,
+                    TypeCategory = null
+                });
+            }
+
+            return booksDto;
+        }
+
+        public IEnumerable<BookDTO> GetBooksRandomly(int count)
+        {
+            var books = bookRepository.GetBooksRandomly(count);
+            var booksDto = new List<BookDTO>();
+
+            foreach(Book book in books)
+            {
+                booksDto.Add(new BookDTO()
+                {
+                    BookId = book.BookId,
+                    Title = book.Title,
+                    PhotoUrl = book.PhotoUrl,
+                    Price = book.Price,
+                    TypeCategoryId = book.TypeCategoryId,
+                    TypeCategory = book.TypeCategory
+                });
+            }
+
+            return booksDto;
+        }
+
+        public IEnumerable<Category> GetCategoriesByType(Guid typeId)
+        {
+            var categories = categoryRepository.GetCategoriesByType(typeId);
+            return categories;
+        }
+
+        public IEnumerable<Models.Type> GetTypes()
+        {
+            var types = typeRepository.GetTypes();
+            return types;
+        }
+
         public Book ShowBookDetails(Guid bookId)
         {
             var book = bookRepository.GetBook(bookId);
@@ -77,6 +155,12 @@ namespace Ksiegarnia.Services
             typeCategoryRepository.SaveChanges();
 
             return relation.TypeCategoryId;
+        }
+
+        public void AddBook(Book book)
+        {//Dodać walidacje, zabronić dwie ksiązki o tym samym tytule, sprawdic nulle itd
+            bookRepository.AddBook(book);
+            bookRepository.SaveChanges();
         }
     }
 }

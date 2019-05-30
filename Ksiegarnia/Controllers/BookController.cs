@@ -1,8 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using Ksiegarnia.Models;
 using Ksiegarnia.IServices;
-using Ksiegarnia.IRepositories;
+using System.Collections.Generic;
 
 namespace Ksiegarnia.Controllers
 {
@@ -28,18 +27,57 @@ namespace Ksiegarnia.Controllers
         }
 
         [HttpGet("[action]")]
+        public IActionResult GetBooksByType(int page, int pageSize, Guid typeId)
+        {
+            if (page <= 0 || pageSize <= 0)
+            {
+                return BadRequest();
+            }
+            var books = bookService.GetBooksByType(page, pageSize, typeId);
+            return new JsonResult(books);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetBooksByCategory(int page, int pageSize, Guid typeId, Guid categoryId)
+        {
+            if (page <= 0 || pageSize <= 0)
+            {
+                return BadRequest();
+            }
+            var books = bookService.GetBooksByTypeAndCategory(page, pageSize, typeId, categoryId);
+            return new JsonResult(books);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetBooksRandomly(int count)
+        {
+            if (count <= 0)
+            {
+                return BadRequest();
+            }
+            var books = bookService.GetBooksRandomly(count);
+            return new JsonResult(books);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetTypes()
+        {
+            var types = bookService.GetTypes();
+            return new JsonResult(types);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetCategories(Guid typeId)
+        {
+            var cateogries = bookService.GetCategoriesByType(typeId);
+            return new JsonResult(cateogries);
+        }
+
+        [HttpGet("[action]")]
         public IActionResult GetBook(Guid bookId)
         {
             var book = bookService.ShowBookDetails(bookId);
             return new JsonResult(book);
-        }
-
-        [HttpGet("[action]")]
-        public IActionResult test()
-        {//testowa
-            var type = bookService.TypeRepository.GetType(Guid.Parse("74191B2B-C2BC-4E6D-9589-0E50AA73A543"));
-            var categories = bookService.CategoryRepository.GetCategoriesByType(type.TypeId);
-            return new JsonResult(categories);
         }
     }
 }
