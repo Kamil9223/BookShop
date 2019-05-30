@@ -94,6 +94,27 @@ namespace Ksiegarnia.Services
             return booksDto;
         }
 
+        public IEnumerable<BookDTO> GetBooksRandomly(int count)
+        {
+            var books = bookRepository.GetBooksRandomly(count);
+            var booksDto = new List<BookDTO>();
+
+            foreach(Book book in books)
+            {
+                booksDto.Add(new BookDTO()
+                {
+                    BookId = book.BookId,
+                    Title = book.Title,
+                    PhotoUrl = book.PhotoUrl,
+                    Price = book.Price,
+                    TypeCategoryId = book.TypeCategoryId,
+                    TypeCategory = book.TypeCategory
+                });
+            }
+
+            return booksDto;
+        }
+
         public IEnumerable<Category> GetCategoriesByType(Guid typeId)
         {
             var categories = categoryRepository.GetCategoriesByType(typeId);

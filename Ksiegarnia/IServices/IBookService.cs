@@ -13,6 +13,7 @@ namespace Ksiegarnia.IServices
         IEnumerable<BookDTO> GetBooks(int page, int pageSize);
         IEnumerable<BookDTO> GetBooksByType(int page, int pageSize, Guid typeId);
         IEnumerable<BookDTO> GetBooksByTypeAndCategory(int page, int pageSize, Guid typeId, Guid categoryId);
+        IEnumerable<BookDTO> GetBooksRandomly(int count);
         IEnumerable<Category> GetCategoriesByType(Guid typeId);
         IEnumerable<Models.Type> GetTypes();
         Book ShowBookDetails(Guid bookId);

@@ -40,6 +40,13 @@ namespace Ksiegarnia.Repositories
             return books;
         }
 
+        public IEnumerable<Book> GetBooksRandomly(int count)
+        {
+            Random rand = new Random();
+            var books = context.Books.OrderBy(x => rand.Next()).Take(count);
+            return books;
+        }
+
         public void AddBook(Book book)
         {
             context.Books.Add(book);

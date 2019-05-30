@@ -13,6 +13,7 @@ namespace Ksiegarnia.IRepositories
         IEnumerable<Book> GetBooks(int page, int pageSize);
         IEnumerable<Book> GetBooksByType(Guid typeId, int page, int pageSize);
         IEnumerable<Book> GetBooksByTypeAndCategory(Guid typeId, Guid categoryId, int page, int pageSize);
+        IEnumerable<Book> GetBooksRandomly(int count);
         void AddBook(Book book);
         void UpdateBook(Book book);
         void RemoveBook(Guid bookId);

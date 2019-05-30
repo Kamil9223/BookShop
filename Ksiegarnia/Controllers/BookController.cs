@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Ksiegarnia.IServices;
+using System.Collections.Generic;
 
 namespace Ksiegarnia.Controllers
 {
@@ -44,6 +45,17 @@ namespace Ksiegarnia.Controllers
                 return BadRequest();
             }
             var books = bookService.GetBooksByTypeAndCategory(page, pageSize, typeId, categoryId);
+            return new JsonResult(books);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetBooksRandomly(int count)
+        {
+            if (count <= 0)
+            {
+                return BadRequest();
+            }
+            var books = bookService.GetBooksRandomly(count);
             return new JsonResult(books);
         }
 
