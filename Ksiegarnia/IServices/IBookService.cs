@@ -16,6 +16,7 @@ namespace Ksiegarnia.IServices
         IEnumerable<BookDTO> GetBooksRandomly(int count);
         IEnumerable<Category> GetCategoriesByType(Guid typeId);
         IEnumerable<Models.Type> GetTypes();
+        Models.Type GetType(string typeName);
         Book ShowBookDetails(Guid bookId);
         Guid AddTypeCategoryRelation(Guid categoryId, Guid typeId);
         void AddBook(Book book);

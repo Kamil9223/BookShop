@@ -127,6 +127,12 @@ namespace Ksiegarnia.Services
             return types;
         }
 
+        public Models.Type GetType(string typeName)
+        {
+            var type = typeRepository.GetType(typeName);
+            return type;
+        }
+
         public Book ShowBookDetails(Guid bookId)
         {
             var book = bookRepository.GetBook(bookId);
