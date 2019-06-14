@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Ksiegarnia.IServices;
 using Ksiegarnia.DTO;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ksiegarnia.Controllers
 {
@@ -35,12 +36,6 @@ namespace Ksiegarnia.Controllers
             var jwt = memoryCache.Get(login);
 
             return new JsonResult(jwt);
-        }
-
-        [HttpGet("[action]")]
-        public IActionResult Test()
-        {
-            return new JsonResult("Sample text!");
         }
     }
 }

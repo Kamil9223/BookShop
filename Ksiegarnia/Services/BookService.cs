@@ -49,8 +49,6 @@ namespace Ksiegarnia.Services
         public IEnumerable<BookDTO> GetBooksByType(int page, int pageSize, Guid typeId)
         {
             var books = bookRepository.GetBooksByType(typeId, page, pageSize);
-            if (books == null)
-                throw new Exception("Can not find books collection with provided type Id.");
 
             var booksDto = new List<BookDTO>();
 
