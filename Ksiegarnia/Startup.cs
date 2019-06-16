@@ -17,6 +17,8 @@ using Ksiegarnia.IServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Ksiegarnia.Models.Internet_Cart;
+using Microsoft.AspNetCore.Http;
 
 namespace Ksiegarnia
 {
@@ -55,6 +57,9 @@ namespace Ksiegarnia
                     .AllowAnyHeader();
                 })
             );
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(10); 
+            });
             services.AddMvc();
             services.AddDbContext<BookShopContext>(o => o.UseSqlServer(Configuration["ConnectionString:BookShopDB"]));
             //Repositories
@@ -68,6 +73,7 @@ namespace Ksiegarnia
             services.AddScoped<IBookService, BookService>();
             services.AddSingleton<IEncrypter, Encrypter>();
             services.AddSingleton<IJwtService, JwtService>();
+            services.AddScoped<Cart>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,7 +92,7 @@ namespace Ksiegarnia
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseCors("AllowCors");
-
+            app.UseSession();
             app.UseStaticFiles();
             app.UseAuthentication();
 

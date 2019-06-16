@@ -20,6 +20,9 @@ namespace Ksiegarnia.Repositories
         public Models.Type GetType(Guid typeId)
             => context.Types.SingleOrDefault(t => t.TypeId == typeId);
 
+        public Models.Type GetType(string typeName)
+            => context.Types.SingleOrDefault(t => t.TypeName == typeName);
+
         public IEnumerable<Models.Type> GetTypes()
             => context.Types.ToList();
 

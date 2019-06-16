@@ -24,10 +24,10 @@ namespace Ksiegarnia.Models
 
         protected Book() { }
 
-        public Book(string title, decimal price, int numberOfPages, 
+        public Book(Guid bookId, string title, decimal price, int numberOfPages, 
             string shortDescription, int numberOfPieces, Guid typeCategoryId)
         {
-            BookId = Guid.NewGuid();
+            BookId = bookId;
             Title = title;
             Price = price;
             NumberOfPages = numberOfPages;

@@ -67,6 +67,22 @@ namespace Ksiegarnia.Controllers
         }
 
         [HttpGet("[action]")]
+        public IActionResult GetType(string typeName)
+        {
+            if (String.IsNullOrWhiteSpace(typeName))
+            {
+                return BadRequest();
+            }
+            var type = bookService.GetType(typeName);
+
+            if (type == null)
+            {
+                return BadRequest();
+            }
+            return new JsonResult(type);
+        }
+
+        [HttpGet("[action]")]
         public IActionResult GetCategories(Guid typeId)
         {
             var cateogries = bookService.GetCategoriesByType(typeId);
