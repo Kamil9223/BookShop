@@ -37,5 +37,14 @@ namespace Ksiegarnia.Controllers
 
             return new JsonResult(jwt);
         }
+
+        [Authorize]
+        [HttpGet("[action]")]
+        public IActionResult Logout()
+        {
+            var token = Request.Headers["Authorization"];
+            userService.Logout(token);
+            return new JsonResult(token);
+        }
     }
 }

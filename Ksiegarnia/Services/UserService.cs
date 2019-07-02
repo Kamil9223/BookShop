@@ -64,6 +64,11 @@ namespace Ksiegarnia.Services
             memoryCache.Set(user.Login, jwtToken, TimeSpan.FromSeconds(30));
         }
 
+        public void Logout(string jwtToken)
+        {
+            jwtService.DeleteToken(jwtToken);
+        }
+
         public void Register(string login, string password, string email, AddressDTO addressDto = null)
         {
             var user = userRepository.GetUser(login);
