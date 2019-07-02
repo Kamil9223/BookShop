@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Ksiegarnia.Models.Internet_Cart;
-using Ksiegarnia.IRepositories;
+using Ksiegarnia.Services;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
+using Ksiegarnia.Models.Internet_Cart;
 
 namespace Ksiegarnia.Controllers
 {
     [Route("api/Order")]
     public class OrderController : Controller
-    {
+    { 
         private readonly Cart cart;
 
         public OrderController(Cart cart)
@@ -20,36 +19,68 @@ namespace Ksiegarnia.Controllers
             this.cart = cart;
         }
 
+        [Authorize]
         [HttpGet("[action]")]
-        public IActionResult test(Guid id)
+        public IActionResult AddToCart(Guid id)
         {
+            //Tylko testowo
+            foreach(string token in JwtService.BlackList)
+            {
+                if (Request.Headers["Authorization"] == token)
+                    throw new UnauthorizedAccessException();
+            }
+
+            var sessionKey = Request.Headers["login"];
+            if ((string)sessionKey == null)
+                return BadRequest();
+
             var session = HttpContext.Session;
-            cart.AddPositionToCart(session, id);
+            cart.AddPositionToCart(session,sessionKey, id);
 
-            var ret = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString("key"));
-            return new JsonResult(ret);
+            var result = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString(sessionKey));
+            return new JsonResult(result);
         }
 
+        [Authorize]
         [HttpGet("[action]")]
-        public IActionResult Remove(Guid id)
+        public IActionResult RemoveFromCart(Guid id)
         {
+            var sessionKey = Request.Headers["login"];
+            if ((string)sessionKey == null)
+                return BadRequest();
+
             var session = HttpContext.Session;
-            cart.RemovePositionFromCart(session, id);
-
-            var ret = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString("key"));
-            return new JsonResult(ret);
+            cart.RemovePositionFromCart(session, sessionKey, id);
+            List<CartPosition> result = null;
+            try
+            {
+                result = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString(sessionKey));
+            }
+            catch(ArgumentNullException e)
+            {
+                return NotFound(e.Message);
+            }
+            return new JsonResult(result);
         }
 
+        [Authorize]
         [HttpGet("[action]")]
-        public IActionResult test2()
+        public IActionResult ShowCart()
         {
-            return new JsonResult(HttpContext.Session.GetString("key"));
-        }
+            var sessionKey = Request.Headers["login"];
+            if ((string)sessionKey == null)
+                return BadRequest();
 
-        [HttpGet("[action]")]
-        public IActionResult test3()
-        {
-            return new JsonResult(JsonConvert.DeserializeObject<List<CartPosition>>(HttpContext.Session.GetString("key")));
+            List<CartPosition> result = null;
+            try
+            {
+                result = JsonConvert.DeserializeObject<List<CartPosition>>(HttpContext.Session.GetString(sessionKey));
+            }
+            catch (ArgumentNullException e)
+            {
+                return NotFound(e.Message);
+            }
+            return new JsonResult(result);
         }
     }
 }

@@ -1,12 +1,11 @@
 ﻿using Ksiegarnia.IRepositories;
+using Ksiegarnia.Models.Internet_Cart;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Ksiegarnia.Models.Internet_Cart
+namespace Ksiegarnia.Services
 {
     public class Cart
     {
@@ -17,23 +16,23 @@ namespace Ksiegarnia.Models.Internet_Cart
             this.bookRepository = bookRepository;
         }
 
-        public List<CartPosition> GetCart(ISession session)
+        public List<CartPosition> GetCart(ISession session, string sessionKey)
         {
             List<CartPosition> cart;
 
-            if (session.GetString("key") == null)
+            if (session.GetString(sessionKey) == null)
                 cart = new List<CartPosition>();
             else
             {
-                cart = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString("key"));
+                cart = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString(sessionKey));
             }
 
             return cart;
         }
 
-        public void AddPositionToCart(ISession session, Guid bookId)
+        public void AddPositionToCart(ISession session, string sessionKey, Guid bookId)
         {
-            var cart = GetCart(session);
+            var cart = GetCart(session, sessionKey);
             var position = cart.Find(x => x.Book.BookId == bookId);
 
             if (position != null)
@@ -50,18 +49,12 @@ namespace Ksiegarnia.Models.Internet_Cart
                     Price = book.Price
                 });
             }
-            session.SetString("key", JsonConvert.SerializeObject(cart));
+            session.SetString(sessionKey, JsonConvert.SerializeObject(cart));
         }
 
-        public string test()
+        public void RemovePositionFromCart(ISession session, string sessionKey, Guid bookId)
         {
-            var t = bookRepository.GetBook("Potop");
-            return t.ToString();
-        }
-
-        public void RemovePositionFromCart(ISession session, Guid bookId)
-        {
-            var cart = GetCart(session);
+            var cart = GetCart(session, sessionKey);
             var position = cart.Find(x => x.Book.BookId == bookId);
 
             if (position == null)
@@ -73,7 +66,20 @@ namespace Ksiegarnia.Models.Internet_Cart
             {
                 cart.Remove(position);
             }
-            session.SetString("key", JsonConvert.SerializeObject(cart));
+            session.SetString(sessionKey, JsonConvert.SerializeObject(cart));
+        }
+
+        public decimal GetPrice(ISession session, string sessionKey)
+        {
+            var cart = GetCart(session, sessionKey);
+            decimal price = 0;
+
+            foreach(var book in cart)
+            {
+                price += (book.Price * book.NumberOfBooks);
+            }
+
+            return price;
         }
     }
 }

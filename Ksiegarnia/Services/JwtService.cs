@@ -13,6 +13,9 @@ namespace Ksiegarnia.Services
 {
     public class JwtService : IJwtService
     {
+        //rozwiązanie tymczasowe
+        //docelowo użyć Redisa to przechowywania czarnej listy tokenów
+        public static List<string> BlackList = new List<string>();
         private readonly IConfiguration config;
 
         public JwtService(IConfiguration config)
@@ -40,6 +43,11 @@ namespace Ksiegarnia.Services
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public void DeleteToken(string jwtToken)
+        {
+            BlackList.Add(jwtToken);
         }
     }
 }
