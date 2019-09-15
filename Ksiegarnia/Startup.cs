@@ -19,6 +19,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Ksiegarnia.Models.Internet_Cart;
 using Microsoft.AspNetCore.Http;
+using Ksiegarnia.MiddleWares;
 
 namespace Ksiegarnia
 {
@@ -46,6 +47,7 @@ namespace Ksiegarnia
             });
             services.AddAuthorization(p => p.AddPolicy("admin", pol => pol.RequireRole("admin")));
             services.AddMemoryCache();
+            //services.AddDistributedRedisCache(x => { x.Configuration = Configuration["Redis:ConnectionString"]; });
             services.AddCors(
                 options => options.AddPolicy("AllowCors",
                 builder =>
@@ -62,6 +64,7 @@ namespace Ksiegarnia
             });
             services.AddMvc();
             services.AddDbContext<BookShopContext>(o => o.UseSqlServer(Configuration["ConnectionString:BookShopDB"]));
+            services.AddTransient<JwtTokenMiddleWare>();
             //Repositories
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
@@ -73,6 +76,7 @@ namespace Ksiegarnia
             services.AddScoped<IBookService, BookService>();
             services.AddSingleton<IEncrypter, Encrypter>();
             services.AddSingleton<IJwtService, JwtService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<Cart>();
         }
 
@@ -91,10 +95,12 @@ namespace Ksiegarnia
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
             app.UseCors("AllowCors");
             app.UseSession();
             app.UseStaticFiles();
             app.UseAuthentication();
+            app.UseMiddleware<JwtTokenMiddleWare>();
 
             app.UseMvc(routes =>
             {

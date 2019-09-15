@@ -1,5 +1,8 @@
 ﻿using Ksiegarnia.IServices;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -13,14 +16,15 @@ namespace Ksiegarnia.Services
 {
     public class JwtService : IJwtService
     {
-        //rozwiązanie tymczasowe
-        //docelowo użyć Redisa to przechowywania czarnej listy tokenów
-        public static List<string> BlackList = new List<string>();
         private readonly IConfiguration config;
+        private readonly IDistributedCache cache;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public JwtService(IConfiguration config)
+        public JwtService(IConfiguration config, IDistributedCache cache, IHttpContextAccessor httpContextAccessor)
         {
             this.config = config;
+            this.cache = cache;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public string CreateToken(string login, string role)
@@ -37,17 +41,44 @@ namespace Ksiegarnia.Services
             var token = new JwtSecurityToken(
                     issuer: config["Jwt:Issuer"],
                     claims: claims,
-                    notBefore: DateTime.Now,
-                    expires: DateTime.Now.AddMinutes(20),
+                    notBefore: DateTime.UtcNow,
+                    expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(config["Jwt:ExpiryMinutes"])),
                     signingCredentials: creds
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public void DeleteToken(string jwtToken)
+        public async Task<bool> IsActive(string token)
         {
-            BlackList.Add(jwtToken);
+            return await cache.GetStringAsync(token) == null;
+        }
+
+        public async Task<bool> IsCurrentActive()
+        {
+            return await IsActive(GetCurrentToken());
+        }
+
+        public async Task DeactivateToken(string token)
+        {
+            await cache.SetStringAsync(token, " ", new DistributedCacheEntryOptions()
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(Convert.ToDouble(config["Jwt:ExpiryMinutes"]))
+            });
+        }
+
+        public async Task DeactivateCurrentToken()
+        {
+            await DeactivateToken(GetCurrentToken());
+        }
+
+        private string GetCurrentToken()
+        {
+            var authorizationHeader = httpContextAccessor.HttpContext.Request.Headers["authorization"];
+
+            return authorizationHeader == StringValues.Empty
+                ? String.Empty
+                : authorizationHeader.Single().Split(" ").Last();
         }
     }
 }

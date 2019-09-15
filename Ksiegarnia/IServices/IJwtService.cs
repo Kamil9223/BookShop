@@ -8,6 +8,9 @@ namespace Ksiegarnia.IServices
     public interface IJwtService
     {
         string CreateToken(string login, string role);
-        void DeleteToken(string jwtToken);
+        Task DeactivateToken(string token);
+        Task DeactivateCurrentToken();
+        Task<bool> IsActive(string token);
+        Task<bool> IsCurrentActive();
     }
 }

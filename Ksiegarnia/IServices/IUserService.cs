@@ -10,7 +10,7 @@ namespace Ksiegarnia.IServices
     {
         void Register(string login, string password, string email, AddressDTO addressDto = null);
         void Login(string login, string password);
-        void Logout(string jwtToken);
+        void Logout();
         UserDTO Get(string login);
     }
 }

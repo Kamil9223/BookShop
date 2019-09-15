@@ -15,5 +15,6 @@ namespace Ksiegarnia.IRepositories
         void UpdateCategory(Category category);
         void RemoveCategory(Guid categoryId);
         void SaveChanges();
+        void Test();
     }
 }

@@ -4,6 +4,7 @@ using Ksiegarnia.IServices;
 using Ksiegarnia.DTO;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Authorization;
+using Ksiegarnia.IRepositories;
 
 namespace Ksiegarnia.Controllers
 {
@@ -43,7 +44,7 @@ namespace Ksiegarnia.Controllers
         public IActionResult Logout()
         {
             var token = Request.Headers["Authorization"];
-            userService.Logout(token);
+            userService.Logout();
             return new JsonResult(token);
         }
     }

@@ -23,13 +23,6 @@ namespace Ksiegarnia.Controllers
         [HttpGet("[action]")]
         public IActionResult AddToCart(Guid id)
         {
-            //Tylko testowo
-            foreach(string token in JwtService.BlackList)
-            {
-                if (Request.Headers["Authorization"] == token)
-                    throw new UnauthorizedAccessException();
-            }
-
             var sessionKey = Request.Headers["login"];
             if ((string)sessionKey == null)
                 return BadRequest();

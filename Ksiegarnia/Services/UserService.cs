@@ -64,9 +64,9 @@ namespace Ksiegarnia.Services
             memoryCache.Set(user.Login, jwtToken, TimeSpan.FromSeconds(30));
         }
 
-        public void Logout(string jwtToken)
+        public void Logout()
         {
-            jwtService.DeleteToken(jwtToken);
+            jwtService.DeactivateCurrentToken();
         }
 
         public void Register(string login, string password, string email, AddressDTO addressDto = null)
