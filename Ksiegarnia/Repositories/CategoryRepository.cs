@@ -50,24 +50,5 @@ namespace Ksiegarnia.Repositories
         {
             context.SaveChanges();
         }
-
-        public void Test()
-        {
-            var res = context.Categories.Join(
-                            context.TypeCategories,
-                            CId => CId.CategoryId,
-                            TPId => TPId.Category.CategoryId,
-                            (CID, TPId) => new
-                            {
-                                CategoryId = CID.CategoryId,
-                                CategoryName = CID.CategoryName,
-                                TypeCategoryId = TPId.TypeCategoryId,
-                                CategoryID = TPId.CategoryId,
-                                TypeId = TPId.TypeId
-                            }
-                        ).ToList();
-
-            
-        }
     }
 }

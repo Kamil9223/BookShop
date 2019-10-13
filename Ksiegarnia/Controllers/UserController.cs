@@ -5,10 +5,11 @@ using Ksiegarnia.DTO;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Authorization;
 using Ksiegarnia.IRepositories;
+using Ksiegarnia.Commands;
 
 namespace Ksiegarnia.Controllers
 {
-    [Route("api/User")]
+    [Route("api")]
     public class UserController : Controller
     {
         private readonly IUserService userService;
@@ -20,27 +21,27 @@ namespace Ksiegarnia.Controllers
             this.memoryCache = memoryCache;
         }
 
-        [HttpPost("[action]")]
-        public IActionResult Register(string login, string password, string email, AddressDTO address)
+        [HttpPost("/Register")]
+        public IActionResult Register([FromBody] RegisterCommand command)
         {
-            if (address.City == null && address.Street == null && address.ZipCode == null)
-                address = null;
+            if (command.Address.City == null && command.Address.Street == null && command.Address.ZipCode == null)
+                command.Address = null;
 
-            userService.Register(login, password, email, address);
-            return new JsonResult(StatusCode(200));
+            userService.Register(command.Login, command.Password, command.Email, command.Address);
+            return Ok();
         }
 
-        [HttpPost("[action]")]
-        public IActionResult Login(string login, string password)
+        [HttpPost("/Login")]
+        public IActionResult Login([FromBody] LoginCommand command)
         {
-            userService.Login(login, password);
-            var jwt = memoryCache.Get(login);
+            userService.Login(command.Login, command.Password);
+            var jwt = memoryCache.Get(command.Login);
 
             return new JsonResult(jwt);
         }
 
         [Authorize]
-        [HttpGet("[action]")]
+        [HttpGet("/Logout")]
         public IActionResult Logout()
         {
             var token = Request.Headers["Authorization"];

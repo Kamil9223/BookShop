@@ -9,7 +9,8 @@ using Ksiegarnia.Models.Internet_Cart;
 
 namespace Ksiegarnia.Controllers
 {
-    [Route("api/Order")]
+    [Authorize]
+    [Route("api")]
     public class OrderController : Controller
     { 
         private readonly Cart cart;
@@ -19,8 +20,7 @@ namespace Ksiegarnia.Controllers
             this.cart = cart;
         }
 
-        [Authorize]
-        [HttpGet("[action]")]
+        [HttpPost("/Cart/{id}")]
         public IActionResult AddToCart(Guid id)
         {
             var sessionKey = Request.Headers["login"];
@@ -28,14 +28,13 @@ namespace Ksiegarnia.Controllers
                 return BadRequest();
 
             var session = HttpContext.Session;
-            cart.AddPositionToCart(session,sessionKey, id);
+            cart.AddPositionToCart(session, sessionKey, id);
 
             var result = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString(sessionKey));
             return new JsonResult(result);
         }
 
-        [Authorize]
-        [HttpGet("[action]")]
+        [HttpDelete("/Cart/{id}")]
         public IActionResult RemoveFromCart(Guid id)
         {
             var sessionKey = Request.Headers["login"];
@@ -44,36 +43,33 @@ namespace Ksiegarnia.Controllers
 
             var session = HttpContext.Session;
             cart.RemovePositionFromCart(session, sessionKey, id);
-            List<CartPosition> result = null;
             try
             {
-                result = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString(sessionKey));
+                List<CartPosition> result = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString(sessionKey));
+                return new JsonResult(result);
             }
             catch(ArgumentNullException e)
             {
                 return NotFound(e.Message);
             }
-            return new JsonResult(result);
         }
 
-        [Authorize]
-        [HttpGet("[action]")]
+        [HttpGet("/Cart")]
         public IActionResult ShowCart()
         {
             var sessionKey = Request.Headers["login"];
             if ((string)sessionKey == null)
                 return BadRequest();
 
-            List<CartPosition> result = null;
             try
             {
-                result = JsonConvert.DeserializeObject<List<CartPosition>>(HttpContext.Session.GetString(sessionKey));
+                List<CartPosition> result = JsonConvert.DeserializeObject<List<CartPosition>>(HttpContext.Session.GetString(sessionKey));
+                return new JsonResult(result);
             }
             catch (ArgumentNullException e)
             {
                 return NotFound(e.Message);
             }
-            return new JsonResult(result);
         }
     }
 }
