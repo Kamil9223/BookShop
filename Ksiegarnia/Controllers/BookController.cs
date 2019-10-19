@@ -15,7 +15,7 @@ namespace Ksiegarnia.Controllers
             this.bookService = bookService;
         }
 
-        [HttpGet("/Books")]
+        [HttpGet("Books")]
         public IActionResult GetBooks(int page, int pageSize)
         {
             if (page <= 0 || pageSize <= 0)
@@ -26,7 +26,7 @@ namespace Ksiegarnia.Controllers
             return new JsonResult(books);
         }
 
-        [HttpGet("/Books/{typeId}")]
+        [HttpGet("Books/{typeId}")]
         public IActionResult GetBooksByType(Guid typeId, int page, int pageSize)
         {
             if (page <= 0 || pageSize <= 0)
@@ -37,7 +37,7 @@ namespace Ksiegarnia.Controllers
             return new JsonResult(books);
         }
 
-        [HttpGet("/Books/{typeId}/{categoryId}")]
+        [HttpGet("Books/{typeId}/{categoryId}")]
         public IActionResult GetBooksByCategory(Guid typeId, Guid categoryId, int page, int pageSize)
         {
             if (page <= 0 || pageSize <= 0)
@@ -48,7 +48,7 @@ namespace Ksiegarnia.Controllers
             return new JsonResult(books);
         }
 
-        [HttpGet("/Books/Random/{count}")]
+        [HttpGet("Books/Random/{count}")]
         public IActionResult GetBooksRandomly(int count)
         {
             if (count <= 0)
@@ -59,14 +59,14 @@ namespace Ksiegarnia.Controllers
             return new JsonResult(books);
         }
 
-        [HttpGet("/Types")]
+        [HttpGet("Types")]
         public IActionResult GetTypes()
         {
             var types = bookService.GetTypes();
             return new JsonResult(types);
         }
 
-        [HttpGet("/Types/{typeName}")]
+        [HttpGet("Types/{typeName}")]
         public IActionResult GetType(string typeName)
         {
             if (String.IsNullOrEmpty(typeName))
@@ -82,14 +82,14 @@ namespace Ksiegarnia.Controllers
             return new JsonResult(type);
         }
 
-        [HttpGet("/Categories")]
+        [HttpGet("Categories")]
         public IActionResult GetCategories(Guid typeId)
         {
             var cateogries = bookService.GetCategoriesByType(typeId);
             return new JsonResult(cateogries);
         }
 
-        [HttpGet("/Book/{bookId}")]
+        [HttpGet("Book/{bookId}")]
         public IActionResult GetBook(Guid bookId)
         {
             var book = bookService.ShowBookDetails(bookId);

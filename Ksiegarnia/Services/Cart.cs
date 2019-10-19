@@ -1,4 +1,5 @@
 ﻿using Ksiegarnia.IRepositories;
+using Ksiegarnia.IServices;
 using Ksiegarnia.Models.Internet_Cart;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Ksiegarnia.Services
 {
-    public class Cart
+    public class Cart : ICart
     {
         private readonly IBookRepository bookRepository;
 

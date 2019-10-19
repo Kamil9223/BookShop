@@ -21,7 +21,7 @@ namespace Ksiegarnia.Controllers
             this.memoryCache = memoryCache;
         }
 
-        [HttpPost("/Register")]
+        [HttpPost("Register")]
         public IActionResult Register([FromBody] RegisterCommand command)
         {
             if (command.Address.City == null && command.Address.Street == null && command.Address.ZipCode == null)
@@ -31,7 +31,7 @@ namespace Ksiegarnia.Controllers
             return Ok();
         }
 
-        [HttpPost("/Login")]
+        [HttpPost("Login")]
         public IActionResult Login([FromBody] LoginCommand command)
         {
             userService.Login(command.Login, command.Password);
@@ -41,7 +41,7 @@ namespace Ksiegarnia.Controllers
         }
 
         [Authorize]
-        [HttpGet("/Logout")]
+        [HttpGet("Logout")]
         public IActionResult Logout()
         {
             var token = Request.Headers["Authorization"];

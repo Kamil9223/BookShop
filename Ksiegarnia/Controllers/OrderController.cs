@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Ksiegarnia.Services;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using Ksiegarnia.Models.Internet_Cart;
+using Ksiegarnia.IServices;
 
 namespace Ksiegarnia.Controllers
 {
@@ -13,17 +13,17 @@ namespace Ksiegarnia.Controllers
     [Route("api")]
     public class OrderController : Controller
     { 
-        private readonly Cart cart;
+        private readonly ICart cart;
 
-        public OrderController(Cart cart)
+        public OrderController(ICart cart)
         {
             this.cart = cart;
         }
 
-        [HttpPost("/Cart/{id}")]
+        [HttpPost("Cart/{id}")]
         public IActionResult AddToCart(Guid id)
         {
-            var sessionKey = Request.Headers["login"];
+            var sessionKey = Request.Headers["Login"];
             if ((string)sessionKey == null)
                 return BadRequest();
 
@@ -34,10 +34,10 @@ namespace Ksiegarnia.Controllers
             return new JsonResult(result);
         }
 
-        [HttpDelete("/Cart/{id}")]
+        [HttpDelete("Cart/{id}")]
         public IActionResult RemoveFromCart(Guid id)
         {
-            var sessionKey = Request.Headers["login"];
+            var sessionKey = Request.Headers["Login"];
             if ((string)sessionKey == null)
                 return BadRequest();
 
@@ -54,10 +54,10 @@ namespace Ksiegarnia.Controllers
             }
         }
 
-        [HttpGet("/Cart")]
+        [HttpGet("Cart")]
         public IActionResult ShowCart()
         {
-            var sessionKey = Request.Headers["login"];
+            var sessionKey = Request.Headers["Login"];
             if ((string)sessionKey == null)
                 return BadRequest();
 
