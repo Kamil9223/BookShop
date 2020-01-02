@@ -2,20 +2,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Ksiegarnia.IServices;
 using System.Collections.Generic;
-using Ksiegarnia.Tests;
 
 namespace Ksiegarnia.Controllers
 {
     [Route("api")]
     public class BookController : Controller
     {
-        private readonly IBookService bookService;
-        private readonly SingletonService singletonService; 
+        private readonly IBookService bookService; 
 
-        public BookController(IBookService bookService, SingletonService singletonService)
+        public BookController(IBookService bookService)
         {
             this.bookService = bookService;
-            this.singletonService = singletonService;
         }
 
         [HttpGet("Books")]
@@ -97,38 +94,6 @@ namespace Ksiegarnia.Controllers
         {
             var book = bookService.ShowBookDetails(bookId);
             return new JsonResult(book);
-        }
-
-        [HttpGet("test")]
-        public IActionResult Test()
-        {
-            string result = String.Empty;
-            foreach (var sample in singletonService.samples)
-                result += sample.Number + " ";
-
-            return new JsonResult(result);
-        }
-
-        [HttpGet("test2")]
-        public IActionResult Test2()
-        {
-            singletonService.samples.Remove(singletonService.samples.Find(x => x.Number == 3));
-            string result = String.Empty;
-            foreach (var sample in singletonService.samples)
-                result += sample.Number + " ";
-
-            return new JsonResult(result);
-        }
-
-        [HttpGet("test3")]
-        public IActionResult Test3()
-        {
-            singletonService.samples.Add(new SampleService(12));
-            string result = String.Empty;
-            foreach (var sample in singletonService.samples)
-                result += sample.Number + " ";
-
-            return new JsonResult(result);
         }
     }
 }

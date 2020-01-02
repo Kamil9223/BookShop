@@ -15,7 +15,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Ksiegarnia.MiddleWares;
-using Ksiegarnia.Tests;
 
 namespace Ksiegarnia
 {
@@ -74,9 +73,6 @@ namespace Ksiegarnia
             services.AddSingleton<IJwtService, JwtService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ICart, Cart>();
-
-            services.AddSingleton<SingletonService>();
-            services.AddSingleton<AnotherSingleton>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -102,9 +98,6 @@ namespace Ksiegarnia
             app.UseMiddleware<JwtTokenMiddleWare>();
 
             app.UseMvc();
-
-            var another = app.ApplicationServices.GetService<AnotherSingleton>();
-            another.SetSomething();
         }
     }
 }
