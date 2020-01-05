@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Ksiegarnia.IServices;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Ksiegarnia.Controllers
 {
@@ -16,64 +16,64 @@ namespace Ksiegarnia.Controllers
         }
 
         [HttpGet("Books")]
-        public IActionResult GetBooks(int page, int pageSize)
+        public async Task<IActionResult> GetBooks(int page, int pageSize)
         {
             if (page <= 0 || pageSize <= 0)
             {
                 return BadRequest();
             }
-            var books = bookService.GetBooks(page, pageSize);
+            var books = await bookService.GetBooks(page, pageSize);
             return new JsonResult(books);
         }
 
         [HttpGet("Books/{typeId}")]
-        public IActionResult GetBooksByType(Guid typeId, int page, int pageSize)
+        public async Task<IActionResult> GetBooksByType(Guid typeId, int page, int pageSize)
         {
             if (page <= 0 || pageSize <= 0)
             {
                 return BadRequest();
             }
-            var books = bookService.GetBooksByType(page, pageSize, typeId);
+            var books = await bookService.GetBooksByType(page, pageSize, typeId);
             return new JsonResult(books);
         }
 
         [HttpGet("Books/{typeId}/{categoryId}")]
-        public IActionResult GetBooksByCategory(Guid typeId, Guid categoryId, int page, int pageSize)
+        public async Task<IActionResult> GetBooksByCategory(Guid typeId, Guid categoryId, int page, int pageSize)
         {
             if (page <= 0 || pageSize <= 0)
             {
                 return BadRequest();
             }
-            var books = bookService.GetBooksByTypeAndCategory(page, pageSize, typeId, categoryId);
+            var books = await bookService.GetBooksByTypeAndCategory(page, pageSize, typeId, categoryId);
             return new JsonResult(books);
         }
 
         [HttpGet("Books/Random/{count}")]
-        public IActionResult GetBooksRandomly(int count)
+        public async Task<IActionResult> GetBooksRandomly(int count)
         {
             if (count <= 0)
             {
                 return BadRequest();
             }
-            var books = bookService.GetBooksRandomly(count);
+            var books = await bookService.GetBooksRandomly(count);
             return new JsonResult(books);
         }
 
         [HttpGet("Types")]
-        public IActionResult GetTypes()
+        public async Task<IActionResult> GetTypes()
         {
-            var types = bookService.GetTypes();
+            var types = await bookService.GetTypes();
             return new JsonResult(types);
         }
 
         [HttpGet("Types/{typeName}")]
-        public IActionResult GetType(string typeName)
+        public async Task<IActionResult> GetType(string typeName)
         {
             if (String.IsNullOrEmpty(typeName))
             {
                 return BadRequest();
             }
-            var type = bookService.GetType(typeName);
+            var type = await bookService.GetType(typeName);
 
             if (type == null)
             {
@@ -83,16 +83,16 @@ namespace Ksiegarnia.Controllers
         }
 
         [HttpGet("Categories")]
-        public IActionResult GetCategories(Guid typeId)
+        public async Task<IActionResult> GetCategories(Guid typeId)
         {
-            var cateogries = bookService.GetCategoriesByType(typeId);
+            var cateogries = await bookService.GetCategoriesByType(typeId);
             return new JsonResult(cateogries);
         }
 
         [HttpGet("Book/{bookId}")]
-        public IActionResult GetBook(Guid bookId)
+        public async Task<IActionResult> GetBook(Guid bookId)
         {
-            var book = bookService.ShowBookDetails(bookId);
+            var book = await bookService.ShowBookDetails(bookId);
             return new JsonResult(book);
         }
     }

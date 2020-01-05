@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Ksiegarnia.IServices;
-using Ksiegarnia.DTO;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Authorization;
-using Ksiegarnia.IRepositories;
 using Ksiegarnia.Commands;
 using Ksiegarnia.Responses;
+using System.Threading.Tasks;
 
 namespace Ksiegarnia.Controllers
 {
@@ -23,19 +21,19 @@ namespace Ksiegarnia.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterCommand command)
+        public async Task<IActionResult> Register([FromBody] RegisterCommand command)
         {
             if (command.Address.City == null && command.Address.Street == null && command.Address.ZipCode == null)
                 command.Address = null;
 
-            userService.Register(command.Login, command.Password, command.Email, command.Address);
+            await userService.Register(command.Login, command.Password, command.Email, command.Address);
             return Ok();
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginCommand command)
+        public async Task<IActionResult> Login([FromBody] LoginCommand command)
         {
-            var authResult = userService.Login(command.Login, command.Password);
+            var authResult = await userService.Login(command.Login, command.Password);
             var authResponse = new AuthenticationResponse
             {
                 JwtToken = authResult.JwtToken,
@@ -46,17 +44,17 @@ namespace Ksiegarnia.Controllers
 
         [Authorize]
         [HttpPost("logout")]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
             var token = Request.Headers["Authorization"];
-            userService.Logout();
+            await userService.Logout();
             return new JsonResult(token);
         }
 
         [HttpPost("refresh")]
-        public IActionResult RefreshToken([FromBody] RefreshConnectionCommand command)
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshConnectionCommand command)
         {
-            var authResult = userService.RefreshConnection(command.JwtToken, command.RefreshToken);
+            var authResult = await userService.RefreshConnection(command.JwtToken, command.RefreshToken);
             var authResponse = new AuthenticationResponse
             {
                 JwtToken = authResult.JwtToken,

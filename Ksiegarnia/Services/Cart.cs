@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Ksiegarnia.Services
 {
@@ -31,7 +32,7 @@ namespace Ksiegarnia.Services
             return cart;
         }
 
-        public void AddPositionToCart(ISession session, string sessionKey, Guid bookId)
+        public async Task AddPositionToCart(ISession session, string sessionKey, Guid bookId)
         {
             var cart = GetCart(session, sessionKey);
             var position = cart.Find(x => x.Book.BookId == bookId);
@@ -42,7 +43,7 @@ namespace Ksiegarnia.Services
             }
             else
             {
-                var book = bookRepository.GetBook(bookId);
+                var book = await bookRepository.GetBook(bookId);
                 cart.Add(new CartPosition()
                 {
                     Book = book,

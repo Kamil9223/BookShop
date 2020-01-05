@@ -8,12 +8,12 @@ namespace Ksiegarnia.IRepositories
 {
     public interface ICategoryRepository
     {
-        Category GetCategory(Guid categoryId);
-        IEnumerable<Category> GetCategories();
-        IEnumerable<Category> GetCategoriesByType(Guid typeId);
-        void AddCategory(Category category);
-        void UpdateCategory(Category category);
-        void RemoveCategory(Guid categoryId);
-        void SaveChanges();
+        Task <Category> GetCategory(Guid categoryId);
+        Task <IEnumerable<Category>> GetCategories();
+        Task <IEnumerable<Category>> GetCategoriesByType(Guid typeId);
+        Task AddCategory(Category category);
+        Task UpdateCategory(Category category);
+        Task RemoveCategory(Guid categoryId);
+        Task SaveChanges();
     }
 }

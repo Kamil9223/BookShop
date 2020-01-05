@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using Ksiegarnia.Models.Internet_Cart;
 using Ksiegarnia.IServices;
+using System.Threading.Tasks;
 
 namespace Ksiegarnia.Controllers
 {
@@ -21,14 +22,14 @@ namespace Ksiegarnia.Controllers
         }
 
         [HttpPost("Cart/{id}")]
-        public IActionResult AddToCart(Guid id)
+        public async Task<IActionResult> AddToCart(Guid id)
         {
             var sessionKey = Request.Headers["Login"];
             if ((string)sessionKey == null)
                 return BadRequest();
 
             var session = HttpContext.Session;
-            cart.AddPositionToCart(session, sessionKey, id);
+            await cart.AddPositionToCart(session, sessionKey, id);
 
             var result = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString(sessionKey));
             return new JsonResult(result);

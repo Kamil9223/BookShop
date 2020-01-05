@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ksiegarnia.Models;
 using Ksiegarnia.DB;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ksiegarnia.Repositories
 {
@@ -17,55 +18,55 @@ namespace Ksiegarnia.Repositories
             this.context = context;
         }
 
-        public Book GetBook(Guid bookId)
-            => context.Books.SingleOrDefault(b => b.BookId == bookId);
+        public async Task<Book> GetBook(Guid bookId)
+            => await context.Books.SingleOrDefaultAsync(b => b.BookId == bookId);
 
-        public Book GetBook(string title)
-            => context.Books.SingleOrDefault(b => b.Title == title);
+        public async Task<Book> GetBook(string title)
+            => await context.Books.SingleOrDefaultAsync(b => b.Title == title);
 
-        public IEnumerable<Book> GetBooks(int page, int pageSize)
-            => context.Books.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        public async Task<IEnumerable<Book>> GetBooks(int page, int pageSize)
+            => await context.Books.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
-        public IEnumerable<Book> GetBooksByType(Guid typeId, int page, int pageSize)
+        public async Task<IEnumerable<Book>> GetBooksByType(Guid typeId, int page, int pageSize)
         {
-            var ids = context.TypeCategories.Where(x => x.TypeId == typeId).Select(x => x.TypeCategoryId).ToList();
-            var books = context.Books.Where(x => ids.Contains(x.TypeCategoryId)).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var ids = await context.TypeCategories.Where(x => x.TypeId == typeId).Select(x => x.TypeCategoryId).ToListAsync();
+            var books = await context.Books.Where(x => ids.Contains(x.TypeCategoryId)).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
             return books;
         }
 
-        public IEnumerable<Book> GetBooksByTypeAndCategory(Guid typeId, Guid categoryId, int page, int pageSize)
+        public async Task<IEnumerable<Book>> GetBooksByTypeAndCategory(Guid typeId, Guid categoryId, int page, int pageSize)
         {
-            var id = context.TypeCategories.SingleOrDefault(x => x.TypeId == typeId && x.CategoryId == categoryId).TypeCategoryId;
-            var books = context.Books.Where(x => x.TypeCategoryId == id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var id = (await context.TypeCategories.SingleOrDefaultAsync(x => x.TypeId == typeId && x.CategoryId == categoryId)).TypeCategoryId;
+            var books = await context.Books.Where(x => x.TypeCategoryId == id).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
             return books;
         }
 
-        public IEnumerable<Book> GetBooksRandomly(int count)
+        public async Task<IEnumerable<Book>> GetBooksRandomly(int count)
         {
             Random rand = new Random();
-            var books = context.Books.OrderBy(x => rand.Next()).Take(count);
+            var books = await context.Books.OrderBy(x => rand.Next()).Take(count).ToListAsync();
             return books;
         }
 
-        public void AddBook(Book book)
+        public async Task AddBook(Book book)
         {
-            context.Books.Add(book);
+            await context.Books.AddAsync(book);
         }
 
-        public void UpdateBook(Book book)
+        public async Task UpdateBook(Book book)
         {
             context.Books.Update(book);
         }
 
-        public void RemoveBook(Guid bookId)
+        public async Task RemoveBook(Guid bookId)
         {
-            var book = GetBook(bookId);
+            var book = await GetBook(bookId);
             context.Books.Remove(book);
         }
 
-        public void SaveChanges()
+        public async Task SaveChanges()
         {
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

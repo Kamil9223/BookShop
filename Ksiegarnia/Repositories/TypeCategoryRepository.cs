@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ksiegarnia.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ksiegarnia.Repositories
 {
@@ -17,31 +18,31 @@ namespace Ksiegarnia.Repositories
             this.context = context;
         }
 
-        public TypeCategory GetTypeCategoryRelation(Guid relationId)
-            => context.TypeCategories.SingleOrDefault(tp => tp.TypeCategoryId == relationId);
+        public async Task<TypeCategory> GetTypeCategoryRelation(Guid relationId)
+            => await context.TypeCategories.SingleOrDefaultAsync(tp => tp.TypeCategoryId == relationId);
 
-        public Guid GetExistingRelation(Guid categoryId, Guid typeId)
-            => context.TypeCategories.SingleOrDefault(x => x.CategoryId == categoryId && x.TypeId == typeId).TypeCategoryId;
+        public async Task<Guid> GetExistingRelation(Guid categoryId, Guid typeId)
+            => (await context.TypeCategories.SingleOrDefaultAsync(x => x.CategoryId == categoryId && x.TypeId == typeId)).TypeCategoryId;
 
-        public void AddTypeCategoryRelation(TypeCategory relation)
+        public async Task AddTypeCategoryRelation(TypeCategory relation)
         {
-            context.TypeCategories.Add(relation);
+            await context.TypeCategories.AddAsync(relation);
         }
 
-        public void UpdateTypeCategoryRelation(TypeCategory relation)
+        public async Task UpdateTypeCategoryRelation(TypeCategory relation)
         {
             context.TypeCategories.Update(relation);
         }
 
-        public void RemoveTypeCategoryRelation(Guid relationId)
+        public async Task RemoveTypeCategoryRelation(Guid relationId)
         {
-            var relation = GetTypeCategoryRelation(relationId);
+            var relation = await GetTypeCategoryRelation(relationId);
             context.TypeCategories.Remove(relation);
         }
 
-        public void SaveChanges()
+        public async Task SaveChanges()
         {
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

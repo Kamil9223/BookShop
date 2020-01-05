@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ksiegarnia.Models;
 using Ksiegarnia.DB;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ksiegarnia.Repositories
 {
@@ -17,34 +18,34 @@ namespace Ksiegarnia.Repositories
             this.context = context;
         }
 
-        public Models.Type GetType(Guid typeId)
-            => context.Types.SingleOrDefault(t => t.TypeId == typeId);
+        public async Task<Models.Type> GetType(Guid typeId)
+            => await context.Types.SingleOrDefaultAsync(t => t.TypeId == typeId);
 
-        public Models.Type GetType(string typeName)
-            => context.Types.SingleOrDefault(t => t.TypeName == typeName);
+        public async Task<Models.Type> GetType(string typeName)
+            => await context.Types.SingleOrDefaultAsync(t => t.TypeName == typeName);
 
-        public IEnumerable<Models.Type> GetTypes()
-            => context.Types.ToList();
+        public async Task<IEnumerable<Models.Type>> GetTypes()
+            => await context.Types.ToListAsync();
 
-        public void AddType(Models.Type type)
+        public async Task AddType(Models.Type type)
         {
-            context.Types.Add(type);
+            await context.Types.AddAsync(type);
         }
 
-        public void UpdateType(Models.Type type)
+        public async Task UpdateType(Models.Type type)
         {
             context.Types.Update(type);
         }
 
-        public void RemoveType(Guid typeId)
+        public async Task RemoveType(Guid typeId)
         {
-            var type = GetType(typeId);
+            var type = await GetType(typeId);
             context.Types.Remove(type);
         }
 
-        public void SaveChanges()
+        public async Task SaveChanges()
         {
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

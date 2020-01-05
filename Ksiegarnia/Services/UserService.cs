@@ -6,6 +6,7 @@ using Ksiegarnia.IRepositories;
 using Ksiegarnia.Models;
 using Ksiegarnia.Domain;
 using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
 
 namespace Ksiegarnia.Services
 {
@@ -25,9 +26,9 @@ namespace Ksiegarnia.Services
             this.jwtService = jwtService;
         }
 
-        public UserDTO Get(string login)
+        public async Task<UserDTO> Get(string login)
         {
-            var user = userRepository.GetUser(login);
+            var user = await userRepository.GetUser(login);
             if(user == null)
             {
                 throw new Exception($"user with login: '{login}' does't exist.");
@@ -44,9 +45,9 @@ namespace Ksiegarnia.Services
             return userDto;
         }
 
-        public AuthenticationResult Login(string login, string password)
+        public async Task<AuthenticationResult> Login(string login, string password)
         {
-            var user = userRepository.GetUser(login);
+            var user = await userRepository.GetUser(login);
             if (user == null)
             {
                 throw new Exception("Invalid credentials");
@@ -70,51 +71,51 @@ namespace Ksiegarnia.Services
                 UserId = user.UserId
             };
 
-            loggedUserRepository.AddLoggedUser(refreshToken);
-            loggedUserRepository.SaveChanges();
+            await loggedUserRepository.AddLoggedUser(refreshToken);
+            await loggedUserRepository.SaveChanges();
 
             authResult.RefreshToken = refreshToken.RefreshToken;
             return authResult;
         }
 
-        public AuthenticationResult RefreshConnection(string jwtToken, string refreshToken)
+        public async Task<AuthenticationResult> RefreshConnection(string jwtToken, string refreshToken)
         {
-            var loggedUser = loggedUserRepository.GetLoggedUser(Guid.Parse(refreshToken));
+            var loggedUser = await loggedUserRepository.GetLoggedUser(Guid.Parse(refreshToken));
 
             var authResult = jwtService.RefreshToken(jwtToken, loggedUser);
 
             loggedUser.JwtId = authResult.JwtId;
-            loggedUserRepository.UpdateLoggedUser(loggedUser);
-            loggedUserRepository.SaveChanges();
+            await loggedUserRepository.UpdateLoggedUser(loggedUser);
+            await loggedUserRepository.SaveChanges();
             authResult.RefreshToken = loggedUser.RefreshToken;
 
             return authResult;
         }
 
-        public void Logout()
+        public async Task Logout()
         {
             var jwt = jwtService.GetCurrentToken();
             var validatedToken = jwtService.GetPrincipalFromToken(jwt);
             //zbadaj czemu Authorize nie dziala na przedawnione tokeny
             var login = validatedToken.Claims.Single(x => x.Type == "login").Value;
-            var userId = userRepository.GetUser(login).UserId;
+            var userId = (await userRepository.GetUser(login)).UserId;
             var JwtId = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 
-            loggedUserRepository.RemoveLoggedUser(JwtId);
-            loggedUserRepository.SaveChanges();
+            await loggedUserRepository.RemoveLoggedUser(JwtId);
+            await loggedUserRepository.SaveChanges();
 
-            jwtService.DeactivateCurrentToken();
+            await jwtService.DeactivateCurrentToken();
         }
 
-        public void Register(string login, string password, string email, AddressDTO addressDto = null)
+        public async Task Register(string login, string password, string email, AddressDTO addressDto = null)
         {
-            var user = userRepository.GetUser(login);
+            var user = await userRepository.GetUser(login);
             if (user != null)
             {
                 throw new Exception($"User with login: '{login}' already exist.");
             }
 
-            user = userRepository.GetUserByEmail(email);
+            user = await userRepository.GetUserByEmail(email);
             if (user != null)
             {
                 throw new Exception($"User with email: '{email}' already exist.");
@@ -134,10 +135,10 @@ namespace Ksiegarnia.Services
                         addressDto.ZipCode,
                         addressDto.FlatNumber
                     );
-                userRepository.AddAddress(address);
+                await userRepository.AddAddress(address);
             }
-            userRepository.AddUser(user);
-            userRepository.SaveChanges();
+            await userRepository.AddUser(user);
+            await userRepository.SaveChanges();
         }
     }
 }

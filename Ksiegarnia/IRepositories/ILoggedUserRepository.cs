@@ -8,12 +8,12 @@ namespace Ksiegarnia.IRepositories
 {
     public interface ILoggedUserRepository
     {
-        void AddLoggedUser(LoggedUser loggedUser);
-        LoggedUser GetLoggedUser(Guid loggedUserId);
-        LoggedUser GetLoggedUser(string jwtId);
-        void RemoveLoggedUser(Guid loggedUserId);
-        void RemoveLoggedUser(string jwtId);
-        void UpdateLoggedUser(LoggedUser loggedUser);
-        void SaveChanges();
+        Task AddLoggedUser(LoggedUser loggedUser);
+        Task <LoggedUser> GetLoggedUser(Guid loggedUserId);
+        Task <LoggedUser> GetLoggedUser(string jwtId);
+        Task RemoveLoggedUser(Guid loggedUserId);
+        Task RemoveLoggedUser(string jwtId);
+        Task UpdateLoggedUser(LoggedUser loggedUser);
+        Task SaveChanges();
     }
 }

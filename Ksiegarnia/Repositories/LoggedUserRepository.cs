@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ksiegarnia.Models;
 using Ksiegarnia.DB;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ksiegarnia.Repositories
 {
@@ -17,37 +18,37 @@ namespace Ksiegarnia.Repositories
             this.context = context;
         }
 
-        public void AddLoggedUser(LoggedUser loggedUser)
+        public async Task AddLoggedUser(LoggedUser loggedUser)
         {
-            context.LoggedUsers.Add(loggedUser);
+            await context.LoggedUsers.AddAsync(loggedUser);
         }
 
-        public LoggedUser GetLoggedUser(Guid refreshToken)
-            => context.LoggedUsers.SingleOrDefault(x => x.RefreshToken == refreshToken);
+        public async Task<LoggedUser> GetLoggedUser(Guid refreshToken)
+            => await context.LoggedUsers.SingleOrDefaultAsync(x => x.RefreshToken == refreshToken);
 
-        public LoggedUser GetLoggedUser(string jwtId)
-            => context.LoggedUsers.SingleOrDefault(x => x.JwtId == jwtId);
+        public async Task <LoggedUser> GetLoggedUser(string jwtId)
+            => await context.LoggedUsers.SingleOrDefaultAsync(x => x.JwtId == jwtId);
 
-        public void RemoveLoggedUser(Guid loggedUserId)
+        public async Task RemoveLoggedUser(Guid loggedUserId)
         {
-            var loggedUser = GetLoggedUser(loggedUserId);
+            var loggedUser = await GetLoggedUser(loggedUserId);
             context.LoggedUsers.Remove(loggedUser);
         }
 
-        public void RemoveLoggedUser(string jwtId)
+        public async Task RemoveLoggedUser(string jwtId)
         {
-            var loggedUser = GetLoggedUser(jwtId);
+            var loggedUser = await GetLoggedUser(jwtId);
             context.LoggedUsers.Remove(loggedUser);
         }
 
-        public void UpdateLoggedUser(LoggedUser loggedUser)
+        public async Task UpdateLoggedUser(LoggedUser loggedUser)
         {
             context.LoggedUsers.Update(loggedUser);
         }
 
-        public void SaveChanges()
+        public async Task SaveChanges()
         {
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

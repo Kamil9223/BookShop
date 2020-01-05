@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ksiegarnia.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ksiegarnia.Repositories
 {
@@ -17,38 +18,38 @@ namespace Ksiegarnia.Repositories
             this.context = context;
         }
 
-        public Category GetCategory(Guid categoryId)
-            => context.Categories.SingleOrDefault(c => c.CategoryId == categoryId);
+        public async Task<Category> GetCategory(Guid categoryId)
+            => await context.Categories.SingleOrDefaultAsync(c => c.CategoryId == categoryId);
 
-        public IEnumerable<Category> GetCategories()
-            => context.Categories.ToList();
+        public async Task<IEnumerable<Category>> GetCategories()
+            => await context.Categories.ToListAsync();
 
-        public IEnumerable<Category> GetCategoriesByType(Guid typeId)
+        public async Task<IEnumerable<Category>> GetCategoriesByType(Guid typeId)
         {
-            var categoryIds = context.TypeCategories.Where(x => x.TypeId == typeId).Select(x => x.CategoryId).ToList();
+            var categoryIds = await context.TypeCategories.Where(x => x.TypeId == typeId).Select(x => x.CategoryId).ToListAsync();
             var categories = context.Categories.Where(x => categoryIds.Contains(x.CategoryId));
             return categories;
         }
 
-        public void AddCategory(Category category)
+        public async Task AddCategory(Category category)
         {
-            context.Categories.Add(category);
+            await context.Categories.AddAsync(category);
         }
 
-        public void UpdateCategory(Category category)
+        public async Task UpdateCategory(Category category)
         {
             context.Categories.Update(category);
         }
 
-        public void RemoveCategory(Guid categoryId)
+        public async Task RemoveCategory(Guid categoryId)
         {
-            var category = GetCategory(categoryId);
+            var category = await GetCategory(categoryId);
             context.Categories.Remove(category);
         }
 
-        public void SaveChanges()
+        public async Task SaveChanges()
         {
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

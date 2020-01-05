@@ -8,11 +8,11 @@ namespace Ksiegarnia.IRepositories
 {
     public interface ITypeCategoryRepository
     {
-        TypeCategory GetTypeCategoryRelation(Guid relationId);
-        Guid GetExistingRelation(Guid categoryId, Guid typeId);
-        void AddTypeCategoryRelation(TypeCategory relation);
-        void UpdateTypeCategoryRelation(TypeCategory relation);
-        void RemoveTypeCategoryRelation(Guid relationId);
-        void SaveChanges();
+        Task <TypeCategory> GetTypeCategoryRelation(Guid relationId);
+        Task<Guid> GetExistingRelation(Guid categoryId, Guid typeId);
+        Task AddTypeCategoryRelation(TypeCategory relation);
+        Task UpdateTypeCategoryRelation(TypeCategory relation);
+        Task RemoveTypeCategoryRelation(Guid relationId);
+        Task SaveChanges();
     }
 }
