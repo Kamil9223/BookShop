@@ -1,29 +1,28 @@
 ﻿using Ksiegarnia.IServices;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Ksiegarnia.DTO;
 using Ksiegarnia.IRepositories;
 using Ksiegarnia.Models;
-using Microsoft.Extensions.Caching.Memory;
+using Ksiegarnia.Domain;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Ksiegarnia.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository userRepository;
+        private readonly ILoggedUserRepository loggedUserRepository;
         private readonly IEncrypter encrypter;
         private readonly IJwtService jwtService;
-        private readonly IMemoryCache memoryCache;
 
-        public UserService(IUserRepository userRepository, IEncrypter encrypter,
-            IJwtService jwtService, IMemoryCache memoryCache)
+        public UserService(IUserRepository userRepository, ILoggedUserRepository loggedUserRepository,
+            IEncrypter encrypter, IJwtService jwtService)
         {
             this.userRepository = userRepository;
+            this.loggedUserRepository = loggedUserRepository;
             this.encrypter = encrypter;
             this.jwtService = jwtService;
-            this.memoryCache = memoryCache;
         }
 
         public UserDTO Get(string login)
@@ -45,7 +44,7 @@ namespace Ksiegarnia.Services
             return userDto;
         }
 
-        public void Login(string login, string password)
+        public AuthenticationResult Login(string login, string password)
         {
             var user = userRepository.GetUser(login);
             if (user == null)
@@ -60,12 +59,50 @@ namespace Ksiegarnia.Services
                 throw new Exception("Invalid credentials");
             }
             
-            var jwtToken = jwtService.CreateToken(user.Login, "user");
-            memoryCache.Set(user.Login, jwtToken, TimeSpan.FromSeconds(30));
+            var authResult = jwtService.CreateToken(user.Login, "user");
+
+            var refreshToken = new LoggedUser
+            {
+                RefreshToken = Guid.NewGuid(),
+                JwtId = authResult.JwtId,
+                CreationDate = DateTime.UtcNow,
+                ExpiryDate = DateTime.UtcNow.AddDays(7),
+                UserId = user.UserId
+            };
+
+            loggedUserRepository.AddLoggedUser(refreshToken);
+            loggedUserRepository.SaveChanges();
+
+            authResult.RefreshToken = refreshToken.RefreshToken;
+            return authResult;
+        }
+
+        public AuthenticationResult RefreshConnection(string jwtToken, string refreshToken)
+        {
+            var loggedUser = loggedUserRepository.GetLoggedUser(Guid.Parse(refreshToken));
+
+            var authResult = jwtService.RefreshToken(jwtToken, loggedUser);
+
+            loggedUser.JwtId = authResult.JwtId;
+            loggedUserRepository.UpdateLoggedUser(loggedUser);
+            loggedUserRepository.SaveChanges();
+            authResult.RefreshToken = loggedUser.RefreshToken;
+
+            return authResult;
         }
 
         public void Logout()
         {
+            var jwt = jwtService.GetCurrentToken();
+            var validatedToken = jwtService.GetPrincipalFromToken(jwt);
+            //zbadaj czemu Authorize nie dziala na przedawnione tokeny
+            var login = validatedToken.Claims.Single(x => x.Type == "login").Value;
+            var userId = userRepository.GetUser(login).UserId;
+            var JwtId = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
+
+            loggedUserRepository.RemoveLoggedUser(JwtId);
+            loggedUserRepository.SaveChanges();
+
             jwtService.DeactivateCurrentToken();
         }
 

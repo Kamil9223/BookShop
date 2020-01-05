@@ -30,15 +30,18 @@ namespace Ksiegarnia
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = false,
+                ValidIssuer = Configuration["Jwt:Issuer"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+            };
+            services.AddSingleton(tokenValidationParameters);
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = false,
-                    ValidIssuer = Configuration["Jwt:Issuer"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-                };
+                options.TokenValidationParameters = tokenValidationParameters;
             });
             services.AddAuthorization(p => p.AddPolicy("admin", pol => pol.RequireRole("admin")));
             services.AddMemoryCache();
@@ -66,6 +69,7 @@ namespace Ksiegarnia
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITypeRepository, TypeRepository>();
             services.AddScoped<ITypeCategoryRepository, TypeCategoryRepository>();
+            services.AddScoped<ILoggedUserRepository, LoggedUserRepository>();
             //Services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBookService, BookService>();

@@ -18,6 +18,7 @@ namespace Ksiegarnia.DB
         public DbSet<BookInOrder> BooksInOrder { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<History> History { get; set; }
+        public DbSet<LoggedUser> LoggedUsers { get; set; }
 
         public BookShopContext(DbContextOptions options) : base(options)
         {
@@ -35,6 +36,7 @@ namespace Ksiegarnia.DB
             OnUserCreating(modelBuilder);
             OnOrderCreating(modelBuilder);
             OnBookInOrderCreating(modelBuilder);
+            OnLoggedUserCreating(modelBuilder);
         }
 
         private void OnUserCreating(ModelBuilder modelBuilder)
@@ -122,6 +124,13 @@ namespace Ksiegarnia.DB
             modelBuilder.Entity<History>().ToTable("History");
             modelBuilder.Entity<History>().HasKey(k => k.HistoryId);
             modelBuilder.Entity<History>().Property(p => p.ClientLogin).HasMaxLength(20).IsRequired();
+        }
+
+        private void OnLoggedUserCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<LoggedUser>().ToTable("LoggedUsers");
+            modelBuilder.Entity<LoggedUser>().HasKey(k => k.RefreshToken);
+            modelBuilder.Entity<LoggedUser>().HasOne(l => l.User);
         }
     }
 }

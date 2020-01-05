@@ -1,4 +1,5 @@
-﻿using Ksiegarnia.DTO;
+﻿using Ksiegarnia.Domain;
+using Ksiegarnia.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,8 @@ namespace Ksiegarnia.IServices
     public interface IUserService
     {
         void Register(string login, string password, string email, AddressDTO addressDto = null);
-        void Login(string login, string password);
+        AuthenticationResult Login(string login, string password);
+        AuthenticationResult RefreshConnection(string jwtToken, string refreshToken);
         void Logout();
         UserDTO Get(string login);
     }

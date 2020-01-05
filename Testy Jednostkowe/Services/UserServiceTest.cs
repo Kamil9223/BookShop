@@ -17,12 +17,12 @@ namespace Testy_Jednostkowe.Services
         public void Register_method_should_invoke_GetUser_method_in_repository()
         {
             var userRepositoryMock = new Mock<IUserRepository>();
+            var loggedUserRepositoryMock = new Mock<ILoggedUserRepository>();
             var encrypterMock = new Mock<IEncrypter>();
             var jwtService = new Mock<IJwtService>();
-            var memoryCache = new Mock<IMemoryCache>();
 
-            var userService = new UserService(userRepositoryMock.Object, encrypterMock.Object,
-                jwtService.Object, memoryCache.Object);
+            var userService = new UserService(userRepositoryMock.Object, loggedUserRepositoryMock.Object, 
+                encrypterMock.Object, jwtService.Object);
 
             userService.Register("Test", "password", "wrongMail");
 
@@ -33,12 +33,12 @@ namespace Testy_Jednostkowe.Services
         public void Register_method_should_invoke_AddUser_method_in_repository()
         {
             var userRepositoryMock = new Mock<IUserRepository>();
+            var loggedUserRepositoryMock = new Mock<ILoggedUserRepository>();
             var encrypterMock = new Mock<IEncrypter>();
             var jwtService = new Mock<IJwtService>();
-            var memoryCache = new Mock<IMemoryCache>();
 
-            var userService = new UserService(userRepositoryMock.Object, encrypterMock.Object,
-                jwtService.Object, memoryCache.Object);
+            var userService = new UserService(userRepositoryMock.Object, loggedUserRepositoryMock.Object,
+                encrypterMock.Object, jwtService.Object);
 
             userService.Register("Test", "password", "wrongMail");
 
@@ -49,12 +49,12 @@ namespace Testy_Jednostkowe.Services
         public void Register_method_should_throw_exception_when_user_already_exist()
         {
             var userRepositoryMock = new Mock<IUserRepository>();
+            var loggedUserRepositoryMock = new Mock<ILoggedUserRepository>();
             var encrypterMock = new Mock<IEncrypter>();
             var jwtService = new Mock<IJwtService>();
-            var memoryCache = new Mock<IMemoryCache>();
 
-            var userService = new UserService(userRepositoryMock.Object, encrypterMock.Object,
-               jwtService.Object, memoryCache.Object);
+            var userService = new UserService(userRepositoryMock.Object, loggedUserRepositoryMock.Object,
+                encrypterMock.Object, jwtService.Object);
 
             var user = new User("Kamil", "wrongMail", "pass", "salt");
             userRepositoryMock.Setup(x => x.GetUser(It.IsAny<string>())).Returns(user);
@@ -68,12 +68,12 @@ namespace Testy_Jednostkowe.Services
         public void Login_method_should_throw_exception_when_given_password_is_not_equal_to_hash()
         {
             var userRepositoryMock = new Mock<IUserRepository>();
+            var loggedUserRepositoryMock = new Mock<ILoggedUserRepository>();
             var encrypterMock = new Mock<IEncrypter>();
             var jwtService = new Mock<IJwtService>();
-            var memoryCache = new Mock<IMemoryCache>();
 
-            var userService = new UserService(userRepositoryMock.Object, encrypterMock.Object,
-               jwtService.Object, memoryCache.Object);
+            var userService = new UserService(userRepositoryMock.Object, loggedUserRepositoryMock.Object,
+                encrypterMock.Object, jwtService.Object);
 
             //correct password for login=Kamil is kamil.
             string testPass = "fakePass";

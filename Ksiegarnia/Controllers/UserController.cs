@@ -6,6 +6,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Authorization;
 using Ksiegarnia.IRepositories;
 using Ksiegarnia.Commands;
+using Ksiegarnia.Responses;
 
 namespace Ksiegarnia.Controllers
 {
@@ -21,7 +22,7 @@ namespace Ksiegarnia.Controllers
             this.memoryCache = memoryCache;
         }
 
-        [HttpPost("Register")]
+        [HttpPost("register")]
         public IActionResult Register([FromBody] RegisterCommand command)
         {
             if (command.Address.City == null && command.Address.Street == null && command.Address.ZipCode == null)
@@ -31,22 +32,37 @@ namespace Ksiegarnia.Controllers
             return Ok();
         }
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public IActionResult Login([FromBody] LoginCommand command)
         {
-            userService.Login(command.Login, command.Password);
-            var jwt = memoryCache.Get(command.Login);
-
-            return new JsonResult(jwt);
+            var authResult = userService.Login(command.Login, command.Password);
+            var authResponse = new AuthenticationResponse
+            {
+                JwtToken = authResult.JwtToken,
+                RefreshToken = authResult.RefreshToken.ToString()
+            };
+            return new JsonResult(authResponse);
         }
 
         [Authorize]
-        [HttpGet("Logout")]
+        [HttpPost("logout")]
         public IActionResult Logout()
         {
             var token = Request.Headers["Authorization"];
             userService.Logout();
             return new JsonResult(token);
+        }
+
+        [HttpPost("refresh")]
+        public IActionResult RefreshToken([FromBody] RefreshConnectionCommand command)
+        {
+            var authResult = userService.RefreshConnection(command.JwtToken, command.RefreshToken);
+            var authResponse = new AuthenticationResponse
+            {
+                JwtToken = authResult.JwtToken,
+                RefreshToken = authResult.RefreshToken.ToString()
+            };
+            return new JsonResult(authResponse);
         }
     }
 }
