@@ -57,9 +57,9 @@ namespace Testy_Jednostkowe.Services
             var user = new User("Kamil", "wrongMail", "pass", "salt");
             userRepositoryMock.Setup(x => x.GetUser(It.IsAny<string>())).Returns(Task.FromResult(user));
 
-            Action register = async () => await userService.Register("Kamil", "secret", "wrongMail");
+            Func<Task> register = async () => await userService.Register("Kamil", "secret", "wrongMail");
 
-            Assert.Throws<Exception>(register);
+            await Assert.ThrowsAsync<Exception>(register);
         }
 
         [Fact]
@@ -84,8 +84,8 @@ namespace Testy_Jednostkowe.Services
                                       .Returns(hashForTest);
                          
 
-            Action login = async () => await userService.Login("Kamil", testPass);
-            Assert.Throws<Exception>(login);
+            Func<Task> login = async () => await userService.Login("Kamil", testPass);
+            await Assert.ThrowsAsync<Exception>(login);
         }
     }
 }

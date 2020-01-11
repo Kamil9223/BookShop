@@ -125,9 +125,9 @@ namespace Ksiegarnia.Services
             return types;
         }
 
-        public async Task<Models.Type> GetType(string typeName)
+        public async Task<Models.Type> GetType(Guid typeId)
         {
-            var type = await typeRepository.GetType(typeName);
+            var type = await typeRepository.GetType(typeId);
             return type;
         }
 

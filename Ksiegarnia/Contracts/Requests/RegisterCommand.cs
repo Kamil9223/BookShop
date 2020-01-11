@@ -1,12 +1,8 @@
 ﻿using Ksiegarnia.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Ksiegarnia.Commands
+namespace Ksiegarnia.Contracts.Requests
 {
-    public class RegisterCommand
+    public class RegisterRequest
     {
         public string Login { get; set; }
         public string Password { get; set; }

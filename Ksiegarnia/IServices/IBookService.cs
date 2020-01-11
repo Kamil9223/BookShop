@@ -16,7 +16,7 @@ namespace Ksiegarnia.IServices
         Task<IEnumerable<BookDTO>> GetBooksRandomly(int count);
         Task<IEnumerable<Category>> GetCategoriesByType(Guid typeId);
         Task<IEnumerable<Models.Type>> GetTypes();
-        Task<Models.Type> GetType(string typeName);
+        Task<Models.Type> GetType(Guid typeId);
         Task<Book> ShowBookDetails(Guid bookId);
         Task<Guid> AddTypeCategoryRelation(Guid categoryId, Guid typeId);
         Task AddBook(Book book);

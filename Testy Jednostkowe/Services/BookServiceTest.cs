@@ -37,11 +37,11 @@ namespace Testy_Jednostkowe.Services
             var bookService = new BookService(bookRepositoryMock.Object, categoryRepositoryMock.Object,
                 typeRepositoryMock.Object, typeCategoryRepositoryMock.Object);
 
-            bookRepositoryMock.Setup(x => x.GetBook(It.IsAny<Guid>())).Returns((Task<Book>)null);
+            bookRepositoryMock.Setup(x => x.GetBook(It.IsAny<Guid>())).Returns(Task.FromResult<Book>(null));
 
-            Action showBookDetails = async () => await bookService.ShowBookDetails(It.IsAny<Guid>());
+            Func<Task<Book>> showBookDetails = async () => await bookService.ShowBookDetails(It.IsAny<Guid>());
 
-            Assert.Throws<Exception>(showBookDetails);
+            await Assert.ThrowsAsync<Exception>(showBookDetails);
         }
     }
 }

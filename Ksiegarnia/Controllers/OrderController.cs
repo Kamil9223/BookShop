@@ -22,14 +22,14 @@ namespace Ksiegarnia.Controllers
         }
 
         [HttpPost("Cart/{id}")]
-        public async Task<IActionResult> AddToCart(Guid id)
+        public async Task<IActionResult> AddToCart(Guid bookId)
         {
             var sessionKey = Request.Headers["Login"];
             if ((string)sessionKey == null)
                 return BadRequest();
 
             var session = HttpContext.Session;
-            await cart.AddPositionToCart(session, sessionKey, id);
+            await cart.AddPositionToCart(session, sessionKey, bookId);
 
             var result = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString(sessionKey));
             return new JsonResult(result);

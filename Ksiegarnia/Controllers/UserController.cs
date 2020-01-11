@@ -2,9 +2,9 @@
 using Ksiegarnia.IServices;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Authorization;
-using Ksiegarnia.Commands;
-using Ksiegarnia.Responses;
 using System.Threading.Tasks;
+using Ksiegarnia.Contracts.Responses;
+using Ksiegarnia.Contracts.Requests;
 
 namespace Ksiegarnia.Controllers
 {
@@ -21,7 +21,7 @@ namespace Ksiegarnia.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterCommand command)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest command)
         {
             if (command.Address.City == null && command.Address.Street == null && command.Address.ZipCode == null)
                 command.Address = null;
@@ -31,7 +31,7 @@ namespace Ksiegarnia.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginCommand command)
+        public async Task<IActionResult> Login([FromBody] LoginRequest command)
         {
             var authResult = await userService.Login(command.Login, command.Password);
             var authResponse = new AuthenticationResponse
@@ -52,7 +52,7 @@ namespace Ksiegarnia.Controllers
         }
 
         [HttpPost("refresh")]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshConnectionCommand command)
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshConnectionRequest command)
         {
             var authResult = await userService.RefreshConnection(command.JwtToken, command.RefreshToken);
             var authResponse = new AuthenticationResponse

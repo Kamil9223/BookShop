@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Ksiegarnia.Responses
+namespace Ksiegarnia.Contracts.Responses
 {
     public class AuthenticationResponse
     {

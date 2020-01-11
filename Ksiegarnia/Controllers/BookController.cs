@@ -4,7 +4,7 @@ using Ksiegarnia.IServices;
 using System.Threading.Tasks;
 
 namespace Ksiegarnia.Controllers
-{
+{//zamienic DTO (do usuniecia) na responses, zwracac jakies inne statuscody?, poprawic w Order, sprawdzic w bazie, testy jednostowe, odpalic i skonfigurowsc integacyjne, postman
     [Route("api")]
     public class BookController : Controller
     {
@@ -26,7 +26,7 @@ namespace Ksiegarnia.Controllers
             return new JsonResult(books);
         }
 
-        [HttpGet("Books/{typeId}")]
+        [HttpGet("Books/Types/{typeId}")]
         public async Task<IActionResult> GetBooksByType(Guid typeId, int page, int pageSize)
         {
             if (page <= 0 || pageSize <= 0)
@@ -37,7 +37,7 @@ namespace Ksiegarnia.Controllers
             return new JsonResult(books);
         }
 
-        [HttpGet("Books/{typeId}/{categoryId}")]
+        [HttpGet("Books/Types/{typeId}/Categories/{categoryId}")]
         public async Task<IActionResult> GetBooksByCategory(Guid typeId, Guid categoryId, int page, int pageSize)
         {
             if (page <= 0 || pageSize <= 0)
@@ -66,14 +66,10 @@ namespace Ksiegarnia.Controllers
             return new JsonResult(types);
         }
 
-        [HttpGet("Types/{typeName}")]
-        public async Task<IActionResult> GetType(string typeName)
+        [HttpGet("Types/{typeId}")]
+        public async Task<IActionResult> GetType(Guid typeId)
         {
-            if (String.IsNullOrEmpty(typeName))
-            {
-                return BadRequest();
-            }
-            var type = await bookService.GetType(typeName);
+            var type = await bookService.GetType(typeId);
 
             if (type == null)
             {
@@ -82,14 +78,14 @@ namespace Ksiegarnia.Controllers
             return new JsonResult(type);
         }
 
-        [HttpGet("Categories")]
+        [HttpGet("Types/{typeId}/Categories")]
         public async Task<IActionResult> GetCategories(Guid typeId)
         {
             var cateogries = await bookService.GetCategoriesByType(typeId);
             return new JsonResult(cateogries);
         }
 
-        [HttpGet("Book/{bookId}")]
+        [HttpGet("Books/{bookId}")]
         public async Task<IActionResult> GetBook(Guid bookId)
         {
             var book = await bookService.ShowBookDetails(bookId);
