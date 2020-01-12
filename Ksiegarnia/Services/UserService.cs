@@ -1,12 +1,13 @@
 ﻿using Ksiegarnia.IServices;
 using System;
 using System.Linq;
-using Ksiegarnia.DTO;
 using Ksiegarnia.IRepositories;
 using Ksiegarnia.Models;
 using Ksiegarnia.Domain;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
+using Ksiegarnia.Responses;
+using Ksiegarnia.Requests;
 
 namespace Ksiegarnia.Services
 {
@@ -26,14 +27,14 @@ namespace Ksiegarnia.Services
             this.jwtService = jwtService;
         }
 
-        public async Task<UserDTO> Get(string login)
+        public async Task<UserResponse> Get(string login)
         {
             var user = await userRepository.GetUser(login);
             if(user == null)
             {
                 throw new Exception($"user with login: '{login}' does't exist.");
             }
-            var userDto = new UserDTO()
+            var userResponse = new UserResponse()
             {
                 UserId = user.UserId,
                 Login = user.Login,
@@ -42,7 +43,7 @@ namespace Ksiegarnia.Services
                 Orders = user.Orders
             };
 
-            return userDto;
+            return userResponse;
         }
 
         public async Task<AuthenticationResult> Login(string login, string password)
@@ -107,7 +108,7 @@ namespace Ksiegarnia.Services
             await jwtService.DeactivateCurrentToken();
         }
 
-        public async Task Register(string login, string password, string email, AddressDTO addressDto = null)
+        public async Task Register(string login, string password, string email, AddressRequest addressRequest = null)
         {
             var user = await userRepository.GetUser(login);
             if (user != null)
@@ -125,15 +126,15 @@ namespace Ksiegarnia.Services
             string hash = encrypter.GetHash(password, salt);
             user = new User(login, email, hash, salt);
 
-            if (addressDto != null)
+            if (addressRequest != null)
             {
                 Address address = new Address(
                         user.UserId,
-                        addressDto.City,
-                        addressDto.Street,
-                        addressDto.HouseNumber,
-                        addressDto.ZipCode,
-                        addressDto.FlatNumber
+                        addressRequest.City,
+                        addressRequest.Street,
+                        addressRequest.HouseNumber,
+                        addressRequest.ZipCode,
+                        addressRequest.FlatNumber
                     );
                 await userRepository.AddAddress(address);
             }

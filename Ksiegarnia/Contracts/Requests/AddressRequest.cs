@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Ksiegarnia.DTO
+﻿namespace Ksiegarnia.Requests
 {
-    public class AddressDTO
+    public class AddressRequest
     {
         public string City { get; set; }
         public string Street { get; set; }

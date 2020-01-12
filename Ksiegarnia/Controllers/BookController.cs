@@ -4,7 +4,7 @@ using Ksiegarnia.IServices;
 using System.Threading.Tasks;
 
 namespace Ksiegarnia.Controllers
-{//zamienic DTO (do usuniecia) na responses, zwracac jakies inne statuscody?, poprawic w Order, sprawdzic w bazie, testy jednostowe, odpalic i skonfigurowsc integacyjne, postman
+{//zwracac jakies inne statuscody?, poprawic w Order, sprawdzic w bazie, testy jednostowe, odpalic i skonfigurowsc integacyjne, postman, linq w repo popatrzec, automapper?
     [Route("api")]
     public class BookController : Controller
     {

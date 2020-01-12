@@ -1,4 +1,4 @@
-﻿using Ksiegarnia.DTO;
+﻿using Ksiegarnia.Requests;
 
 namespace Ksiegarnia.Contracts.Requests
 {
@@ -7,6 +7,6 @@ namespace Ksiegarnia.Contracts.Requests
         public string Login { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
-        public AddressDTO Address { get; set; }
+        public AddressRequest Address { get; set; }
     }
 }

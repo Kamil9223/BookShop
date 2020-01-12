@@ -1,12 +1,10 @@
 ﻿using Ksiegarnia.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Ksiegarnia.DTO
+namespace Ksiegarnia.Responses
 {
-    public class UserDTO
+    public class UserResponse
     {
         public Guid UserId { get; set; }
         public string Login { get; set; }
