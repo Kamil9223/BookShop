@@ -4,7 +4,7 @@ using Ksiegarnia.IServices;
 using System.Threading.Tasks;
 
 namespace Ksiegarnia.Controllers
-{//zwracac jakies inne statuscody?, poprawic w Order, sprawdzic w bazie, testy jednostowe, odpalic i skonfigurowsc integacyjne, postman, linq w repo popatrzec, automapper?
+{//poprawic w Order, sprawdzic w bazie, testy jednostowe, odpalic i skonfigurowsc integacyjne
     [Route("api")]
     public class BookController : Controller
     {

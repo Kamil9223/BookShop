@@ -26,8 +26,11 @@ namespace Ksiegarnia.Repositories
 
         public async Task<IEnumerable<Category>> GetCategoriesByType(Guid typeId)
         {
-            var categoryIds = await context.TypeCategories.Where(x => x.TypeId == typeId).Select(x => x.CategoryId).ToListAsync();
-            var categories = context.Categories.Where(x => categoryIds.Contains(x.CategoryId));
+            var categories = await (from typeCat in context.TypeCategories
+                                    where typeCat.TypeId == typeId
+                                    join category in context.Categories on typeCat.CategoryId equals category.CategoryId
+                                    select category).ToListAsync();
+
             return categories;
         }
 

@@ -27,17 +27,31 @@ namespace Ksiegarnia.Repositories
         public async Task<IEnumerable<Book>> GetBooks(int page, int pageSize)
             => await context.Books.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
+        //public async Task<IEnumerable<Book>> GetBooksByType(Guid typeId, int page, int pageSize)
+        //{
+        //    var ids = await context.TypeCategories.Where(x => x.TypeId == typeId).Select(x => x.TypeCategoryId).ToListAsync();
+        //    var books = await context.Books.Where(x => ids.Contains(x.TypeCategoryId)).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+        //    return books;
+        //}
+
         public async Task<IEnumerable<Book>> GetBooksByType(Guid typeId, int page, int pageSize)
         {
-            var ids = await context.TypeCategories.Where(x => x.TypeId == typeId).Select(x => x.TypeCategoryId).ToListAsync();
-            var books = await context.Books.Where(x => ids.Contains(x.TypeCategoryId)).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            var books = await (from typeCat in context.TypeCategories
+                               where typeCat.TypeId == typeId
+                               join book in context.Books on typeCat.TypeCategoryId equals book.TypeCategoryId
+                               select book).ToListAsync();
+
             return books;
         }
 
         public async Task<IEnumerable<Book>> GetBooksByTypeAndCategory(Guid typeId, Guid categoryId, int page, int pageSize)
         {
-            var id = (await context.TypeCategories.SingleOrDefaultAsync(x => x.TypeId == typeId && x.CategoryId == categoryId)).TypeCategoryId;
-            var books = await context.Books.Where(x => x.TypeCategoryId == id).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            var books = await (from typeCat in context.TypeCategories
+                               where typeCat.TypeId == typeId
+                               where typeCat.CategoryId == categoryId
+                               join book in context.Books on typeCat.TypeCategoryId equals book.TypeCategoryId
+                               select book).ToListAsync();
+
             return books;
         }
 
