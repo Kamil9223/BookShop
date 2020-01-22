@@ -130,13 +130,21 @@ namespace Ksiegarnia.Services
             return type;
         }
 
-        public async Task<Book> ShowBookDetails(Guid bookId)
+        public async Task<BookResponse> ShowBookDetails(Guid bookId)
         {
             var book = await bookRepository.GetBook(bookId);
             if (book == null)
                 throw new Exception("Book with provided Id doesn't exist");
 
-            return book;
+            return new BookResponse
+            {
+                BookId = book.BookId,
+                Title = book.Title,
+                PhotoUrl = book.PhotoUrl,
+                Price = book.Price,
+                TypeCategoryId = book.TypeCategoryId,
+                TypeCategory = book.TypeCategory
+            };
         }
 
         public async Task<Guid> AddTypeCategoryRelation(Guid categoryId, Guid typeId)

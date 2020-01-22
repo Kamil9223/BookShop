@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Ksiegarnia.MiddleWares;
+using FluentValidation.AspNetCore;
 
 namespace Ksiegarnia
 {
@@ -45,7 +46,7 @@ namespace Ksiegarnia
             });
             services.AddAuthorization(p => p.AddPolicy("admin", pol => pol.RequireRole("admin")));
             services.AddMemoryCache();
-            //services.AddDistributedRedisCache(x => { x.Configuration = Configuration["Redis:ConnectionString"]; });
+
             services.AddCors(
                 options => options.AddPolicy("AllowCors",
                 builder =>
@@ -60,7 +61,11 @@ namespace Ksiegarnia
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(10); 
             });
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<ValidationMiddleWare>();
+            })
+                .AddFluentValidation(conf => conf.RegisterValidatorsFromAssemblyContaining<Startup>());
             services.AddDbContext<BookShopContext>(o => o.UseSqlServer(Configuration["ConnectionString:BookShopDB"]));
             services.AddTransient<JwtTokenMiddleWare>();
             //Repositories

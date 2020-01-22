@@ -21,19 +21,19 @@ namespace Ksiegarnia.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest command)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            if (command.Address.City == null && command.Address.Street == null && command.Address.ZipCode == null)
-                command.Address = null;
+            if (request.Address.City == null && request.Address.Street == null && request.Address.ZipCode == null)
+                request.Address = null;
 
-            await userService.Register(command.Login, command.Password, command.Email, command.Address);
+            await userService.Register(request.Login, request.Password, request.Email, request.Address);
             return Ok();
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest command)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var authResult = await userService.Login(command.Login, command.Password);
+            var authResult = await userService.Login(request.Login, request.Password);
             var authResponse = new AuthenticationResponse
             {
                 JwtToken = authResult.JwtToken,
@@ -52,9 +52,9 @@ namespace Ksiegarnia.Controllers
         }
 
         [HttpPost("refresh")]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshConnectionRequest command)
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshConnectionRequest request)
         {
-            var authResult = await userService.RefreshConnection(command.JwtToken, command.RefreshToken);
+            var authResult = await userService.RefreshConnection(request.JwtToken, request.RefreshToken);
             var authResponse = new AuthenticationResponse
             {
                 JwtToken = authResult.JwtToken,
