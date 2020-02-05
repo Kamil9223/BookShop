@@ -66,6 +66,7 @@ namespace Ksiegarnia
                 options.Filters.Add<ValidationMiddleWare>();
             })
                 .AddFluentValidation(conf => conf.RegisterValidatorsFromAssemblyContaining<Startup>());
+
             services.AddDbContext<BookShopContext>(o => o.UseSqlServer(Configuration["ConnectionString:BookShopDB"]));
             services.AddTransient<JwtTokenMiddleWare>();
             //Repositories
@@ -87,19 +88,6 @@ namespace Ksiegarnia
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-                {
-                    HotModuleReplacement = true
-                });
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
-
             app.UseCors("AllowCors");
             app.UseSession();
             app.UseStaticFiles();

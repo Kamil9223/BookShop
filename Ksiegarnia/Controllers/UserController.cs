@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using Ksiegarnia.Contracts.Responses;
 using Ksiegarnia.Contracts.Requests;
+using System;
 
 namespace Ksiegarnia.Controllers
 {
@@ -61,6 +62,13 @@ namespace Ksiegarnia.Controllers
                 RefreshToken = authResult.RefreshToken.ToString()
             };
             return new JsonResult(authResponse);
+        }
+
+        [HttpGet("user/{login}/get")]
+        public async Task<IActionResult> GetUser(string login)
+        {
+            var userResponse = await userService.Get(login);
+            return new JsonResult(userResponse);
         }
     }
 }

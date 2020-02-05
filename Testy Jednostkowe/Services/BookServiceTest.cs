@@ -1,5 +1,6 @@
 ﻿using Ksiegarnia.IRepositories;
 using Ksiegarnia.Models;
+using Ksiegarnia.Responses;
 using Ksiegarnia.Services;
 using Moq;
 using System;
@@ -39,7 +40,7 @@ namespace Testy_Jednostkowe.Services
 
             bookRepositoryMock.Setup(x => x.GetBook(It.IsAny<Guid>())).Returns(Task.FromResult<Book>(null));
 
-            Func<Task<Book>> showBookDetails = async () => await bookService.ShowBookDetails(It.IsAny<Guid>());
+            Func<Task<BookResponse>> showBookDetails = async () => await bookService.ShowBookDetails(It.IsAny<Guid>());
 
             await Assert.ThrowsAsync<Exception>(showBookDetails);
         }

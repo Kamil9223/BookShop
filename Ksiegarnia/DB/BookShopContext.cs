@@ -25,6 +25,8 @@ namespace Ksiegarnia.DB
 
         }
 
+        public BookShopContext() { }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             OnHistoryCreating(modelBuilder);
