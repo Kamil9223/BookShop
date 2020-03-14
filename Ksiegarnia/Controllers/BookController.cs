@@ -1,98 +1,94 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Ksiegarnia.IServices;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Ksiegarnia.Controllers
-{
-    [Route("api/Book")]
+{//poprawic w Order, sprawdzic w bazie, testy jednostowe, odpalic i skonfigurowsc integacyjne
+    [Route("api")]
     public class BookController : Controller
     {
-        private readonly IBookService bookService;
+        private readonly IBookService bookService; 
 
         public BookController(IBookService bookService)
         {
             this.bookService = bookService;
         }
 
-        [HttpGet("[action]")]
-        public IActionResult GetBooks(int page, int pageSize)
+        [HttpGet("Books")]
+        public async Task<IActionResult> GetBooks(int page, int pageSize)
         {
             if (page <= 0 || pageSize <= 0)
             {
                 return BadRequest();
             }
-            var books = bookService.GetBooks(page, pageSize);
+            var books = await bookService.GetBooks(page, pageSize);
             return new JsonResult(books);
         }
 
-        [HttpGet("[action]")]
-        public IActionResult GetBooksByType(int page, int pageSize, Guid typeId)
+        [HttpGet("Books/Types/{typeId}")]
+        public async Task<IActionResult> GetBooksByType(Guid typeId, int page, int pageSize)
         {
             if (page <= 0 || pageSize <= 0)
             {
                 return BadRequest();
             }
-            var books = bookService.GetBooksByType(page, pageSize, typeId);
+            var books = await bookService.GetBooksByType(page, pageSize, typeId);
             return new JsonResult(books);
         }
 
-        [HttpGet("[action]")]
-        public IActionResult GetBooksByCategory(int page, int pageSize, Guid typeId, Guid categoryId)
+        [HttpGet("Books/Types/{typeId}/Categories/{categoryId}")]
+        public async Task<IActionResult> GetBooksByCategory(Guid typeId, Guid categoryId, int page, int pageSize)
         {
             if (page <= 0 || pageSize <= 0)
             {
                 return BadRequest();
             }
-            var books = bookService.GetBooksByTypeAndCategory(page, pageSize, typeId, categoryId);
+            var books = await bookService.GetBooksByTypeAndCategory(page, pageSize, typeId, categoryId);
             return new JsonResult(books);
         }
 
-        [HttpGet("[action]")]
-        public IActionResult GetBooksRandomly(int count)
+        [HttpGet("Books/Random/{count}")]
+        public async Task<IActionResult> GetBooksRandomly(int count)
         {
             if (count <= 0)
             {
                 return BadRequest();
             }
-            var books = bookService.GetBooksRandomly(count);
+            var books = await bookService.GetBooksRandomly(count);
             return new JsonResult(books);
         }
 
-        [HttpGet("[action]")]
-        public IActionResult GetTypes()
+        [HttpGet("Types")]
+        public async Task<IActionResult> GetTypes()
         {
-            var types = bookService.GetTypes();
+            var types = await bookService.GetTypes();
             return new JsonResult(types);
         }
 
-        [HttpGet("[action]")]
-        public IActionResult GetType(string typeName)
+        [HttpGet("Types/{typeId}")]
+        public async Task<IActionResult> GetType(Guid typeId)
         {
-            if (String.IsNullOrWhiteSpace(typeName))
-            {
-                return BadRequest();
-            }
-            var type = bookService.GetType(typeName);
+            var type = await bookService.GetType(typeId);
 
             if (type == null)
             {
-                return BadRequest();
+                return NotFound();
             }
             return new JsonResult(type);
         }
 
-        [HttpGet("[action]")]
-        public IActionResult GetCategories(Guid typeId)
+        [HttpGet("Types/{typeId}/Categories")]
+        public async Task<IActionResult> GetCategories(Guid typeId)
         {
-            var cateogries = bookService.GetCategoriesByType(typeId);
+            var cateogries = await bookService.GetCategoriesByType(typeId);
             return new JsonResult(cateogries);
         }
 
-        [HttpGet("[action]")]
-        public IActionResult GetBook(Guid bookId)
+        [HttpGet("Books/{bookId}")]
+        public async Task<IActionResult> GetBook(Guid bookId)
         {
-            var book = bookService.ShowBookDetails(bookId);
+            var book = await bookService.ShowBookDetails(bookId);
             return new JsonResult(book);
         }
     }

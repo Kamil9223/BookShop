@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -9,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ksiegarnia.DB;
 using Microsoft.EntityFrameworkCore;
-using Ksiegarnia.Extensions;
 using Ksiegarnia.IRepositories;
 using Ksiegarnia.Repositories;
 using Ksiegarnia.Services;
@@ -17,8 +13,9 @@ using Ksiegarnia.IServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Ksiegarnia.Models.Internet_Cart;
 using Microsoft.AspNetCore.Http;
+using Ksiegarnia.MiddleWares;
+using FluentValidation.AspNetCore;
 
 namespace Ksiegarnia
 {
@@ -34,18 +31,22 @@ namespace Ksiegarnia
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = false,
+                ValidIssuer = Configuration["Jwt:Issuer"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+            };
+            services.AddSingleton(tokenValidationParameters);
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = false,
-                    ValidIssuer = Configuration["Jwt:Issuer"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-                };
+                options.TokenValidationParameters = tokenValidationParameters;
             });
             services.AddAuthorization(p => p.AddPolicy("admin", pol => pol.RequireRole("admin")));
             services.AddMemoryCache();
+
             services.AddCors(
                 options => options.AddPolicy("AllowCors",
                 builder =>
@@ -60,52 +61,40 @@ namespace Ksiegarnia
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(10); 
             });
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<ValidationMiddleWare>();
+            })
+                .AddFluentValidation(conf => conf.RegisterValidatorsFromAssemblyContaining<Startup>());
+
             services.AddDbContext<BookShopContext>(o => o.UseSqlServer(Configuration["ConnectionString:BookShopDB"]));
+            services.AddTransient<JwtTokenMiddleWare>();
             //Repositories
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITypeRepository, TypeRepository>();
             services.AddScoped<ITypeCategoryRepository, TypeCategoryRepository>();
+            services.AddScoped<ILoggedUserRepository, LoggedUserRepository>();
             //Services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBookService, BookService>();
             services.AddSingleton<IEncrypter, Encrypter>();
             services.AddSingleton<IJwtService, JwtService>();
-            services.AddScoped<Cart>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<ICart, Cart>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-                {
-                    HotModuleReplacement = true
-                });
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
             app.UseCors("AllowCors");
             app.UseSession();
             app.UseStaticFiles();
             app.UseAuthentication();
+            app.UseMiddleware<JwtTokenMiddleWare>();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
-            });
+            app.UseMvc();
         }
     }
 }

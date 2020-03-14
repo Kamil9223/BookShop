@@ -2,11 +2,9 @@
 using Ksiegarnia.IServices;
 using Ksiegarnia.Models;
 using Ksiegarnia.Services;
-using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Testy_Jednostkowe.Services
@@ -14,66 +12,66 @@ namespace Testy_Jednostkowe.Services
     public class UserServiceTest
     {
         [Fact]
-        public void Register_method_should_invoke_GetUser_method_in_repository()
+        public async Task Register_method_should_invoke_GetUser_method_in_repository()
         {
             var userRepositoryMock = new Mock<IUserRepository>();
+            var loggedUserRepositoryMock = new Mock<ILoggedUserRepository>();
             var encrypterMock = new Mock<IEncrypter>();
             var jwtService = new Mock<IJwtService>();
-            var memoryCache = new Mock<IMemoryCache>();
 
-            var userService = new UserService(userRepositoryMock.Object, encrypterMock.Object,
-                jwtService.Object, memoryCache.Object);
+            var userService = new UserService(userRepositoryMock.Object, loggedUserRepositoryMock.Object, 
+                encrypterMock.Object, jwtService.Object);
 
-            userService.Register("Test", "password", "wrongMail");
+            await userService.Register("Test", "password", "wrongMail");
 
             userRepositoryMock.Verify(x => x.GetUser(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
-        public void Register_method_should_invoke_AddUser_method_in_repository()
+        public async Task Register_method_should_invoke_AddUser_method_in_repository()
         {
             var userRepositoryMock = new Mock<IUserRepository>();
+            var loggedUserRepositoryMock = new Mock<ILoggedUserRepository>();
             var encrypterMock = new Mock<IEncrypter>();
             var jwtService = new Mock<IJwtService>();
-            var memoryCache = new Mock<IMemoryCache>();
 
-            var userService = new UserService(userRepositoryMock.Object, encrypterMock.Object,
-                jwtService.Object, memoryCache.Object);
+            var userService = new UserService(userRepositoryMock.Object, loggedUserRepositoryMock.Object,
+                encrypterMock.Object, jwtService.Object);
 
-            userService.Register("Test", "password", "wrongMail");
+            await userService.Register("Test", "password", "wrongMail");
 
             userRepositoryMock.Verify(x => x.AddUser(It.IsAny<User>()), Times.Once);
         }
 
         [Fact]
-        public void Register_method_should_throw_exception_when_user_already_exist()
+        public async Task Register_method_should_throw_exception_when_user_already_exist()
         {
             var userRepositoryMock = new Mock<IUserRepository>();
+            var loggedUserRepositoryMock = new Mock<ILoggedUserRepository>();
             var encrypterMock = new Mock<IEncrypter>();
             var jwtService = new Mock<IJwtService>();
-            var memoryCache = new Mock<IMemoryCache>();
 
-            var userService = new UserService(userRepositoryMock.Object, encrypterMock.Object,
-               jwtService.Object, memoryCache.Object);
+            var userService = new UserService(userRepositoryMock.Object, loggedUserRepositoryMock.Object,
+                encrypterMock.Object, jwtService.Object);
 
             var user = new User("Kamil", "wrongMail", "pass", "salt");
-            userRepositoryMock.Setup(x => x.GetUser(It.IsAny<string>())).Returns(user);
+            userRepositoryMock.Setup(x => x.GetUser(It.IsAny<string>())).Returns(Task.FromResult(user));
 
-            Action register = () => userService.Register("Kamil", "secret", "wrongMail");
+            Func<Task> register = async () => await userService.Register("Kamil", "secret", "wrongMail");
 
-            Assert.Throws<Exception>(register);
+            await Assert.ThrowsAsync<Exception>(register);
         }
 
         [Fact]
-        public void Login_method_should_throw_exception_when_given_password_is_not_equal_to_hash()
+        public async Task Login_method_should_throw_exception_when_given_password_is_not_equal_to_hash()
         {
             var userRepositoryMock = new Mock<IUserRepository>();
+            var loggedUserRepositoryMock = new Mock<ILoggedUserRepository>();
             var encrypterMock = new Mock<IEncrypter>();
             var jwtService = new Mock<IJwtService>();
-            var memoryCache = new Mock<IMemoryCache>();
 
-            var userService = new UserService(userRepositoryMock.Object, encrypterMock.Object,
-               jwtService.Object, memoryCache.Object);
+            var userService = new UserService(userRepositoryMock.Object, loggedUserRepositoryMock.Object,
+                encrypterMock.Object, jwtService.Object);
 
             //correct password for login=Kamil is kamil.
             string testPass = "fakePass";
@@ -81,13 +79,13 @@ namespace Testy_Jednostkowe.Services
             Encrypter encrypter = new Encrypter();
             var hashForTest = encrypter.GetHash(testPass, user.Salt);
 
-            userRepositoryMock.Setup(x => x.GetUser(It.IsAny<string>())).Returns(user);
+            userRepositoryMock.Setup(x => x.GetUser(It.IsAny<string>())).Returns(Task.FromResult(user));
             encrypterMock.Setup(x => x.GetHash(It.IsAny<string>(), user.Salt))
                                       .Returns(hashForTest);
                          
 
-            Action login = () => userService.Login("Kamil", testPass);
-            Assert.Throws<Exception>(login);
+            Func<Task> login = async () => await userService.Login("Kamil", testPass);
+            await Assert.ThrowsAsync<Exception>(login);
         }
     }
 }

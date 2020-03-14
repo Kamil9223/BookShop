@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ksiegarnia.Models;
 using Ksiegarnia.DB;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ksiegarnia.Repositories
 {
@@ -17,50 +18,50 @@ namespace Ksiegarnia.Repositories
             this.context = context;
         }
 
-        public User GetUser(Guid userId)
-            => context.Users.SingleOrDefault(u => u.UserId == userId);
+        public async Task<User> GetUser(Guid userId)
+            => await context.Users.SingleOrDefaultAsync(u => u.UserId == userId);
 
-        public User GetUser(string login)
-            => context.Users.SingleOrDefault(u => u.Login == login);
+        public async Task<User> GetUser(string login)
+            => await context.Users.SingleOrDefaultAsync(u => u.Login == login);
 
-        public User GetUserByEmail(string email)
-            => context.Users.SingleOrDefault(u => u.Email == email.ToLowerInvariant());
+        public async Task<User> GetUserByEmail(string email)
+            => await context.Users.SingleOrDefaultAsync(u => u.Email == email.ToLowerInvariant());
 
-        public IEnumerable<User> GetUsers()
-            => context.Users.ToList();
+        public async Task<IEnumerable<User>> GetUsers()
+            => await context.Users.ToListAsync();
 
-        public Address GetAddress(Guid userId)
-            =>context.Addresses.SingleOrDefault(a => a.UserId == userId);
+        public async Task<Address> GetAddress(Guid userId)
+            => await context.Addresses.SingleOrDefaultAsync(a => a.UserId == userId);
 
-        public void AddUser(User user)
+        public async Task AddUser(User user)
         {
-            context.Users.Add(user);
+            await context.Users.AddAsync(user);
         }
 
-        public void UpdateUser(User user)
+        public async Task UpdateUser(User user)
         {
             context.Users.Update(user);
         }
 
-        public void RemoveUser(Guid userId)
+        public async Task RemoveUser(Guid userId)
         {
-            var user = GetUser(userId);
+            var user = await GetUser(userId);
             context.Users.Remove(user);
         }
 
-        public void AddAddress(Address address)
+        public async Task AddAddress(Address address)
         {
-            context.Addresses.Add(address);
+            await context.Addresses.AddAsync(address);
         }
 
-        public void UpdateAddress(Address address)
+        public async Task UpdateAddress(Address address)
         {
             context.Addresses.Update(address);
         }
 
-        public void SaveChanges()
+        public async Task SaveChanges()
         {
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

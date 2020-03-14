@@ -2,10 +2,9 @@
 using Ksiegarnia.IServices;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Ksiegarnia.DTO;
 using Ksiegarnia.Models;
+using Ksiegarnia.Responses;
 
 namespace Ksiegarnia.Services
 {
@@ -25,14 +24,14 @@ namespace Ksiegarnia.Services
             this.typeCategoryRepository = typeCategoryRepository;
         }
 
-        public IEnumerable<BookDTO> GetBooks(int page, int pageSize)
+        public async Task<IEnumerable<BookResponse>> GetBooks(int page, int pageSize)
         {
-            var books = bookRepository.GetBooks(page, pageSize);
-            var booksDto = new List<BookDTO>();
+            var books = await bookRepository.GetBooks(page, pageSize);
+            var bookResponse = new List<BookResponse>();
 
             foreach(Book book in books)
             {
-                booksDto.Add(new BookDTO()
+                bookResponse.Add(new BookResponse()
                 {
                     BookId = book.BookId,
                     Title = book.Title,
@@ -43,18 +42,18 @@ namespace Ksiegarnia.Services
                 });
             }
 
-            return booksDto;
+            return bookResponse;
         }
 
-        public IEnumerable<BookDTO> GetBooksByType(int page, int pageSize, Guid typeId)
+        public async Task<IEnumerable<BookResponse>> GetBooksByType(int page, int pageSize, Guid typeId)
         {
-            var books = bookRepository.GetBooksByType(typeId, page, pageSize);
+            var books = await bookRepository.GetBooksByType(typeId, page, pageSize);
 
-            var booksDto = new List<BookDTO>();
+            var bookResponse = new List<BookResponse>();
 
             foreach (Book book in books)
             {
-                booksDto.Add(new BookDTO()
+                bookResponse.Add(new BookResponse()
                 {
                     BookId = book.BookId,
                     Title = book.Title,
@@ -65,20 +64,20 @@ namespace Ksiegarnia.Services
                 });
             }
 
-            return booksDto;
+            return bookResponse;
         }
 
-        public IEnumerable<BookDTO> GetBooksByTypeAndCategory(int page, int pageSize, Guid typeId, Guid categoryId)
+        public async Task<IEnumerable<BookResponse>> GetBooksByTypeAndCategory(int page, int pageSize, Guid typeId, Guid categoryId)
         {
-            var books = bookRepository.GetBooksByTypeAndCategory(typeId, categoryId, page, pageSize);
+            var books = await bookRepository.GetBooksByTypeAndCategory(typeId, categoryId, page, pageSize);
             if (books == null)
                 throw new Exception("Can not find books collection with provided type Id and category Id.");
 
-            var booksDto = new List<BookDTO>();
+            var bookResponse = new List<BookResponse>();
 
             foreach (Book book in books)
             {
-                booksDto.Add(new BookDTO()
+                bookResponse.Add(new BookResponse()
                 {
                     BookId = book.BookId,
                     Title = book.Title,
@@ -89,17 +88,17 @@ namespace Ksiegarnia.Services
                 });
             }
 
-            return booksDto;
+            return bookResponse;
         }
 
-        public IEnumerable<BookDTO> GetBooksRandomly(int count)
+        public async Task<IEnumerable<BookResponse>> GetBooksRandomly(int count)
         {
-            var books = bookRepository.GetBooksRandomly(count);
-            var booksDto = new List<BookDTO>();
+            var books = await bookRepository.GetBooksRandomly(count);
+            var bookResponse = new List<BookResponse>();
 
             foreach(Book book in books)
             {
-                booksDto.Add(new BookDTO()
+                bookResponse.Add(new BookResponse()
                 {
                     BookId = book.BookId,
                     Title = book.Title,
@@ -110,61 +109,69 @@ namespace Ksiegarnia.Services
                 });
             }
 
-            return booksDto;
+            return bookResponse;
         }
 
-        public IEnumerable<Category> GetCategoriesByType(Guid typeId)
+        public async Task<IEnumerable<Category>> GetCategoriesByType(Guid typeId)
         {
-            var categories = categoryRepository.GetCategoriesByType(typeId);
+            var categories = await categoryRepository.GetCategoriesByType(typeId);
             return categories;
         }
 
-        public IEnumerable<Models.Type> GetTypes()
+        public async Task<IEnumerable<Models.Type>> GetTypes()
         {
-            var types = typeRepository.GetTypes();
+            var types = await typeRepository.GetTypes();
             return types;
         }
 
-        public Models.Type GetType(string typeName)
+        public async Task<Models.Type> GetType(Guid typeId)
         {
-            var type = typeRepository.GetType(typeName);
+            var type = await typeRepository.GetType(typeId);
             return type;
         }
 
-        public Book ShowBookDetails(Guid bookId)
+        public async Task<BookResponse> ShowBookDetails(Guid bookId)
         {
-            var book = bookRepository.GetBook(bookId);
+            var book = await bookRepository.GetBook(bookId);
             if (book == null)
                 throw new Exception("Book with provided Id doesn't exist");
 
-            return book;
+            return new BookResponse
+            {
+                BookId = book.BookId,
+                Title = book.Title,
+                PhotoUrl = book.PhotoUrl,
+                Price = book.Price,
+                TypeCategoryId = book.TypeCategoryId,
+                TypeCategory = book.TypeCategory
+            };
         }
 
-        public Guid AddTypeCategoryRelation(Guid categoryId, Guid typeId)
+        public async Task<Guid> AddTypeCategoryRelation(Guid categoryId, Guid typeId)
         {
-            var category = categoryRepository.GetCategory(categoryId);
+            var category = await categoryRepository.GetCategory(categoryId);
             if (category == null)
                 throw new Exception("Category with provided Id doesn't exist.");
 
-            var type = typeRepository.GetType(typeId);
+            var type = await typeRepository.GetType(typeId);
             if (type == null)
                 throw new Exception("Type with provided Id doesn't exist");
 
-            var existingRelation = typeCategoryRepository.GetExistingRelation(categoryId, typeId);
+            var existingRelation = await typeCategoryRepository.GetExistingRelation(categoryId, typeId);
             if (existingRelation != null)
                 throw new Exception("Relation already exist");
 
             var relation = new TypeCategory(categoryId, typeId);
-            typeCategoryRepository.AddTypeCategoryRelation(relation);
-            typeCategoryRepository.SaveChanges();
+            await typeCategoryRepository.AddTypeCategoryRelation(relation);
+            await typeCategoryRepository.SaveChanges();
 
             return relation.TypeCategoryId;
         }
 
-        public void AddBook(Book book)
+        public async Task AddBook(Book book)
         {//Dodać walidacje, zabronić dwie ksiązki o tym samym tytule, sprawdic nulle itd
-            bookRepository.AddBook(book);
-            bookRepository.SaveChanges();
+            await bookRepository.AddBook(book);
+            await bookRepository.SaveChanges();
         }
     }
 }

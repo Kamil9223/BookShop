@@ -1,10 +1,10 @@
 ﻿using Ksiegarnia.IRepositories;
 using Ksiegarnia.Models;
+using Ksiegarnia.Responses;
 using Ksiegarnia.Services;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Testy_Jednostkowe.Services
@@ -12,7 +12,7 @@ namespace Testy_Jednostkowe.Services
     public class BookServiceTest
     {
         [Fact]
-        public void GetBooksByType_method_should_invoke_GetBooksByType_method_in_Repository()
+        public async Task GetBooksByType_method_should_invoke_GetBooksByType_method_in_Repository()
         {
             var bookRepositoryMock = new Mock<IBookRepository>();
             var categoryRepositoryMock = new Mock<ICategoryRepository>();
@@ -22,13 +22,13 @@ namespace Testy_Jednostkowe.Services
             var bookService = new BookService(bookRepositoryMock.Object, categoryRepositoryMock.Object,
                 typeRepositoryMock.Object, typeCategoryRepositoryMock.Object);
 
-            bookService.GetBooksByType(1, 9, new Guid());
+            await bookService.GetBooksByType(1, 9, new Guid());
 
             bookRepositoryMock.Verify(x => x.GetBooksByType(It.IsAny<Guid>(), 1, 9), Times.Once);
         }
 
         [Fact]
-        public void ShowBookDetails_method_should_throw_exception_when_book_with_provided_id_doesnt_exist()
+        public async Task ShowBookDetails_method_should_throw_exception_when_book_with_provided_id_doesnt_exist()
         {
             var bookRepositoryMock = new Mock<IBookRepository>();
             var categoryRepositoryMock = new Mock<ICategoryRepository>();
@@ -38,11 +38,11 @@ namespace Testy_Jednostkowe.Services
             var bookService = new BookService(bookRepositoryMock.Object, categoryRepositoryMock.Object,
                 typeRepositoryMock.Object, typeCategoryRepositoryMock.Object);
 
-            bookRepositoryMock.Setup(x => x.GetBook(It.IsAny<Guid>())).Returns((Book)null);
+            bookRepositoryMock.Setup(x => x.GetBook(It.IsAny<Guid>())).Returns(Task.FromResult<Book>(null));
 
-            Action showBookDetails = () => bookService.ShowBookDetails(It.IsAny<Guid>());
+            Func<Task<BookResponse>> showBookDetails = async () => await bookService.ShowBookDetails(It.IsAny<Guid>());
 
-            Assert.Throws<Exception>(showBookDetails);
+            await Assert.ThrowsAsync<Exception>(showBookDetails);
         }
     }
 }

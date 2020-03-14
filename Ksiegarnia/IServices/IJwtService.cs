@@ -1,13 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Ksiegarnia.Domain;
+using Ksiegarnia.Models;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Ksiegarnia.IServices
 {
     public interface IJwtService
     {
-        string CreateToken(string login, string role);
-        void DeleteToken(string jwtToken);
+        AuthenticationResult CreateToken(string login, string role);
+        AuthenticationResult RefreshToken(string jwtToken, LoggedUser loggedUser);
+        Task DeactivateToken(string token);
+        Task DeactivateCurrentToken();
+        Task<bool> IsActive(string token);
+        Task<bool> IsCurrentActive();
+        string GetCurrentToken();
+        ClaimsPrincipal GetPrincipalFromToken(string token);
     }
 }

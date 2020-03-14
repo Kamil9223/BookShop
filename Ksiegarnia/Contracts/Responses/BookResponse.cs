@@ -1,9 +1,9 @@
 ﻿using Ksiegarnia.Models;
 using System;
 
-namespace Ksiegarnia.DTO
+namespace Ksiegarnia.Responses
 {
-    public class BookDTO
+    public class BookResponse
     {
         public Guid BookId { get; set; }
         public string Title { get; set; }

@@ -8,16 +8,16 @@ namespace Ksiegarnia.IRepositories
 {
     public interface IUserRepository
     {
-        User GetUser(Guid userId);
-        User GetUser(string login);
-        User GetUserByEmail(string email);
-        IEnumerable<User> GetUsers();
-        Address GetAddress(Guid userId);
-        void AddUser(User user);
-        void AddAddress(Address address);
-        void UpdateUser(User user);
-        void UpdateAddress(Address address);
-        void RemoveUser(Guid userId);
-        void SaveChanges();
+        Task<User> GetUser(Guid userId);
+        Task<User> GetUser(string login);
+        Task<User> GetUserByEmail(string email);
+        Task<IEnumerable<User>> GetUsers();
+        Task<Address> GetAddress(Guid userId);
+        Task AddUser(User user);
+        Task AddAddress(Address address);
+        Task UpdateUser(User user);
+        Task UpdateAddress(Address address);
+        Task RemoveUser(Guid userId);
+        Task SaveChanges();
     }
 }
