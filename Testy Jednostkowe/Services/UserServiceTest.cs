@@ -73,18 +73,22 @@ namespace Testy_Jednostkowe.Services
             var userService = new UserService(userRepositoryMock.Object, loggedUserRepositoryMock.Object,
                 encrypterMock.Object, jwtService.Object);
 
-            //correct password for login=Kamil is kamil.
+            string correctPassword = "correct";
             string testPass = "fakePass";
-            var user = new User("Kamil", "email", "K7UbVVzydbxhowe4PBq2yEcdgJmaSqk65w1uymlcZcTIzcfLlf2hztqfFiN6ii2pPKg=", "gdNA8qsL9sgD/ZVjtt9ZMjbNDmUgJf4WVQPVYkkO7UaKVlIlzI/5JiJYG2ZdeGQvT6s=");
-            Encrypter encrypter = new Encrypter();
-            var hashForTest = encrypter.GetHash(testPass, user.Salt);
 
+            Encrypter encrypter = new Encrypter();
+            string salt = encrypter.GetSalt();
+
+            string hash = encrypter.GetHash(correctPassword, salt);
+            var hashForTest = encrypter.GetHash(testPass, salt);
+            var user = new User("Kamil", "email", hash, salt);       
+            
             userRepositoryMock.Setup(x => x.GetUser(It.IsAny<string>())).Returns(Task.FromResult(user));
             encrypterMock.Setup(x => x.GetHash(It.IsAny<string>(), user.Salt))
                                       .Returns(hashForTest);
                          
 
-            Func<Task> login = async () => await userService.Login("Kamil", testPass);
+            Func<Task> login = async () => await userService.Login("testLogin", testPass);
             await Assert.ThrowsAsync<Exception>(login);
         }
     }

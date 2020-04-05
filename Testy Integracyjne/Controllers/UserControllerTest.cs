@@ -1,14 +1,10 @@
-﻿using Ksiegarnia;
-using Ksiegarnia.DB;
+﻿using Ksiegarnia.DB;
 using Ksiegarnia.Models;
 using Ksiegarnia.Responses;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using TestyIntegracyjne.Helpers;
 using Xunit;
 
 namespace TestyIntegracyjne.Controllers
@@ -24,15 +20,8 @@ namespace TestyIntegracyjne.Controllers
         protected override void SeedDatabase()
         {
             var dbContext = TestServer.Host.Services.GetService(typeof(BookShopContext)) as BookShopContext;
-            dbContext.Users.Add(new User("testLogin", "test@ll.com",
-                "passHash", "sampleSalt"));
+            dbContext.Users.Add(new User("testLogin", "test@ll.com","passHash", "sampleSalt"));
             dbContext.SaveChanges();
-        }
-
-        //docelowo extension do COntent
-        private T ReadAsAsync<T>(string content)
-        {
-            return JsonConvert.DeserializeObject<T>(content);
         }
 
         [Fact]
@@ -41,7 +30,7 @@ namespace TestyIntegracyjne.Controllers
             var defaultUserLogin = "testLogin";
 
             var response = await HttpClient.GetAsync($"/api/user/{defaultUserLogin}/get");
-            var user = ReadAsAsync<UserResponse>(await response.Content.ReadAsStringAsync());
+            var user = await response.Content.ReadAsAsync<UserResponse>();
 
             response.EnsureSuccessStatusCode();
             Assert.Equal("testLogin", user.Login);
