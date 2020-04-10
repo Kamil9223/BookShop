@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Ksiegarnia.IServices;
 using System.Threading.Tasks;
+using Ksiegarnia.Contracts.Requests;
 
 namespace Ksiegarnia.Controllers
-{//poprawic w Order, sprawdzic w bazie, testy jednostowe, odpalic i skonfigurowsc integacyjne
+{
     [Route("api")]
     public class BookController : Controller
     {
@@ -16,35 +17,24 @@ namespace Ksiegarnia.Controllers
         }
 
         [HttpGet("Books")]
-        public async Task<IActionResult> GetBooks(int page, int pageSize)
+        public async Task<IActionResult> GetBooks([FromBody] PaginationRequest pagination)
         {
-            if (page <= 0 || pageSize <= 0)
-            {
-                return BadRequest();
-            }
-            var books = await bookService.GetBooks(page, pageSize);
+            var books = await bookService.GetBooks(pagination.Page, pagination.PageSize);
             return new JsonResult(books);
         }
 
         [HttpGet("Books/Types/{typeId}")]
-        public async Task<IActionResult> GetBooksByType(Guid typeId, int page, int pageSize)
+        public async Task<IActionResult> GetBooksByType(Guid typeId, [FromBody] PaginationRequest pagination)
         {
-            if (page <= 0 || pageSize <= 0)
-            {
-                return BadRequest();
-            }
-            var books = await bookService.GetBooksByType(page, pageSize, typeId);
+            var books = await bookService.GetBooksByType(pagination.Page, pagination.PageSize, typeId);
             return new JsonResult(books);
         }
 
         [HttpGet("Books/Types/{typeId}/Categories/{categoryId}")]
-        public async Task<IActionResult> GetBooksByCategory(Guid typeId, Guid categoryId, int page, int pageSize)
+        public async Task<IActionResult> GetBooksByCategory(Guid typeId, Guid categoryId, [FromBody] PaginationRequest pagination)
         {
-            if (page <= 0 || pageSize <= 0)
-            {
-                return BadRequest();
-            }
-            var books = await bookService.GetBooksByTypeAndCategory(page, pageSize, typeId, categoryId);
+            var books = await bookService.GetBooksByTypeAndCategory(
+                pagination.Page, pagination.PageSize, typeId, categoryId);
             return new JsonResult(books);
         }
 

@@ -11,11 +11,11 @@ namespace Ksiegarnia.Services
 {
     public class Cart : ICart
     {
-        private readonly IBookRepository bookRepository;
+        private readonly IBookService bookService;
 
-        public Cart(IBookRepository bookRepository)
+        public Cart(IBookService bookService)
         {
-            this.bookRepository = bookRepository;
+            this.bookService = bookService;
         }
 
         public List<CartPosition> GetCart(ISession session, string sessionKey)
@@ -43,7 +43,7 @@ namespace Ksiegarnia.Services
             }
             else
             {
-                var book = await bookRepository.GetBook(bookId);
+                var book = await bookService.ShowBookDetails(bookId);
                 cart.Add(new CartPosition()
                 {
                     Book = book,

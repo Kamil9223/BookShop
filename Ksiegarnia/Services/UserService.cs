@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using Ksiegarnia.Responses;
 using Ksiegarnia.Requests;
+using Ksiegarnia.Exceptions;
 
 namespace Ksiegarnia.Services
 {
@@ -32,7 +33,7 @@ namespace Ksiegarnia.Services
             var user = await userRepository.GetUser(login);
             if(user == null)
             {
-                throw new Exception($"user with login: '{login}' does't exist.");
+                throw new NotFoundException($"user with login: '{login}' does't exist.");
             }
             var userResponse = new UserResponse()
             {
@@ -51,14 +52,14 @@ namespace Ksiegarnia.Services
             var user = await userRepository.GetUser(login);
             if (user == null)
             {
-                throw new Exception("Invalid credentials");
+                throw new InvalidCredentialsException("Invalid credentials");
             }
 
             string salt = user.Salt;
             string hash = encrypter.GetHash(password, salt);
             if (user.Password != hash)
             {
-                throw new Exception("Invalid credentials");
+                throw new InvalidCredentialsException("Invalid credentials");
             }
             
             var authResult = jwtService.CreateToken(user.Login, "user");
@@ -113,13 +114,13 @@ namespace Ksiegarnia.Services
             var user = await userRepository.GetUser(login);
             if (user != null)
             {
-                throw new Exception($"User with login: '{login}' already exist.");
+                throw new AlreadyExistException($"User with login: '{login}' already exist.");
             }
 
             user = await userRepository.GetUserByEmail(email);
             if (user != null)
             {
-                throw new Exception($"User with email: '{email}' already exist.");
+                throw new AlreadyExistException($"User with email: '{email}' already exist.");
             }
 
             string salt = encrypter.GetSalt();

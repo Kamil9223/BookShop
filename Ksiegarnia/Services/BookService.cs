@@ -37,8 +37,7 @@ namespace Ksiegarnia.Services
                     Title = book.Title,
                     PhotoUrl = book.PhotoUrl,
                     Price = book.Price,
-                    TypeCategoryId = book.TypeCategoryId,
-                    TypeCategory = book.TypeCategory
+                    TypeCategoryId = book.TypeCategoryId
                 });
             }
 
@@ -59,8 +58,7 @@ namespace Ksiegarnia.Services
                     Title = book.Title,
                     PhotoUrl = book.PhotoUrl,
                     Price = book.Price,
-                    TypeCategoryId = book.TypeCategoryId,
-                    TypeCategory = book.TypeCategory
+                    TypeCategoryId = book.TypeCategoryId
                 });
             }
 
@@ -83,8 +81,7 @@ namespace Ksiegarnia.Services
                     Title = book.Title,
                     PhotoUrl = book.PhotoUrl,
                     Price = book.Price,
-                    TypeCategoryId = book.TypeCategoryId,
-                    TypeCategory = null
+                    TypeCategoryId = book.TypeCategoryId
                 });
             }
 
@@ -104,8 +101,7 @@ namespace Ksiegarnia.Services
                     Title = book.Title,
                     PhotoUrl = book.PhotoUrl,
                     Price = book.Price,
-                    TypeCategoryId = book.TypeCategoryId,
-                    TypeCategory = book.TypeCategory
+                    TypeCategoryId = book.TypeCategoryId
                 });
             }
 
@@ -142,8 +138,7 @@ namespace Ksiegarnia.Services
                 Title = book.Title,
                 PhotoUrl = book.PhotoUrl,
                 Price = book.Price,
-                TypeCategoryId = book.TypeCategoryId,
-                TypeCategory = book.TypeCategory
+                TypeCategoryId = book.TypeCategoryId
             };
         }
 

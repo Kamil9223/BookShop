@@ -10,6 +10,5 @@ namespace Ksiegarnia.Responses
         public string PhotoUrl { get; set; }
         public decimal Price { get; set; }
         public Guid TypeCategoryId { get; set; }
-        public TypeCategory TypeCategory { get; set; }
     }
 }

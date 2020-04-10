@@ -93,7 +93,7 @@ namespace Ksiegarnia
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseMiddleware<JwtTokenMiddleWare>();
-
+            app.UseMiddleware<ErrorsMiddleWare>();
             app.UseMvc();
         }
     }

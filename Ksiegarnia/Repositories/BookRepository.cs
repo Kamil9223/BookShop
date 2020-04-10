@@ -56,7 +56,7 @@ namespace Ksiegarnia.Repositories
         }
 
         public async Task<IEnumerable<Book>> GetBooksRandomly(int count)
-        {
+        {//NIEOPTYMALNE !!!
             Random rand = new Random();
             var books = await context.Books.OrderBy(x => rand.Next()).Take(count).ToListAsync();
             return books;

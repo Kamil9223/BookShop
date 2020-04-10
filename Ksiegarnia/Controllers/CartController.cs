@@ -11,17 +11,17 @@ using System.Threading.Tasks;
 namespace Ksiegarnia.Controllers
 {
     [Authorize]
-    [Route("api")]
-    public class OrderController : Controller
+    [Route("api/cart")]
+    public class CartController : Controller
     { 
         private readonly ICart cart;
 
-        public OrderController(ICart cart)
+        public CartController(ICart cart)
         {
             this.cart = cart;
         }
 
-        [HttpPost("Cart/{id}")]
+        [HttpPost("{id}")]
         public async Task<IActionResult> AddToCart(Guid bookId)
         {
             var sessionKey = Request.Headers["Login"];
@@ -35,7 +35,7 @@ namespace Ksiegarnia.Controllers
             return new JsonResult(result);
         }
 
-        [HttpDelete("Cart/{id}")]
+        [HttpDelete("{id}")]
         public IActionResult RemoveFromCart(Guid id)
         {
             var sessionKey = Request.Headers["Login"];
@@ -55,7 +55,7 @@ namespace Ksiegarnia.Controllers
             }
         }
 
-        [HttpGet("Cart")]
+        [HttpGet]
         public IActionResult ShowCart()
         {
             var sessionKey = Request.Headers["Login"];
