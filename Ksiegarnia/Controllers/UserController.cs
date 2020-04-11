@@ -24,7 +24,7 @@ namespace Ksiegarnia.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            if (request.Address.City == null && request.Address.Street == null && request.Address.ZipCode == null)
+            if (request.Address?.City == null && request.Address?.Street == null && request.Address?.ZipCode == null)
                 request.Address = null;
 
             await userService.Register(request.Login, request.Password, request.Email, request.Address);

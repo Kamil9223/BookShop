@@ -69,6 +69,7 @@ namespace Ksiegarnia
 
             services.AddDbContext<BookShopContext>(o => o.UseSqlServer(Configuration["ConnectionString:BookShopDB"]));
             services.AddTransient<JwtTokenMiddleWare>();
+            services.AddTransient<ErrorsMiddleWare>();
             //Repositories
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
