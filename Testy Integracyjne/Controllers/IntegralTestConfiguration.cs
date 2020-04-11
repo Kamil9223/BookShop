@@ -1,8 +1,5 @@
 ﻿using Ksiegarnia;
 using Ksiegarnia.DB;
-using Ksiegarnia.IRepositories;
-using Ksiegarnia.Models;
-using Ksiegarnia.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;

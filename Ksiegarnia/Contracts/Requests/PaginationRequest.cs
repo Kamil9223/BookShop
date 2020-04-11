@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Ksiegarnia.Contracts.Requests
+﻿namespace Ksiegarnia.Contracts.Requests
 {
     public class PaginationRequest
     {

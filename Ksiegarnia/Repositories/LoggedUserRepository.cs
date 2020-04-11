@@ -1,7 +1,5 @@
 ﻿using Ksiegarnia.IRepositories;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Ksiegarnia.Models;
 using Ksiegarnia.DB;

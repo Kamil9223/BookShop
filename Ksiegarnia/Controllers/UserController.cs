@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using Ksiegarnia.Contracts.Responses;
 using Ksiegarnia.Contracts.Requests;
-using System;
 
 namespace Ksiegarnia.Controllers
 {

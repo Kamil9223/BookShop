@@ -1,5 +1,4 @@
-﻿using Ksiegarnia.Models;
-using System;
+﻿using System;
 
 namespace Ksiegarnia.Responses
 {

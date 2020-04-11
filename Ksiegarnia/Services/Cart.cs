@@ -1,5 +1,4 @@
-﻿using Ksiegarnia.IRepositories;
-using Ksiegarnia.IServices;
+﻿using Ksiegarnia.IServices;
 using Ksiegarnia.Models.Internet_Cart;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
