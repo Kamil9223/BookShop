@@ -3,12 +3,12 @@ using System;
 using System.Linq;
 using Ksiegarnia.IRepositories;
 using Ksiegarnia.Models;
-using Ksiegarnia.Domain;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using Ksiegarnia.Responses;
 using Ksiegarnia.Requests;
 using Ksiegarnia.Exceptions;
+using Ksiegarnia.Domain.UserDomain;
 
 namespace Ksiegarnia.Services
 {

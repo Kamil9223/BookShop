@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ksiegarnia.Domain
+namespace Ksiegarnia.Domain.UserDomain
 {
     public class AuthenticationResult
     {

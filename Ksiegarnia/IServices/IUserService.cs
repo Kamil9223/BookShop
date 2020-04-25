@@ -1,4 +1,4 @@
-﻿using Ksiegarnia.Domain;
+﻿using Ksiegarnia.Domain.UserDomain;
 using Ksiegarnia.Requests;
 using Ksiegarnia.Responses;
 using System.Threading.Tasks;
