@@ -36,7 +36,8 @@ namespace Ksiegarnia
                 ValidateIssuer = true,
                 ValidateAudience = false,
                 ValidIssuer = Configuration["Jwt:Issuer"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+                RequireExpirationTime = true
             };
             services.AddSingleton(tokenValidationParameters);
 

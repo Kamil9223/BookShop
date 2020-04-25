@@ -61,6 +61,10 @@ namespace Ksiegarnia.Services
             {
                 throw new InvalidCredentialsException("Invalid credentials");
             }
+
+            var loggedUser = await loggedUserRepository.GetLoggedUser(user.UserId);
+            if (loggedUser != null)
+                throw new AlreadyExistException($"User {user.Login} is already logged on");
             
             var authResult = jwtService.CreateToken(user.Login, "user");
 
@@ -101,7 +105,6 @@ namespace Ksiegarnia.Services
         {
             var jwt = jwtService.GetCurrentToken();
             var validatedToken = jwtService.GetPrincipalFromToken(jwt);
-            //zbadaj czemu Authorize nie dziala na przedawnione tokeny
             var login = validatedToken.Claims.Single(x => x.Type == "login").Value;
             var userId = (await userRepository.GetUser(login)).UserId;
             var JwtId = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;

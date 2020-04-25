@@ -128,7 +128,7 @@ namespace Ksiegarnia.Services
         {
             await cache.SetStringAsync(token, " ", new DistributedCacheEntryOptions()
             {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(Convert.ToDouble(config["Jwt:ExpiryMinutes"]))
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(Convert.ToDouble(config["Jwt:ExpiryMinutes"] + 1))
             });
         }
 

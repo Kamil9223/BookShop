@@ -4,7 +4,6 @@ using Ksiegarnia.DB;
 using Ksiegarnia.Models;
 using Ksiegarnia.Responses;
 using Ksiegarnia.Services;
-using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -118,7 +117,7 @@ namespace TestyIntegracyjne.Controllers
         }
 
         [Fact]
-        public async Task Refresh_LoginAndTryingRefreshToken_ShouldReturnInternalServerError()
+        public async Task Refresh_LoginAndImmediatleyTryingRefreshToken_ShouldReturnInternalServerError()
         {
             var authResponse = await AuthHelper.Authenticate();
             var refreshRequest = new RefreshConnectionRequest
