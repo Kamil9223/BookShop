@@ -84,6 +84,9 @@ namespace Ksiegarnia.Services
         {
             var loggedUser = await loggedUserRepository.GetLoggedUser(Guid.Parse(refreshToken));
 
+            if (loggedUser == null)
+                throw new UnauthorizedAccessException();
+
             var authResult = jwtService.RefreshToken(jwtToken, loggedUser);
 
             loggedUser.JwtId = authResult.JwtId;

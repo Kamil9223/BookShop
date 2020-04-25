@@ -1,10 +1,14 @@
 ﻿using Ksiegarnia.Contracts.Requests;
+using Ksiegarnia.Contracts.Responses;
 using Ksiegarnia.DB;
 using Ksiegarnia.Models;
 using Ksiegarnia.Responses;
+using Ksiegarnia.Services;
 using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
+using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,17 +19,22 @@ namespace TestyIntegracyjne.Controllers
 {
     public class UserControllerTest : IntegralTestConfiguration
     {
-        public BookShopContext dbContext;
+        private BookShopContext dbContext;
+        private Encrypter encrypter;
 
         public UserControllerTest()
         {
+            encrypter = new Encrypter();
             SeedDatabase();
+            AuthHelper = new AuthHelper(httpClient, dbContext);
         }
 
         protected override void SeedDatabase()
         {
-            dbContext = TestServer.Host.Services.GetService(typeof(BookShopContext)) as BookShopContext;
-            dbContext.Users.Add(new User("testLogin", "test@ll.com","passHash", "sampleSalt"));
+            dbContext = testServer.Host.Services.GetService(typeof(BookShopContext)) as BookShopContext;
+            var salt = encrypter.GetSalt();
+            var hash = encrypter.GetHash("secretPass", salt);
+            dbContext.Users.Add(new User("testLogin", "test@ll.com", hash, salt));
             dbContext.SaveChanges();
         }
 
@@ -34,7 +43,7 @@ namespace TestyIntegracyjne.Controllers
         {
             var defaultUserLogin = "testLogin";
 
-            var response = await HttpClient.GetAsync($"/api/user/{defaultUserLogin}/get");
+            var response = await httpClient.GetAsync($"/api/user/{defaultUserLogin}/get");
             var user = await response.Content.ReadAsAsync<UserResponse>();
 
             response.EnsureSuccessStatusCode();
@@ -56,7 +65,7 @@ namespace TestyIntegracyjne.Controllers
                 JsonConvert.SerializeObject(registerRequest),
                 Encoding.UTF8, 
                 "application/json");
-            var response = await HttpClient.PostAsync($"/api/register", httpContent);
+            var response = await httpClient.PostAsync($"/api/register", httpContent);
 
             response.EnsureSuccessStatusCode();
 
@@ -64,6 +73,68 @@ namespace TestyIntegracyjne.Controllers
 
             Assert.NotNull(dbUserName);
             Assert.Equal(dbUserName.Email, registerRequest.Email, true);
+        }
+
+        [Fact]
+        public async Task Login_LoginUsingExistingUserCredentials_MethodShouldReturnTokenAndSaveUserIntoDb()
+        {
+            var loginRequest = new LoginRequest
+            {
+                Login = "testLogin",
+                Password = "secretPass"
+            };
+
+            HttpContent httpContent = new StringContent(
+                JsonConvert.SerializeObject(loginRequest),
+                Encoding.UTF8,
+                "application/json");
+
+            var response = await httpClient.PostAsync($"/api/login", httpContent);
+
+            response.EnsureSuccessStatusCode();
+            var authResponse = await response.Content.ReadAsAsync<AuthenticationResponse>();
+            var loggedUser = dbContext.LoggedUsers.SingleOrDefault(
+                x => x.RefreshToken == Guid.Parse(authResponse.RefreshToken));
+
+            Assert.NotNull(loggedUser);
+        }
+
+        [Fact]
+        public async Task Logout_LogoutAfterAuthentication_ShouldReturnSuccessStatusCode()
+        {
+            await AuthHelper.Authenticate();
+
+            var response = await httpClient.PostAsync($"/api/logout", null);
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        [Fact]
+        public async Task Logout_LogoutWithoutAuthentication_ShouldReturnUnauthorized()
+        {
+            var response = await httpClient.PostAsync($"/api/logout", null);
+
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Refresh_LoginAndTryingRefreshToken_ShouldReturnInternalServerError()
+        {
+            var authResponse = await AuthHelper.Authenticate();
+            var refreshRequest = new RefreshConnectionRequest
+            {
+                JwtToken = authResponse.JwtToken,
+                RefreshToken = authResponse.RefreshToken
+            };
+
+            HttpContent httpContent = new StringContent(
+                JsonConvert.SerializeObject(refreshRequest),
+                Encoding.UTF8,
+                "application/json");
+
+            var response = await httpClient.PostAsync($"/api/refresh", httpContent);
+
+            Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
         }
     }
 }

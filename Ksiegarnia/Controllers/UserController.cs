@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using Ksiegarnia.Contracts.Responses;
 using Ksiegarnia.Contracts.Requests;
+using System;
 
 namespace Ksiegarnia.Controllers
 {
@@ -54,13 +55,20 @@ namespace Ksiegarnia.Controllers
         [HttpPost("refresh")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshConnectionRequest request)
         {
-            var authResult = await userService.RefreshConnection(request.JwtToken, request.RefreshToken);
-            var authResponse = new AuthenticationResponse
+            try
             {
-                JwtToken = authResult.JwtToken,
-                RefreshToken = authResult.RefreshToken.ToString()
-            };
-            return new JsonResult(authResponse);
+                var authResult = await userService.RefreshConnection(request.JwtToken, request.RefreshToken);
+                var authResponse = new AuthenticationResponse
+                {
+                    JwtToken = authResult.JwtToken,
+                    RefreshToken = authResult.RefreshToken.ToString()
+                };
+                return new JsonResult(authResponse);
+            }
+            catch(UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
         }
 
         [HttpGet("user/{login}/get")]

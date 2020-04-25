@@ -14,12 +14,13 @@ namespace TestyIntegracyjne.Controllers
     public abstract class IntegralTestConfiguration
     {
         protected const string DbName = "TestDatabase";
-        protected readonly HttpClient HttpClient;
-        protected readonly TestServer TestServer;
+        protected readonly HttpClient httpClient;
+        protected readonly TestServer testServer;
+        protected AuthHelper AuthHelper { get; set; }
 
         public IntegralTestConfiguration()
         {
-            TestServer = new TestServer(new WebHostBuilder()
+            testServer = new TestServer(new WebHostBuilder()
                 .UseConfiguration(GetAppSettings())
                 .UseStartup<Startup>()
                 .ConfigureServices(services =>
@@ -31,7 +32,7 @@ namespace TestyIntegracyjne.Controllers
                     });
                 }));
 
-            HttpClient = TestServer.CreateClient();
+            httpClient = testServer.CreateClient();
         }
 
         private IConfigurationRoot GetAppSettings()
