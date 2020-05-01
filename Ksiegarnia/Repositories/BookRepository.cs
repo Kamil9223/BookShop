@@ -19,46 +19,27 @@ namespace Ksiegarnia.Repositories
         }
 
         public async Task<Book> GetBook(Guid bookId)
-            => await context.Books.SingleOrDefaultAsync(b => b.BookId == bookId);
+            => await context.Books.Include(x => x.Category)
+                .SingleOrDefaultAsync(x => x.BookId == bookId);
 
         public async Task<Book> GetBook(string title)
-            => await context.Books.SingleOrDefaultAsync(b => b.Title == title);
+            => await context.Books.Include(x => x.Category)
+                .SingleOrDefaultAsync(x => x.Title == title);
 
         public async Task<IEnumerable<Book>> GetBooks(int page, int pageSize)
-            => await context.Books.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            => await context.Books.Include(x => x.Category)
+                .Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
-        //public async Task<IEnumerable<Book>> GetBooksByType(Guid typeId, int page, int pageSize)
-        //{
-        //    var ids = await context.TypeCategories.Where(x => x.TypeId == typeId).Select(x => x.TypeCategoryId).ToListAsync();
-        //    var books = await context.Books.Where(x => ids.Contains(x.TypeCategoryId)).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-        //    return books;
-        //}
-
-        public async Task<IEnumerable<Book>> GetBooksByType(Guid typeId, int page, int pageSize)
-        {
-            var books = await (from typeCat in context.TypeCategories
-                               where typeCat.TypeId == typeId
-                               join book in context.Books on typeCat.TypeCategoryId equals book.TypeCategoryId
-                               select book).ToListAsync();
-
-            return books;
-        }
-
-        public async Task<IEnumerable<Book>> GetBooksByTypeAndCategory(Guid typeId, Guid categoryId, int page, int pageSize)
-        {
-            var books = await (from typeCat in context.TypeCategories
-                               where typeCat.TypeId == typeId
-                               where typeCat.CategoryId == categoryId
-                               join book in context.Books on typeCat.TypeCategoryId equals book.TypeCategoryId
-                               select book).ToListAsync();
-
-            return books;
-        }
+        public async Task<IEnumerable<Book>> GetBooksByCategory(Guid categoryId, int page, int pageSize)
+            => await context.Books.Include(x => x.Category)
+                .Where(x => x.CategoryId == categoryId)
+                    .Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
         public async Task<IEnumerable<Book>> GetBooksRandomly(int count)
         {//NIEOPTYMALNE !!!
             Random rand = new Random();
-            var books = await context.Books.OrderBy(x => rand.Next()).Take(count).ToListAsync();
+            var books = await context.Books.Include(x => x.Category)
+                .OrderBy(x => rand.Next()).Take(count).ToListAsync();
             return books;
         }
 

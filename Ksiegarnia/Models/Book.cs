@@ -13,15 +13,15 @@ namespace Ksiegarnia.Models
         public string ShortDescription { get; protected set; }
         public int NumberOfPieces { get; protected set; }
         public string PhotoUrl { get; protected set; }
+        public Guid CategoryId { get; protected set; }
+        public virtual Category Category { get; protected set; }
         
-        public virtual Guid TypeCategoryId { get; protected set; }
-        public virtual TypeCategory TypeCategory { get; protected set; }
         public virtual IEnumerable<BookInOrder> BooksInOrder { get; protected set; }
 
         protected Book() { }
 
         public Book(Guid bookId, string title, decimal price, int numberOfPages, 
-            string shortDescription, int numberOfPieces, Guid typeCategoryId)
+            string shortDescription, int numberOfPieces, Guid categoryId)
         {
             BookId = bookId;
             Title = title;
@@ -29,7 +29,7 @@ namespace Ksiegarnia.Models
             NumberOfPages = numberOfPages;
             ShortDescription = shortDescription;
             NumberOfPieces = numberOfPieces;
-            TypeCategoryId = typeCategoryId;
+            CategoryId = categoryId;
         }
     }
 }

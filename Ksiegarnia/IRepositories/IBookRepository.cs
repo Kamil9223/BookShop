@@ -10,8 +10,7 @@ namespace Ksiegarnia.IRepositories
         Task<Book> GetBook(Guid bookId);
         Task<Book> GetBook(string title);
         Task<IEnumerable<Book>> GetBooks(int page, int pageSize);
-        Task<IEnumerable<Book>> GetBooksByType(Guid typeId, int page, int pageSize);
-        Task<IEnumerable<Book>> GetBooksByTypeAndCategory(Guid typeId, Guid categoryId, int page, int pageSize);
+        Task<IEnumerable<Book>> GetBooksByCategory(Guid typeId, int page, int pageSize);
         Task<IEnumerable<Book>> GetBooksRandomly(int count);
         Task AddBook(Book book);
         Task UpdateBook(Book book);

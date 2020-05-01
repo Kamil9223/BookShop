@@ -1,7 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ksiegarnia.DB;
@@ -75,8 +74,6 @@ namespace Ksiegarnia
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<ITypeRepository, TypeRepository>();
-            services.AddScoped<ITypeCategoryRepository, TypeCategoryRepository>();
             services.AddScoped<ILoggedUserRepository, LoggedUserRepository>();
             //Services
             services.AddScoped<IUserService, UserService>();

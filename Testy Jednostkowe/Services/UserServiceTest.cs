@@ -1,4 +1,5 @@
-﻿using Ksiegarnia.IRepositories;
+﻿using Ksiegarnia.Exceptions;
+using Ksiegarnia.IRepositories;
 using Ksiegarnia.IServices;
 using Ksiegarnia.Models;
 using Ksiegarnia.Services;
@@ -59,7 +60,7 @@ namespace Testy_Jednostkowe.Services
 
             Func<Task> register = async () => await userService.Register("Kamil", "secret", "wrongMail");
 
-            await Assert.ThrowsAsync<Exception>(register);
+            await Assert.ThrowsAsync<AlreadyExistException>(register);
         }
 
         [Fact]
@@ -89,7 +90,7 @@ namespace Testy_Jednostkowe.Services
                          
 
             Func<Task> login = async () => await userService.Login("testLogin", testPass);
-            await Assert.ThrowsAsync<Exception>(login);
+            await Assert.ThrowsAsync<InvalidCredentialsException>(login);
         }
     }
 }

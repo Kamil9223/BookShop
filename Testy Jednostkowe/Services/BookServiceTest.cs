@@ -12,19 +12,16 @@ namespace Testy_Jednostkowe.Services
     public class BookServiceTest
     {
         [Fact]
-        public async Task GetBooksByType_method_should_invoke_GetBooksByType_method_in_Repository()
+        public async Task GetBooksByCategory_method_should_invoke_GetBooksByCategory_method_from_Repository()
         {
             var bookRepositoryMock = new Mock<IBookRepository>();
             var categoryRepositoryMock = new Mock<ICategoryRepository>();
-            var typeRepositoryMock = new Mock<ITypeRepository>();
-            var typeCategoryRepositoryMock = new Mock<ITypeCategoryRepository>();
 
-            var bookService = new BookService(bookRepositoryMock.Object, categoryRepositoryMock.Object,
-                typeRepositoryMock.Object, typeCategoryRepositoryMock.Object);
+            var bookService = new BookService(bookRepositoryMock.Object, categoryRepositoryMock.Object);
 
-            await bookService.GetBooksByType(1, 9, new Guid());
+            await bookService.GetBooksByCategory(1, 9, new Guid());
 
-            bookRepositoryMock.Verify(x => x.GetBooksByType(It.IsAny<Guid>(), 1, 9), Times.Once);
+            bookRepositoryMock.Verify(x => x.GetBooksByCategory(It.IsAny<Guid>(), 1, 9), Times.Once);
         }
 
         [Fact]
@@ -32,11 +29,8 @@ namespace Testy_Jednostkowe.Services
         {
             var bookRepositoryMock = new Mock<IBookRepository>();
             var categoryRepositoryMock = new Mock<ICategoryRepository>();
-            var typeRepositoryMock = new Mock<ITypeRepository>();
-            var typeCategoryRepositoryMock = new Mock<ITypeCategoryRepository>();
 
-            var bookService = new BookService(bookRepositoryMock.Object, categoryRepositoryMock.Object,
-                typeRepositoryMock.Object, typeCategoryRepositoryMock.Object);
+            var bookService = new BookService(bookRepositoryMock.Object, categoryRepositoryMock.Object);
 
             bookRepositoryMock.Setup(x => x.GetBook(It.IsAny<Guid>())).Returns(Task.FromResult<Book>(null));
 
