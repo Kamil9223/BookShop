@@ -20,58 +20,61 @@ namespace Ksiegarnia.Services
             this.categoryRepository = categoryRepository;
         }
 
-        public async Task<IEnumerable<BookResponse>> GetBooks(int page, int pageSize)
+        public async Task<IEnumerable<BookHeaderResponse>> GetBooks(int page, int pageSize)
         {
             var books = await bookRepository.GetBooks(page, pageSize);
-            var bookResponse = new List<BookResponse>();
+            var bookResponse = new List<BookHeaderResponse>();
 
             foreach(Book book in books)
             {
-                bookResponse.Add(new BookResponse()
+                bookResponse.Add(new BookHeaderResponse()
                 {
                     BookId = book.BookId,
                     Title = book.Title,
                     PhotoUrl = book.PhotoUrl,
-                    Price = book.Price
+                    Price = book.Price,
+                    ShortDescription = book.ShortDescription
                 });
             }
 
             return bookResponse;
         }
 
-        public async Task<IEnumerable<BookResponse>> GetBooksByCategory(int page, int pageSize, Guid categoryId)
+        public async Task<IEnumerable<BookHeaderResponse>> GetBooksByCategory(int page, int pageSize, Guid categoryId)
         {
             var books = await bookRepository.GetBooksByCategory(categoryId, page, pageSize);
 
-            var bookResponse = new List<BookResponse>();
+            var bookResponse = new List<BookHeaderResponse>();
 
             foreach (Book book in books)
             {
-                bookResponse.Add(new BookResponse()
+                bookResponse.Add(new BookHeaderResponse()
                 {
                     BookId = book.BookId,
                     Title = book.Title,
                     PhotoUrl = book.PhotoUrl,
-                    Price = book.Price
+                    Price = book.Price,
+                    ShortDescription = book.ShortDescription
                 });
             }
 
             return bookResponse;
         }
 
-        public async Task<IEnumerable<BookResponse>> GetBooksRandomly(int count)
+        public async Task<IEnumerable<BookHeaderResponse>> GetBooksRandomly(int count)
         {
             var books = await bookRepository.GetBooksRandomly(count);
-            var bookResponse = new List<BookResponse>();
+            var bookResponse = new List<BookHeaderResponse>();
 
             foreach(Book book in books)
             {
-                bookResponse.Add(new BookResponse()
+                bookResponse.Add(new BookHeaderResponse()
                 {
                     BookId = book.BookId,
                     Title = book.Title,
                     PhotoUrl = book.PhotoUrl,
-                    Price = book.Price
+                    Price = book.Price,
+                    ShortDescription = book.ShortDescription
                 });
             }
 
@@ -89,7 +92,12 @@ namespace Ksiegarnia.Services
                 BookId = book.BookId,
                 Title = book.Title,
                 PhotoUrl = book.PhotoUrl,
-                Price = book.Price
+                Price = book.Price,
+                Description = book.Description,
+                NumberOfPages = book.NumberOfPages,
+                NumberOfPieces = book.NumberOfPieces,
+                CategoryId = book.CategoryId,
+                CategoryName = book.Category.CategoryName
             };
         }
 
