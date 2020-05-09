@@ -82,6 +82,7 @@ namespace Ksiegarnia
             services.AddSingleton<IJwtService, JwtService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ICart, Cart>();
+            services.AddScoped<IJwtHelper, JwtHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

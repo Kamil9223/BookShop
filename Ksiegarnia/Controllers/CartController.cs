@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Ksiegarnia.Models.Internet_Cart;
 using Ksiegarnia.IServices;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Ksiegarnia.Controllers
 {
@@ -15,38 +16,40 @@ namespace Ksiegarnia.Controllers
     public class CartController : Controller
     { 
         private readonly ICart cart;
+        private readonly IJwtHelper jwtHelper;
 
-        public CartController(ICart cart)
+        public CartController(ICart cart, IJwtHelper jwtHelper)
         {
             this.cart = cart;
+            this.jwtHelper = jwtHelper;
         }
 
-        [HttpPost("{id}")]
+        [HttpPost("{bookId}")]
         public async Task<IActionResult> AddToCart(Guid bookId)
         {
-            var sessionKey = Request.Headers["Login"];
-            if ((string)sessionKey == null)
-                return BadRequest();
+            var login = jwtHelper.GetClaimsFromToken()
+                .Claims.Single(x => x.Type == "login")
+                .Value;
 
             var session = HttpContext.Session;
-            await cart.AddPositionToCart(session, sessionKey, bookId);
+            await cart.AddPositionToCart(session, login, bookId);
 
-            var result = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString(sessionKey));
+            var result = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString(login));
             return new JsonResult(result);
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult RemoveFromCart(Guid id)
+        [HttpDelete("{bookId}")]
+        public IActionResult RemoveFromCart(Guid bookId)
         {
-            var sessionKey = Request.Headers["Login"];
-            if ((string)sessionKey == null)
-                return BadRequest();
+            var login = jwtHelper.GetClaimsFromToken()
+                .Claims.Single(x => x.Type == "login")
+                .Value;
 
             var session = HttpContext.Session;
-            cart.RemovePositionFromCart(session, sessionKey, id);
+            cart.RemovePositionFromCart(session, login, bookId);
             try
             {
-                List<CartPosition> result = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString(sessionKey));
+                List<CartPosition> result = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString(login));
                 return new JsonResult(result);
             }
             catch(ArgumentNullException e)
@@ -58,13 +61,13 @@ namespace Ksiegarnia.Controllers
         [HttpGet]
         public IActionResult ShowCart()
         {
-            var sessionKey = Request.Headers["Login"];
-            if ((string)sessionKey == null)
-                return BadRequest();
+            var login = jwtHelper.GetClaimsFromToken()
+                .Claims.Single(x => x.Type == "login")
+                .Value;
 
             try
             {
-                List<CartPosition> result = JsonConvert.DeserializeObject<List<CartPosition>>(HttpContext.Session.GetString(sessionKey));
+                List<CartPosition> result = JsonConvert.DeserializeObject<List<CartPosition>>(HttpContext.Session.GetString(login));
                 return new JsonResult(result);
             }
             catch (ArgumentNullException e)
