@@ -47,15 +47,9 @@ namespace Ksiegarnia.Controllers
 
             var session = HttpContext.Session;
             cart.RemovePositionFromCart(session, login, bookId);
-            try
-            {
-                List<CartPosition> result = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString(login));
-                return new JsonResult(result);
-            }
-            catch(ArgumentNullException e)
-            {
-                return NotFound(e.Message);
-            }
+            var response = cart.GetCart(session, login);
+
+            return new JsonResult(response);
         }
 
         [HttpGet]
@@ -65,15 +59,9 @@ namespace Ksiegarnia.Controllers
                 .Claims.Single(x => x.Type == "login")
                 .Value;
 
-            try
-            {
-                List<CartPosition> result = JsonConvert.DeserializeObject<List<CartPosition>>(HttpContext.Session.GetString(login));
-                return new JsonResult(result);
-            }
-            catch (ArgumentNullException e)
-            {
-                return NotFound(e.Message);
-            }
+            var response = cart.GetCart(HttpContext.Session, login);
+
+            return new JsonResult(response);
         }
     }
 }
