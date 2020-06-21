@@ -1,8 +1,8 @@
-﻿using Ksiegarnia.Exceptions;
-using Ksiegarnia.IRepositories;
-using Ksiegarnia.IServices;
-using Ksiegarnia.Models;
-using Ksiegarnia.Services;
+﻿using Core.IRepositories;
+using Core.Models;
+using Infrastructure.Exceptions;
+using Infrastructure.IServices;
+using Infrastructure.Services;
 using Moq;
 using System;
 using System.Threading.Tasks;

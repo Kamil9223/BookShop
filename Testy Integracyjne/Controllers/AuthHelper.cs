@@ -1,6 +1,6 @@
-﻿using Ksiegarnia.Contracts.Requests;
-using Ksiegarnia.Contracts.Responses;
-using Ksiegarnia.DB;
+﻿using Infrastructure.Contracts.Requests;
+using Infrastructure.Contracts.Responses;
+using Infrastructure.DB;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;

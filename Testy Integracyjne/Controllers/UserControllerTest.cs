@@ -1,9 +1,8 @@
-﻿using Ksiegarnia.Contracts.Requests;
-using Ksiegarnia.Contracts.Responses;
-using Ksiegarnia.DB;
-using Ksiegarnia.Models;
-using Ksiegarnia.Responses;
-using Ksiegarnia.Services;
+﻿using Core.Models;
+using Infrastructure.Contracts.Requests;
+using Infrastructure.Contracts.Responses;
+using Infrastructure.DB;
+using Infrastructure.Services;
 using Newtonsoft.Json;
 using System;
 using System.Linq;

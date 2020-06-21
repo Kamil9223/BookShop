@@ -1,5 +1,5 @@
-﻿using Ksiegarnia;
-using Ksiegarnia.DB;
+﻿using API;
+using Infrastructure.DB;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;

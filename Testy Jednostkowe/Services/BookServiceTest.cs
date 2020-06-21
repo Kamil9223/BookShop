@@ -1,7 +1,7 @@
-﻿using Ksiegarnia.IRepositories;
-using Ksiegarnia.Models;
-using Ksiegarnia.Responses;
-using Ksiegarnia.Services;
+﻿using Core.IRepositories;
+using Core.Models;
+using Infrastructure.Contracts.Responses;
+using Infrastructure.Services;
 using Moq;
 using System;
 using System.Threading.Tasks;
