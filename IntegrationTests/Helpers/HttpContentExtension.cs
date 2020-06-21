@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace TestyIntegracyjne.Helpers
+namespace IntegrationTests.Helpers
 {
     public static class HttpContentExtension
     {

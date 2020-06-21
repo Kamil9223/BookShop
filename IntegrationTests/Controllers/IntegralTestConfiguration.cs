@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Net.Http;
 
-namespace TestyIntegracyjne.Controllers
+namespace IntegrationTests.Controllers
 {
     public abstract class IntegralTestConfiguration
     {
@@ -26,7 +26,7 @@ namespace TestyIntegracyjne.Controllers
                 .ConfigureServices(services =>
                 {
                     services.RemoveAll(typeof(BookShopContext));
-                    services.AddDbContext<BookShopContext>(options => 
+                    services.AddDbContext<BookShopContext>(options =>
                     {
                         options.UseInMemoryDatabase(DbName);
                     });

@@ -3,6 +3,7 @@ using Infrastructure.Contracts.Requests;
 using Infrastructure.Contracts.Responses;
 using Infrastructure.DB;
 using Infrastructure.Services;
+using IntegrationTests.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -10,10 +11,9 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using TestyIntegracyjne.Helpers;
 using Xunit;
 
-namespace TestyIntegracyjne.Controllers
+namespace IntegrationTests.Controllers
 {
     public class UserControllerTest : IntegralTestConfiguration
     {
@@ -61,7 +61,7 @@ namespace TestyIntegracyjne.Controllers
 
             HttpContent httpContent = new StringContent(
                 JsonConvert.SerializeObject(registerRequest),
-                Encoding.UTF8, 
+                Encoding.UTF8,
                 "application/json");
             var response = await httpClient.PostAsync($"/api/register", httpContent);
 

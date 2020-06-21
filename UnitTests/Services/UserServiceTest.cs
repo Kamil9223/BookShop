@@ -8,7 +8,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Testy_Jednostkowe.Services
+namespace UnitTests.Services
 {
     public class UserServiceTest
     {
@@ -20,7 +20,7 @@ namespace Testy_Jednostkowe.Services
             var encrypterMock = new Mock<IEncrypter>();
             var jwtService = new Mock<IJwtService>();
 
-            var userService = new UserService(userRepositoryMock.Object, loggedUserRepositoryMock.Object, 
+            var userService = new UserService(userRepositoryMock.Object, loggedUserRepositoryMock.Object,
                 encrypterMock.Object, jwtService.Object);
 
             await userService.Register("Test", "password", "wrongMail");
@@ -82,12 +82,12 @@ namespace Testy_Jednostkowe.Services
 
             string hash = encrypter.GetHash(correctPassword, salt);
             var hashForTest = encrypter.GetHash(testPass, salt);
-            var user = new User("Kamil", "email", hash, salt);       
-            
+            var user = new User("Kamil", "email", hash, salt);
+
             userRepositoryMock.Setup(x => x.GetUser(It.IsAny<string>())).Returns(Task.FromResult(user));
             encrypterMock.Setup(x => x.GetHash(It.IsAny<string>(), user.Salt))
                                       .Returns(hashForTest);
-                         
+
 
             Func<Task> login = async () => await userService.Login("testLogin", testPass);
             await Assert.ThrowsAsync<InvalidCredentialsException>(login);

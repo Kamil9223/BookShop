@@ -7,7 +7,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Testy_Jednostkowe.Services
+namespace UnitTests.Services
 {
     public class BookServiceTest
     {

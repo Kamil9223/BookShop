@@ -1,13 +1,13 @@
 ﻿using Infrastructure.Contracts.Requests;
 using Infrastructure.Contracts.Responses;
 using Infrastructure.DB;
+using IntegrationTests.Helpers;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using TestyIntegracyjne.Helpers;
 
-namespace TestyIntegracyjne.Controllers
+namespace IntegrationTests.Controllers
 {
     public class AuthHelper
     {

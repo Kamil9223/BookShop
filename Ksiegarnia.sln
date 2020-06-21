@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{F802AE64-CDDB-4326-B9F7-B261B815B3F1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testy Integracyjne", "Testy Integracyjne\Testy Integracyjne.csproj", "{DF814D0F-46A3-4B5F-AFE3-91516DC61BD7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{DF814D0F-46A3-4B5F-AFE3-91516DC61BD7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testy Jednostkowe", "Testy Jednostkowe\Testy Jednostkowe.csproj", "{2DF7E580-E1B4-44F5-A13D-374659DD30B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{2DF7E580-E1B4-44F5-A13D-374659DD30B4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{E25D1B79-6A47-4DD9-A4E1-6EB9DD29F500}"
 EndProject
