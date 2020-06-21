@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Ksiegarnia.Models;
 using Ksiegarnia.Responses;
 using Ksiegarnia.Contracts.Responses;
+using Ksiegarnia.Exceptions;
 
 namespace Ksiegarnia.Services
 {
@@ -102,7 +103,12 @@ namespace Ksiegarnia.Services
         }
 
         public async Task AddBook(Book book)
-        {//Dodać walidacje, zabronić dwie ksiązki o tym samym tytule, sprawdic nulle itd
+        {
+            var dbBook = bookRepository.GetBook(book.BookId);
+
+            if (dbBook == null)
+                throw new AlreadyExistException($"Book with id = {book.BookId} already exist.");
+
             await bookRepository.AddBook(book);
             await bookRepository.SaveChanges();
         }
