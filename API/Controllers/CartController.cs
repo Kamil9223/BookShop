@@ -31,10 +31,9 @@ namespace API.Controllers
                 .Claims.Single(x => x.Type == "login")
                 .Value;
 
-            var session = HttpContext.Session;
-            await cart.AddPositionToCart(session, login, bookId);
+            await cart.AddPositionToCart(login, bookId);
 
-            var result = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString(login));
+            var result = cart.GetCart(login);
             return new JsonResult(result);
         }
 
@@ -45,9 +44,8 @@ namespace API.Controllers
                 .Claims.Single(x => x.Type == "login")
                 .Value;
 
-            var session = HttpContext.Session;
-            cart.RemovePositionFromCart(session, login, bookId);
-            var response = cart.GetCart(session, login);
+            cart.RemovePositionFromCart(login, bookId);
+            var response = cart.GetCart(login);
 
             return new JsonResult(response);
         }
@@ -59,7 +57,7 @@ namespace API.Controllers
                 .Claims.Single(x => x.Type == "login")
                 .Value;
 
-            var response = cart.GetCart(HttpContext.Session, login);
+            var response = cart.GetCart(login);
 
             return new JsonResult(response);
         }

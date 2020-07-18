@@ -11,15 +11,18 @@ namespace Infrastructure.Services
     public class Cart : ICart
     {
         private readonly IBookService bookService;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public Cart(IBookService bookService)
+        public Cart(IBookService bookService, IHttpContextAccessor httpContextAccessor)
         {
             this.bookService = bookService;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
-        public List<CartPosition> GetCart(ISession session, string sessionKey)
+        public List<CartPosition> GetCart(string sessionKey)
         {
             List<CartPosition> cart;
+            var session = httpContextAccessor.HttpContext.Session;
 
             if (session.GetString(sessionKey) == null)
                 cart = new List<CartPosition>();
@@ -31,10 +34,11 @@ namespace Infrastructure.Services
             return cart;
         }
 
-        public async Task AddPositionToCart(ISession session, string sessionKey, Guid bookId)
+        public async Task AddPositionToCart(string sessionKey, Guid bookId)
         {
-            var cart = GetCart(session, sessionKey);
+            var cart = GetCart(sessionKey);
             var position = cart.Find(x => x.Book.BookId == bookId);
+            var session = httpContextAccessor.HttpContext.Session;
 
             if (position != null)
             {
@@ -54,10 +58,11 @@ namespace Infrastructure.Services
             session.SetString(sessionKey, JsonConvert.SerializeObject(cart));
         }
 
-        public void RemovePositionFromCart(ISession session, string sessionKey, Guid bookId)
+        public void RemovePositionFromCart(string sessionKey, Guid bookId)
         {
-            var cart = GetCart(session, sessionKey);
+            var cart = GetCart(sessionKey);
             var position = cart.Find(x => x.Book.BookId == bookId);
+            var session = httpContextAccessor.HttpContext.Session;
 
             if (position == null)
                 return;
@@ -71,9 +76,9 @@ namespace Infrastructure.Services
             session.SetString(sessionKey, JsonConvert.SerializeObject(cart));
         }
 
-        public decimal GetPrice(ISession session, string sessionKey)
+        public decimal GetPrice(string sessionKey)
         {
-            var cart = GetCart(session, sessionKey);
+            var cart = GetCart(sessionKey);
             decimal price = 0;
 
             foreach(var book in cart)

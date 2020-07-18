@@ -8,9 +8,9 @@ namespace Infrastructure.IServices
 {
     public interface ICart
     {
-        List<CartPosition> GetCart(ISession session, string sessionKey);
-        Task AddPositionToCart(ISession session, string sessionKey, Guid bookId);
-        void RemovePositionFromCart(ISession session, string sessionKey, Guid bookId);
-        decimal GetPrice(ISession session, string sessionKey);
+        List<CartPosition> GetCart(string sessionKey);
+        Task AddPositionToCart(string sessionKey, Guid bookId);
+        void RemovePositionFromCart(string sessionKey, Guid bookId);
+        decimal GetPrice(string sessionKey);
     }
 }
