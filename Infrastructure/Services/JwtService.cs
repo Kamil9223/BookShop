@@ -46,8 +46,8 @@ namespace Infrastructure.Services
             var token = new JwtSecurityToken(
                     issuer: config["Jwt:Issuer"],
                     claims: claims,
-                    notBefore: DateTime.UtcNow,
-                    expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(config["Jwt:ExpiryMinutes"])),
+                    notBefore: DateTime.Now,
+                    expires: DateTime.Now.AddMinutes(Convert.ToDouble(config["Jwt:ExpiryMinutes"])),
                     signingCredentials: creds
                 );
 
@@ -65,9 +65,9 @@ namespace Infrastructure.Services
             var validatedToken = GetPrincipalFromToken(jwtToken);
 
             var expiryDateUnix = long.Parse(validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
-            var expiryDateTImeUtc = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(expiryDateUnix);
+            var expiryDateTImeUtc = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local).AddSeconds(expiryDateUnix);
 
-            if (expiryDateTImeUtc > DateTime.UtcNow)
+            if (expiryDateTImeUtc > DateTime.Now)
             {
                 throw new Exception("This JwtToken hasn't expire yet");
             }
@@ -78,7 +78,7 @@ namespace Infrastructure.Services
                 throw new Exception("This refesh token doesn't exist");
             }
 
-            if (DateTime.UtcNow > loggedUser.ExpiryDate)
+            if (DateTime.Now > loggedUser.ExpiryDate)
             {
                 throw new Exception("This refresh token has expired");
             }

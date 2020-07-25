@@ -23,7 +23,7 @@ namespace Core.Models
             Email = email.ToLowerInvariant();
             Password = password;
             Salt = salt;
-            CreatedAt = DateTime.UtcNow;
+            CreatedAt = DateTime.Now;
         }
     }
 }

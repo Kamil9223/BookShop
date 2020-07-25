@@ -72,8 +72,8 @@ namespace Infrastructure.Services
             {
                 RefreshToken = Guid.NewGuid(),
                 JwtId = authResult.JwtId,
-                CreationDate = DateTime.UtcNow,
-                ExpiryDate = DateTime.UtcNow.AddDays(7),
+                CreationDate = DateTime.Now,
+                ExpiryDate = DateTime.Now.AddDays(7),
                 UserId = user.UserId
             };
 
