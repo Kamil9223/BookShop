@@ -50,6 +50,19 @@ namespace API.Controllers
             return new JsonResult(response);
         }
 
+        [HttpDelete]
+        public IActionResult ClearCart()
+        {
+            var login = jwtHelper.GetClaimsFromToken()
+                .Claims.Single(x => x.Type == "login")
+                .Value;
+
+            cart.ClearCart(login);
+            var response = cart.GetCart(login);
+
+            return new JsonResult(response);
+        }
+
         [HttpGet]
         public IActionResult ShowCart()
         {

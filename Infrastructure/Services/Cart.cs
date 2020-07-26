@@ -76,6 +76,12 @@ namespace Infrastructure.Services
             session.SetString(sessionKey, JsonConvert.SerializeObject(cart));
         }
 
+        public void ClearCart(string sessionKey)
+        {
+            var session = httpContextAccessor.HttpContext.Session;
+            session.SetString(sessionKey, string.Empty);
+        }
+
         public decimal GetPrice(string sessionKey)
         {
             var cart = GetCart(sessionKey);
