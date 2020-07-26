@@ -11,5 +11,6 @@ namespace Core.IRepositories
         Task<List<Order>> GetUserOrder(Guid userId);
         Task AddOrder(Order order);
         Task RemoveOrder(Guid orderId);
+        Task SaveChanges();
     }
 }

@@ -36,5 +36,10 @@ namespace Infrastructure.Repositories
             var order = await GetOrder(orderId);
             context.Remove(order);
         }
+
+        public async Task SaveChanges()
+        {
+            await context.SaveChangesAsync();
+        }
     }
 }

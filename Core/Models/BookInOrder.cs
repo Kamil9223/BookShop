@@ -12,11 +12,13 @@ namespace Core.Models
 
         protected BookInOrder() { }
 
-        public BookInOrder(Guid orderId, Guid bookId, int numberOfBooks)
+        public BookInOrder(Guid orderId, Guid bookId, int numberOfBooks, Book book, Order order)
         {
             OrderId = orderId;
             BookId = bookId;
             NumberOfBooks = numberOfBooks;
+            Book = book;
+            Order = order;
         }
     }
 }
