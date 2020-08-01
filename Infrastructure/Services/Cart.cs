@@ -1,4 +1,5 @@
 ﻿using Core.Models;
+using Infrastructure.Helpers;
 using Infrastructure.IServices;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -11,24 +12,23 @@ namespace Infrastructure.Services
     public class Cart : ICart
     {
         private readonly IBookService bookService;
-        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IHttpSessionWrapper sessionWrapper;
 
-        public Cart(IBookService bookService, IHttpContextAccessor httpContextAccessor)
+        public Cart(IBookService bookService, IHttpSessionWrapper sessionWrapper)
         {
             this.bookService = bookService;
-            this.httpContextAccessor = httpContextAccessor;
+            this.sessionWrapper = sessionWrapper;
         }
 
         public List<CartPosition> GetCart(string sessionKey)
         {
             List<CartPosition> cart;
-            var session = httpContextAccessor.HttpContext.Session;
 
-            if (session.GetString(sessionKey) == null)
+            if (sessionWrapper.GetString(sessionKey) == null)
                 cart = new List<CartPosition>();
             else
             {
-                cart = JsonConvert.DeserializeObject<List<CartPosition>>(session.GetString(sessionKey));
+                cart = JsonConvert.DeserializeObject<List<CartPosition>>(sessionWrapper.GetString(sessionKey));
             }
 
             return cart;
@@ -38,7 +38,6 @@ namespace Infrastructure.Services
         {
             var cart = GetCart(sessionKey);
             var position = cart.Find(x => x.Book.BookId == bookId);
-            var session = httpContextAccessor.HttpContext.Session;
 
             if (position != null)
             {
@@ -55,14 +54,13 @@ namespace Infrastructure.Services
                     Price = book.Price
                 });
             }
-            session.SetString(sessionKey, JsonConvert.SerializeObject(cart));
+            sessionWrapper.SetString(sessionKey, JsonConvert.SerializeObject(cart));
         }
 
         public void RemovePositionFromCart(string sessionKey, Guid bookId)
         {
             var cart = GetCart(sessionKey);
             var position = cart.Find(x => x.Book.BookId == bookId);
-            var session = httpContextAccessor.HttpContext.Session;
 
             if (position == null)
                 return;
@@ -73,7 +71,13 @@ namespace Infrastructure.Services
             {
                 cart.Remove(position);
             }
-            session.SetString(sessionKey, JsonConvert.SerializeObject(cart));
+            sessionWrapper.SetString(sessionKey, JsonConvert.SerializeObject(cart));
+        }
+
+        public void ClearCart(string sessionKey)
+        {
+            var emptyList = JsonConvert.SerializeObject(new List<CartPosition>());
+            sessionWrapper.SetString(sessionKey, emptyList);
         }
 
         public decimal GetPrice(string sessionKey)
