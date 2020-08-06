@@ -16,5 +16,11 @@ namespace Core.Models
             CategoryId = Guid.NewGuid();
             CategoryName = categoryName;
         }
+
+        public Category(Guid categoryId, string categoryName)
+        {
+            CategoryId = categoryId;
+            CategoryName = categoryName;
+        }
     }
 }

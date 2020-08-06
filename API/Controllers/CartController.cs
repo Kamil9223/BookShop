@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using Infrastructure.IServices;
 using Core.Models;
+using Infrastructure.Contracts.Requests;
+using Infrastructure.Contracts.Responses;
 
 namespace API.Controllers
 {
@@ -24,17 +26,17 @@ namespace API.Controllers
             this.jwtHelper = jwtHelper;
         }
 
-        [HttpPost("{bookId}")]
-        public async Task<IActionResult> AddToCart(Guid bookId)
+        [HttpPost]
+        public async Task<IActionResult> AddToCart([FromBody] AddToCartRequest request)
         {
             var login = jwtHelper.GetClaimsFromToken()
                 .Claims.Single(x => x.Type == "login")
                 .Value;
 
-            await cart.AddPositionToCart(login, bookId);
+            await cart.AddPositionToCart(login, request.BookId);
 
-            var result = cart.GetCart(login);
-            return new JsonResult(result);
+            return Created("http://localhost:49194/api/Cart", 
+                new CreatedResponse { Message = "Resource added propperly." });
         }
 
         [HttpDelete("{bookId}")]
@@ -45,9 +47,8 @@ namespace API.Controllers
                 .Value;
 
             cart.RemovePositionFromCart(login, bookId);
-            var response = cart.GetCart(login);
 
-            return new JsonResult(response);
+            return NoContent();
         }
 
         [HttpGet]
