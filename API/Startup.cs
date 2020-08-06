@@ -15,6 +15,7 @@ using Infrastructure.DB;
 using Infrastructure.IServices;
 using API.MiddleWares;
 using Core.IRepositories;
+using Infrastructure.Helpers;
 
 namespace API
 {
@@ -84,6 +85,7 @@ namespace API
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ICart, Cart>();
             services.AddScoped<IJwtHelper, JwtHelper>();
+            services.AddScoped<IHttpSessionWrapper, HttpSessionWrapper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

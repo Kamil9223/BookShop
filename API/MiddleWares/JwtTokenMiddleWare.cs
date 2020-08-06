@@ -30,9 +30,9 @@ namespace API.MiddleWares
             var validatedToken = jwtService.GetPrincipalFromToken(token);
 
             var expiryDateUnix = long.Parse(validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
-            var expiryDateTImeUtc = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local).AddSeconds(expiryDateUnix);
+            var expiryDateTIme = new DateTime(1970, 1, 1, 0, 0, 0).AddSeconds(expiryDateUnix).ToLocalTime();
 
-            if (await jwtService.IsCurrentActive() && expiryDateTImeUtc > DateTime.Now)
+            if (await jwtService.IsCurrentActive() && expiryDateTIme > DateTime.Now)
             {
                 await next(context);
                 return;

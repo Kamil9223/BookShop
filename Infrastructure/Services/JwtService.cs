@@ -65,9 +65,9 @@ namespace Infrastructure.Services
             var validatedToken = GetPrincipalFromToken(jwtToken);
 
             var expiryDateUnix = long.Parse(validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
-            var expiryDateTImeUtc = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local).AddSeconds(expiryDateUnix);
+            var expiryDateTIme = new DateTime(1970, 1, 1, 0, 0, 0).AddSeconds(expiryDateUnix).ToLocalTime();
 
-            if (expiryDateTImeUtc > DateTime.Now)
+            if (expiryDateTIme > DateTime.Now)
             {
                 throw new Exception("This JwtToken hasn't expire yet");
             }
