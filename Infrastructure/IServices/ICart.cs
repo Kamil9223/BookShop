@@ -12,5 +12,6 @@ namespace Infrastructure.IServices
         Task AddPositionToCart(string sessionKey, Guid bookId);
         void RemovePositionFromCart(string sessionKey, Guid bookId);
         decimal GetPrice(string sessionKey);
+        void ClearCart(string sessionKey);
     }
 }

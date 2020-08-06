@@ -11,21 +11,23 @@ namespace Core.Models
 
         public virtual Guid UserId { get; protected set; }
         public virtual User User { get; protected set; }
-        public virtual IEnumerable<BookInOrder> BooksInOrder { get; protected set; }
+        public virtual ICollection<BookInOrder> BooksInOrder { get; protected set; }
 
         protected Order() { }
 
-        public Order(Status status)
+        public Order(Guid userId)
         {
+            UserId = userId;
             OrderId = Guid.NewGuid();
-            Date = DateTime.UtcNow;
-            Status = status;
+            Date = DateTime.Now;
+            Status = Status.New;
         }
     }
 
     public enum Status
     {
-        New = 0,
-        Realized = 1
+        New,
+        InProgress,
+        Realized
     }
 }
