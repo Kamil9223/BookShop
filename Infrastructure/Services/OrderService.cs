@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
-    public class OrderService
+    public class OrderService : IOrderService
     {
         private readonly ICart cart;
         private readonly IBooksInOrderRepository booksInOrderRepository;
@@ -56,6 +56,27 @@ namespace Infrastructure.Services
         public async Task RealizeOrder(Guid orderId)
         {
 
+        }
+
+        public async Task TakeOrder(Guid orderId)
+        {
+            //simple implementation first
+            var order = await orderRepository.GetOrder(orderId);
+
+            if (order.Status != Status.New)
+                throw new Exception("Wrong status. Can take only new statuses");
+
+            foreach(var bookInOrder in order.BooksInOrder)
+            {
+                if (bookInOrder.NumberOfBooks > bookInOrder.Book.NumberOfPieces)
+                {
+                    throw new Exception($"Cannot take order with id = {order.OrderId}. " +
+                        $"Not enought books in warehouse.");
+                }
+                bookInOrder.Book.DecreaseAmount(bookInOrder.NumberOfBooks);
+            }
+
+            await orderRepository.SaveChanges();
         }
     }
 }

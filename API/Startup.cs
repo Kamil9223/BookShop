@@ -77,6 +77,7 @@ namespace API
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ILoggedUserRepository, LoggedUserRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             //Services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBookService, BookService>();
@@ -86,6 +87,7 @@ namespace API
             services.AddScoped<ICart, Cart>();
             services.AddScoped<IJwtHelper, JwtHelper>();
             services.AddScoped<IHttpSessionWrapper, HttpSessionWrapper>();
+            services.AddScoped<IOrderService, OrderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

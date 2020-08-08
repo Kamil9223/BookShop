@@ -31,5 +31,11 @@ namespace Core.Models
             NumberOfPieces = numberOfPieces;
             CategoryId = categoryId;
         }
+
+        public void DecreaseAmount(int amount)
+        {
+            //TODO
+            NumberOfPieces -= amount;
+        }
     }
 }

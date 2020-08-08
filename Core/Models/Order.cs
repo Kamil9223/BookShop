@@ -27,6 +27,8 @@ namespace Core.Models
     public enum Status
     {
         New,
+        Accepted,
+        WaitingForDelivery,
         InProgress,
         Realized
     }
