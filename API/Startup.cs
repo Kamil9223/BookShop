@@ -77,6 +77,7 @@ namespace API
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ILoggedUserRepository, LoggedUserRepository>();
+            services.AddScoped<IBooksInOrderRepository, BooksInOrderRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             //Services
             services.AddScoped<IUserService, UserService>();

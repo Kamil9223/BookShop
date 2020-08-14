@@ -8,7 +8,6 @@ namespace Core.Models
         public Guid OrderId { get; protected set; }
         public DateTime Date { get; protected set; }
         public Status Status { get; protected set; }
-
         public virtual Guid UserId { get; protected set; }
         public virtual User User { get; protected set; }
         public virtual ICollection<BookInOrder> BooksInOrder { get; protected set; }

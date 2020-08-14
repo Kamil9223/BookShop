@@ -10,7 +10,6 @@ namespace Core.Models
         public string HouseNumber { get; protected set; }
         public string FlatNumber { get; protected set; }
         public string ZipCode { get; protected set; }
-
         public virtual Guid UserId { get; protected set; }
         public virtual User User { get; protected set; }
 

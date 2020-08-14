@@ -7,7 +7,7 @@ namespace Core.Models
     {
         public Guid CategoryId { get; protected set; }
         public string CategoryName { get; protected set; }
-        public virtual IEnumerable<Book> Books { get; protected set; }
+        public virtual ICollection<Book> Books { get; protected set; }
 
         protected Category() { }
 

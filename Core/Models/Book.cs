@@ -15,8 +15,7 @@ namespace Core.Models
         public string PhotoUrl { get; protected set; }
         public Guid CategoryId { get; protected set; }
         public virtual Category Category { get; protected set; }
-
-        public virtual IEnumerable<BookInOrder> BooksInOrder { get; protected set; }
+        public virtual ICollection<BookInOrder> BooksInOrder { get; protected set; }
 
         protected Book() { }
 

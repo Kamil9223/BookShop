@@ -11,5 +11,6 @@ namespace Core.IRepositories
         Task<List<BookInOrder>> GetBooksFromOrder(Guid orderId);
         Task AddBookToOrder(BookInOrder bookInOrder);
         Task RemoveBookFromOrder(Guid orderId, Guid bookId);
+        Task SaveChanges();
     }
 }

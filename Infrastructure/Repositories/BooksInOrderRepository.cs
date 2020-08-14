@@ -1,4 +1,5 @@
-﻿using Core.Models;
+﻿using Core.IRepositories;
+using Core.Models;
 using Infrastructure.DB;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class BooksInOrderRepository
+    public class BooksInOrderRepository : IBooksInOrderRepository
     {
         private readonly BookShopContext context;
 
@@ -34,6 +35,11 @@ namespace Infrastructure.Repositories
         {
             var bookInOrder = await GetBookFromOrder(orderId, bookId);
             context.Remove(bookInOrder);
+        }
+
+        public async Task SaveChanges()
+        {
+            await context.SaveChangesAsync();
         }
     }
 }
