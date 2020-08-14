@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace Infrastructure.Migrations
+namespace DatabaseAccess.MSSQL_BookShop
 {
     public partial class Test : Migration
     {

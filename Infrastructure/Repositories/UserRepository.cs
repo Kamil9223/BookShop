@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Infrastructure.DB;
 using Core.IRepositories;
 using Core.Models;
+using DatabaseAccess.MSSQL_BookShop;
 
 namespace Infrastructure.Repositories
 {

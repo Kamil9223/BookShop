@@ -1,10 +1,11 @@
-﻿using Core.Models;
+﻿using Core.IRepositories;
+using Core.Models;
 using System;
 using System.Threading.Tasks;
 
 namespace Core.AdminRepositories
 {
-    public interface IBookRepository
+    public interface IAdminBookRepository : IBookRepository
     {
         Task AddBook(Book book);
         Task UpdateBook(Book book);

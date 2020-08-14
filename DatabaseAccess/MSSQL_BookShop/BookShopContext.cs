@@ -1,7 +1,7 @@
 ﻿using Core.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.DB
+namespace DatabaseAccess.MSSQL_BookShop
 {
     public class BookShopContext : DbContext
     {

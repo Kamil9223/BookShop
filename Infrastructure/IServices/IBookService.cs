@@ -12,7 +12,6 @@ namespace Infrastructure.IServices
         Task<IEnumerable<BookHeaderResponse>> GetBooksByCategory(int page, int pageSize, Guid categoryId);
         Task<IEnumerable<BookHeaderResponse>> GetBooksRandomly(int count);
         Task<BookResponse> ShowBookDetails(Guid bookId);
-        Task AddBook(Book book);
         Task<IEnumerable<CategoryResponse>> GetCategories();
     }
 }

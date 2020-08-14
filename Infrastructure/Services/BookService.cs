@@ -101,17 +101,6 @@ namespace Infrastructure.Services
             };
         }
 
-        public async Task AddBook(Book book)
-        {
-            var dbBook = bookRepository.GetBook(book.BookId);
-
-            if (dbBook == null)
-                throw new AlreadyExistException($"Book with id = {book.BookId} already exist.");
-
-            await bookRepository.AddBook(book);
-            await bookRepository.SaveChanges();
-        }
-
         public async Task<IEnumerable<CategoryResponse>> GetCategories()
         {
             var categories = await categoryRepository.GetCategories();

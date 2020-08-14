@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Infrastructure.DB;
 using Core.Models;
 using Core.IRepositories;
+using DatabaseAccess.MSSQL_BookShop;
 
 namespace Infrastructure.Repositories
 {
@@ -41,27 +41,6 @@ namespace Infrastructure.Repositories
             var books = await context.Books.Include(x => x.Category)
                 .OrderBy(x => rand.Next()).Take(count).ToListAsync();
             return books;
-        }
-
-        public async Task AddBook(Book book)
-        {
-            await context.Books.AddAsync(book);
-        }
-
-        public async Task UpdateBook(Book book)
-        {
-            context.Books.Update(book);
-        }
-
-        public async Task RemoveBook(Guid bookId)
-        {
-            var book = await GetBook(bookId);
-            context.Books.Remove(book);
-        }
-
-        public async Task SaveChanges()
-        {
-            await context.SaveChangesAsync();
         }
     }
 }

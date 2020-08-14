@@ -1,7 +1,7 @@
 ﻿using Core.Models;
+using DatabaseAccess.MSSQL_BookShop;
 using Infrastructure.Contracts.Requests;
 using Infrastructure.Contracts.Responses;
-using Infrastructure.DB;
 using Infrastructure.Services;
 using IntegrationTests.Helpers;
 using Newtonsoft.Json;

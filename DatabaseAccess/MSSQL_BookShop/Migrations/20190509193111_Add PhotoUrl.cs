@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Infrastructure.Migrations
+namespace DatabaseAccess.MSSQL_BookShop
 {
     public partial class AddPhotoUrl : Migration
     {
