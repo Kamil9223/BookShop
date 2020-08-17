@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Infrastructure.Helpers
+﻿namespace OrderService.Helpers
 {
     public interface IHttpSessionWrapper
     {

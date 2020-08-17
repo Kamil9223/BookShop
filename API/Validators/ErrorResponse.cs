@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Infrastructure.Contracts.Responses
+namespace API.Validators
 {
     public class ErrorResponse
     {

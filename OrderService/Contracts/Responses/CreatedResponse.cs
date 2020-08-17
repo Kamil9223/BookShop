@@ -1,5 +1,4 @@
-﻿using System;
-namespace Infrastructure.Contracts.Responses
+﻿namespace OrderService.Contracts.Responses
 {
     public class CreatedResponse
     {

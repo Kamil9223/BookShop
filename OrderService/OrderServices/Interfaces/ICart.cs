@@ -1,10 +1,9 @@
 ﻿using Core.Models;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Infrastructure.IServices
+namespace OrderService.OrderServices.Interfaces
 {
     public interface ICart
     {

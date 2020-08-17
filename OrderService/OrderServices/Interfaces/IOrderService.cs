@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Infrastructure.IServices
+namespace OrderService.OrderServices.Interfaces
 {
     public interface IOrderService
     {

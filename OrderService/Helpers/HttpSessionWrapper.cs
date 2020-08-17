@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Infrastructure.Helpers
+namespace OrderService.Helpers
 {
     public class HttpSessionWrapper : IHttpSessionWrapper
     {
@@ -11,7 +8,7 @@ namespace Infrastructure.Helpers
 
         public HttpSessionWrapper(IHttpContextAccessor httpContextAccessor)
         {
-            this.session = httpContextAccessor.HttpContext.Session;
+            session = httpContextAccessor.HttpContext.Session;
         }
 
         public string GetString(string key)

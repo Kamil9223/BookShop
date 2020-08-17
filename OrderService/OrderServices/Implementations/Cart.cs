@@ -1,13 +1,12 @@
 ﻿using Core.Models;
-using Infrastructure.Helpers;
-using Infrastructure.IServices;
-using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using OrderService.Helpers;
+using OrderService.OrderServices.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Services
+namespace OrderService.OrderServices.Implementations
 {
     public class Cart : ICart
     {
@@ -85,9 +84,9 @@ namespace Infrastructure.Services
             var cart = GetCart(sessionKey);
             decimal price = 0;
 
-            foreach(var book in cart)
+            foreach (var book in cart)
             {
-                price += (book.Price * book.NumberOfBooks);
+                price += book.Price * book.NumberOfBooks;
             }
 
             return price;

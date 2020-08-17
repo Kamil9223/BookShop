@@ -1,12 +1,12 @@
-﻿using Core.IRepositories;
+﻿using CommonLib.Exceptions;
+using Core.IRepositories;
 using Core.Models;
-using Infrastructure.Exceptions;
-using Infrastructure.IServices;
 using Microsoft.EntityFrameworkCore.Internal;
+using OrderService.OrderServices.Interfaces;
 using System;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Services
+namespace OrderService.OrderServices.Implementations
 {
     public class OrderService : IOrderService
     {
@@ -33,7 +33,7 @@ namespace Infrastructure.Services
             var userId = (await userService.Get(login)).UserId;
             var order = new Order(userId);
 
-            foreach(var cartPosition in userCart)
+            foreach (var cartPosition in userCart)
             {
                 if (cartPosition.Book.NumberOfPieces <= 0)
                     throw new NotFoundException($"Book '{cartPosition.Book.Title}' is not available");
@@ -66,7 +66,7 @@ namespace Infrastructure.Services
             if (order.Status != Status.New)
                 throw new Exception("Wrong status. Can take only new statuses");
 
-            foreach(var bookInOrder in order.BooksInOrder)
+            foreach (var bookInOrder in order.BooksInOrder)
             {
                 if (bookInOrder.NumberOfBooks > bookInOrder.Book.NumberOfPieces)
                 {
