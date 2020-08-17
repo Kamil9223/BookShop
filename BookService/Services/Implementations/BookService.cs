@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Infrastructure.IServices;
-using Infrastructure.Contracts.Responses;
-using Infrastructure.Exceptions;
 using Core.IRepositories;
 using Core.Models;
+using BookService.Services.Interfaces;
+using BookService.ApiContracts.Responses;
 
-namespace Infrastructure.Services
+namespace BookService.Services.Implementations
 {
     public class BookService : IBookService
     {
@@ -25,7 +24,7 @@ namespace Infrastructure.Services
             var books = await bookRepository.GetBooks(page, pageSize);
             var bookResponse = new List<BookHeaderResponse>();
 
-            foreach(Book book in books)
+            foreach (Book book in books)
             {
                 bookResponse.Add(new BookHeaderResponse()
                 {
@@ -66,7 +65,7 @@ namespace Infrastructure.Services
             var books = await bookRepository.GetBooksRandomly(count);
             var bookResponse = new List<BookHeaderResponse>();
 
-            foreach(Book book in books)
+            foreach (Book book in books)
             {
                 bookResponse.Add(new BookHeaderResponse()
                 {
@@ -106,7 +105,7 @@ namespace Infrastructure.Services
             var categories = await categoryRepository.GetCategories();
             var categoryResponse = new List<CategoryResponse>();
 
-            foreach(var category in categories)
+            foreach (var category in categories)
             {
                 categoryResponse.Add(new CategoryResponse
                 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Infrastructure.Contracts.Responses
+namespace BookService.ApiContracts.Responses
 {
     public class CategoryResponse
     {

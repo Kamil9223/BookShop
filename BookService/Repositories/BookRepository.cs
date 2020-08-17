@@ -7,7 +7,7 @@ using Core.Models;
 using Core.IRepositories;
 using DatabaseAccess.MSSQL_BookShop;
 
-namespace Infrastructure.Repositories
+namespace BookService.Repositories
 {
     public class BookRepository : IBookRepository
     {

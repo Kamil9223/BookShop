@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Infrastructure.Contracts.Responses
+namespace BookService.ApiContracts.Responses
 {
     public class BookResponse
     {
@@ -13,14 +13,5 @@ namespace Infrastructure.Contracts.Responses
         public int NumberOfPages { get; set; }
         public Guid CategoryId { get; set; }
         public string CategoryName { get; set; }
-    }
-
-    public class BookHeaderResponse
-    {
-        public Guid BookId { get; set; }
-        public string Title { get; set; }
-        public string PhotoUrl { get; set; }
-        public decimal Price { get; set; }
-        public string ShortDescription { get; set; }
     }
 }

@@ -1,10 +1,9 @@
-﻿using Core.Models;
-using Infrastructure.Contracts.Responses;
+﻿using BookService.ApiContracts.Responses;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Infrastructure.IServices
+namespace BookService.Services.Interfaces
 {
     public interface IBookService
     {

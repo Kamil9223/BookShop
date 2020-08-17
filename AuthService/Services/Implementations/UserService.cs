@@ -6,6 +6,7 @@ using AuthService.ApiContracts.Requests;
 using AuthService.ApiContracts.Responses;
 using AuthService.DTO;
 using AuthService.Services.Interfaces;
+using CommonLib.Exceptions;
 using Core.IRepositories;
 using Core.Models;
 
