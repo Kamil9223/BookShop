@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AuthService.ApiContracts.Requests;
 using AuthService.ApiContracts.Responses;
+using AuthService.DTO;
 using AuthService.Services.Interfaces;
 using Core.IRepositories;
 using Core.Models;

@@ -1,4 +1,5 @@
-﻿using Core.Models;
+﻿using AuthService.DTO;
+using Core.Models;
 using System.Security.Claims;
 using System.Threading.Tasks;
 

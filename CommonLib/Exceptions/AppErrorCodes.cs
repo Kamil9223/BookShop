@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Exceptions
+﻿namespace CommonLib.Exceptions
 {
     public static class AppErrorCodes
     {

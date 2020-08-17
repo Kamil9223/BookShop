@@ -11,6 +11,7 @@ using AuthService.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Http;
+using AuthService.DTO;
 
 namespace AuthService.Services.Implementations
 {

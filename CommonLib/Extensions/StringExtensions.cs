@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Infrastructure.Extensions
+namespace CommonLib.Extensions
 {
     public static class StringExtensions
     {
-        public static string cutSign(this String str, string sign)
+        public static string cutSign(this string str, string sign)
         {
             if (str.Contains(sign))
                 str = str.Replace(sign, "");
@@ -13,7 +13,7 @@ namespace Infrastructure.Extensions
 
         public static bool Empty(this string value)
         {
-            return String.IsNullOrWhiteSpace(value);
+            return string.IsNullOrWhiteSpace(value);
         }
     }
 }

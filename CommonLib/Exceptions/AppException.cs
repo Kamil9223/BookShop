@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace Infrastructure.Exceptions
+namespace CommonLib.Exceptions
 {
     public abstract class AppException : Exception
     {

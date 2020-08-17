@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Infrastructure.Domain.UserDomain
+namespace AuthService.DTO
 {
     public class AuthenticationResult
     {
