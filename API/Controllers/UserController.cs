@@ -6,6 +6,7 @@ using System;
 using Infrastructure.Contracts.Requests;
 using Infrastructure.Contracts.Responses;
 using Infrastructure.IServices;
+using AuthService.Services.Interfaces;
 
 namespace API.Controllers
 {

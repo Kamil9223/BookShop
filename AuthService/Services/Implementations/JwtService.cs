@@ -1,19 +1,18 @@
-﻿using Core.Models;
-using Infrastructure.Domain.UserDomain;
-using Infrastructure.IServices;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Distributed;
+﻿using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
-using Microsoft.IdentityModel.Tokens;
 using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Models;
+using AuthService.Services.Interfaces;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Http;
 
-namespace Infrastructure.Services
+namespace AuthService.Services.Implementations
 {
     public class JwtService : IJwtService
     {
@@ -33,7 +32,7 @@ namespace Infrastructure.Services
 
         public AuthenticationResult CreateToken(string login, string role)
         {
-            var claims = new[] 
+            var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, login),
                 new Claim(ClaimTypes.Role, role),
@@ -142,7 +141,7 @@ namespace Infrastructure.Services
             var authorizationHeader = httpContextAccessor.HttpContext.Request.Headers["authorization"];
 
             return authorizationHeader == StringValues.Empty
-                ? String.Empty
+                ? string.Empty
                 : authorizationHeader.Single().Split(new[] { " " }, StringSplitOptions.None).Last();
         }
     }

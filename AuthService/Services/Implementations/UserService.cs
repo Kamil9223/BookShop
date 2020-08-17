@@ -2,15 +2,13 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using AuthService.ApiContracts.Requests;
+using AuthService.ApiContracts.Responses;
+using AuthService.Services.Interfaces;
 using Core.IRepositories;
 using Core.Models;
-using Infrastructure.Contracts.Requests;
-using Infrastructure.Contracts.Responses;
-using Infrastructure.Domain.UserDomain;
-using Infrastructure.Exceptions;
-using Infrastructure.IServices;
 
-namespace Infrastructure.Services
+namespace AuthService.Services.Implementations
 {
     public class UserService : IUserService
     {
@@ -31,7 +29,7 @@ namespace Infrastructure.Services
         public async Task<UserResponse> Get(string login)
         {
             var user = await userRepository.GetUser(login);
-            if(user == null)
+            if (user == null)
             {
                 throw new NotFoundException($"user with login: '{login}' does't exist.");
             }
@@ -65,7 +63,7 @@ namespace Infrastructure.Services
             var loggedUser = await loggedUserRepository.GetLoggedUser(user.UserId);
             if (loggedUser != null)
                 throw new AlreadyExistException($"User {user.Login} is already logged on");
-            
+
             var authResult = jwtService.CreateToken(user.Login, "user");
 
             var refreshToken = new LoggedUser

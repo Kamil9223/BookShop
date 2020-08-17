@@ -1,7 +1,7 @@
-﻿using Infrastructure.IServices;
-using System.Security.Claims;
+﻿using System.Security.Claims;
+using AuthService.Services.Interfaces;
 
-namespace Infrastructure.Services
+namespace AuthService.Services.Implementations
 {
     public class JwtHelper : IJwtHelper
     {

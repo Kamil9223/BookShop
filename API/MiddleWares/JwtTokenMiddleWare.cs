@@ -1,4 +1,5 @@
-﻿using Infrastructure.IServices;
+﻿using AuthService.Services.Interfaces;
+using Infrastructure.IServices;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.IdentityModel.Tokens.Jwt;

@@ -6,7 +6,7 @@ using Core.IRepositories;
 using Core.Models;
 using DatabaseAccess.MSSQL_BookShop;
 
-namespace Infrastructure.Repositories
+namespace AuthService.Repositories
 {
     public class UserRepository : IUserRepository
     {

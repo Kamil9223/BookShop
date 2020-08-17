@@ -10,6 +10,7 @@ using Infrastructure.IServices;
 using Core.Models;
 using Infrastructure.Contracts.Requests;
 using Infrastructure.Contracts.Responses;
+using AuthService.Services.Interfaces;
 
 namespace API.Controllers
 {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
-using Infrastructure.Extensions;
-using Infrastructure.IServices;
+using AuthService.Services.Interfaces;
 
 namespace Infrastructure.Services
 {

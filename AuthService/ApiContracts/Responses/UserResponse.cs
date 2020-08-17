@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Infrastructure.Contracts.Responses
+namespace AuthService.ApiContracts.Responses
 {
     public class UserResponse
     {

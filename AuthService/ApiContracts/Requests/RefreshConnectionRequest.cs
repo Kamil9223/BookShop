@@ -1,6 +1,6 @@
-﻿namespace Infrastructure.Contracts.Responses
+﻿namespace AuthService.ApiContracts.Requests
 {
-    public class AuthenticationResponse
+    public class RefreshConnectionRequest
     {
         public string JwtToken { get; set; }
         public string RefreshToken { get; set; }

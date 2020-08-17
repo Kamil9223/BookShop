@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Contracts.Requests
+﻿namespace AuthService.ApiContracts.Requests
 {
     public class LoginRequest
     {

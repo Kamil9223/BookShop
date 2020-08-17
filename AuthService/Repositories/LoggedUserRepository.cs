@@ -5,7 +5,7 @@ using Core.IRepositories;
 using Core.Models;
 using DatabaseAccess.MSSQL_BookShop;
 
-namespace Infrastructure.Repositories
+namespace AuthService.Repositories
 {
     public class LoggedUserRepository : ILoggedUserRepository
     {
@@ -24,7 +24,7 @@ namespace Infrastructure.Repositories
         public async Task<LoggedUser> GetLoggedUser(Guid refreshToken)
             => await context.LoggedUsers.SingleOrDefaultAsync(x => x.RefreshToken == refreshToken);
 
-        public async Task <LoggedUser> GetLoggedUser(string jwtId)
+        public async Task<LoggedUser> GetLoggedUser(string jwtId)
             => await context.LoggedUsers.SingleOrDefaultAsync(x => x.JwtId == jwtId);
 
         public async Task RemoveLoggedUser(Guid loggedUserId)

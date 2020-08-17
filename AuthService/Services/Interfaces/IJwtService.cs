@@ -1,9 +1,8 @@
 ﻿using Core.Models;
-using Infrastructure.Domain.UserDomain;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Infrastructure.IServices
+namespace AuthService.Services.Interfaces
 {
     public interface IJwtService
     {

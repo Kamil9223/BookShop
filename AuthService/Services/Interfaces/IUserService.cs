@@ -1,9 +1,8 @@
-﻿using Infrastructure.Contracts.Requests;
-using Infrastructure.Contracts.Responses;
-using Infrastructure.Domain.UserDomain;
+﻿using AuthService.ApiContracts.Requests;
+using AuthService.ApiContracts.Responses;
 using System.Threading.Tasks;
 
-namespace Infrastructure.IServices
+namespace AuthService.Services.Interfaces
 {
     public interface IUserService
     {

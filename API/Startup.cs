@@ -16,6 +16,9 @@ using API.MiddleWares;
 using Core.IRepositories;
 using Infrastructure.Helpers;
 using DatabaseAccess.MSSQL_BookShop;
+using AuthService.Repositories;
+using AuthService.Services.Interfaces;
+using AuthService.Services.Implementations;
 
 namespace API
 {
