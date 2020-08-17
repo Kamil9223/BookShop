@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Infrastructure.IServices;
-using Infrastructure.Contracts.Requests;
+using BookService.Services.Interfaces;
+using BookService.ApiContracts.Requests;
 
 namespace API.Controllers
 {

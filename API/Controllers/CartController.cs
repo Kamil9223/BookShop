@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using System.Linq;
-using Infrastructure.IServices;
-using Core.Models;
-using Infrastructure.Contracts.Requests;
-using Infrastructure.Contracts.Responses;
+using AuthService.Services.Interfaces;
+using OrderService.OrderServices.Interfaces;
+using OrderService.Contracts.Requests;
+using OrderService.Contracts.Responses;
 
 namespace API.Controllers
 {

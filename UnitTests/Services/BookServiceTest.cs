@@ -1,11 +1,11 @@
-﻿using Core.IRepositories;
+﻿using BookService.ApiContracts.Responses;
+using Core.IRepositories;
 using Core.Models;
-using Infrastructure.Contracts.Responses;
-using Infrastructure.Services;
 using Moq;
 using System;
 using System.Threading.Tasks;
 using Xunit;
+using BooksService = BookService.Services.Implementations.BookService;
 
 namespace UnitTests.Services
 {
@@ -17,7 +17,7 @@ namespace UnitTests.Services
             var bookRepositoryMock = new Mock<IBookRepository>();
             var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
-            var bookService = new BookService(bookRepositoryMock.Object, categoryRepositoryMock.Object);
+            var bookService = new BooksService(bookRepositoryMock.Object, categoryRepositoryMock.Object);
 
             await bookService.GetBooksByCategory(1, 9, new Guid());
 
@@ -30,7 +30,7 @@ namespace UnitTests.Services
             var bookRepositoryMock = new Mock<IBookRepository>();
             var categoryRepositoryMock = new Mock<ICategoryRepository>();
 
-            var bookService = new BookService(bookRepositoryMock.Object, categoryRepositoryMock.Object);
+            var bookService = new BooksService(bookRepositoryMock.Object, categoryRepositoryMock.Object);
 
             bookRepositoryMock.Setup(x => x.GetBook(It.IsAny<Guid>())).Returns(Task.FromResult<Book>(null));
 

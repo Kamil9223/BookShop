@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using Infrastructure.Contracts.Requests;
+﻿using AuthService.ApiContracts.Requests;
+using FluentValidation;
 
 namespace API.Validators
 {

@@ -1,4 +1,4 @@
-﻿using Infrastructure.Exceptions;
+﻿using CommonLib.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;

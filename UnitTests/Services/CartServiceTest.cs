@@ -1,9 +1,9 @@
-﻿using Core.Models;
-using Infrastructure.Helpers;
-using Infrastructure.IServices;
-using Infrastructure.Services;
+﻿using BookService.Services.Interfaces;
+using Core.Models;
 using Moq;
 using Newtonsoft.Json;
+using OrderService.Helpers;
+using OrderService.OrderServices.Implementations;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;

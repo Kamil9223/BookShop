@@ -1,7 +1,8 @@
-﻿using Core.IRepositories;
+﻿using AuthService.Services.Implementations;
+using AuthService.Services.Interfaces;
+using CommonLib.Exceptions;
+using Core.IRepositories;
 using Core.Models;
-using Infrastructure.Exceptions;
-using Infrastructure.IServices;
 using Infrastructure.Services;
 using Moq;
 using System;
