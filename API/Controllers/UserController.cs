@@ -3,10 +3,9 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using System;
-using Infrastructure.Contracts.Requests;
-using Infrastructure.Contracts.Responses;
-using Infrastructure.IServices;
 using AuthService.Services.Interfaces;
+using AuthService.ApiContracts.Requests;
+using AuthService.ApiContracts.Responses;
 
 namespace API.Controllers
 {

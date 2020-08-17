@@ -1,6 +1,4 @@
-﻿using AuthService.ApiContracts.Requests;
-
-namespace Infrastructure.Contracts.Requests
+﻿namespace AuthService.ApiContracts.Requests
 {
     public class RegisterRequest
     {

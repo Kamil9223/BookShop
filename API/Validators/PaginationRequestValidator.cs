@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using Infrastructure.Contracts.Requests;
+﻿using BookService.ApiContracts.Requests;
+using FluentValidation;
 
 namespace API.Validators
 {

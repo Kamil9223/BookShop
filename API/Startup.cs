@@ -4,21 +4,24 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using Infrastructure.Repositories;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using FluentValidation.AspNetCore;
-using Infrastructure.IServices;
 using API.MiddleWares;
 using Core.IRepositories;
-using Infrastructure.Helpers;
 using DatabaseAccess.MSSQL_BookShop;
 using AuthService.Repositories;
 using AuthService.Services.Interfaces;
 using AuthService.Services.Implementations;
+using BookService.Repositories;
+using OrderService.Repositories;
+using BookService.Services.Interfaces;
+using OrderService.OrderServices.Interfaces;
+using OrderService.OrderServices.Implementations;
+using OrderService.Helpers;
 
 namespace API
 {
@@ -84,14 +87,14 @@ namespace API
             services.AddScoped<IOrderRepository, OrderRepository>();
             //Services
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IBookService, BookService>();
+            services.AddScoped<IBookService, BookService.Services.Implementations.BookService>();
             services.AddSingleton<IEncrypter, Encrypter>();
             services.AddSingleton<IJwtService, JwtService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ICart, Cart>();
             services.AddScoped<IJwtHelper, JwtHelper>();
             services.AddScoped<IHttpSessionWrapper, HttpSessionWrapper>();
-            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderService, OrderService.OrderServices.Implementations.OrderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
