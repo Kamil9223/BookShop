@@ -1,4 +1,5 @@
-﻿using CommonLib.Exceptions;
+﻿using AuthService.Services.Interfaces;
+using CommonLib.Exceptions;
 using Core.IRepositories;
 using Core.Models;
 using Microsoft.EntityFrameworkCore.Internal;
