@@ -10,4 +10,11 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AuthService\AuthService.csproj" />
+    <ProjectReference Include="..\BookService\BookService.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\OrderService\OrderService.csproj" />
+  </ItemGroup>
+
 </Project>

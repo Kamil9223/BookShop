@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService", "AuthService\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLib", "CommonLib\CommonLib.csproj", "{B9DC9699-78DC-4973-897B-6A29A9AE41D7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7C1AD7F4-08DE-43D9-9F7A-197F8E53B327}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DF814D0F-46A3-4B5F-AFE3-91516DC61BD7} = {7C1AD7F4-08DE-43D9-9F7A-197F8E53B327}
+		{2DF7E580-E1B4-44F5-A13D-374659DD30B4} = {7C1AD7F4-08DE-43D9-9F7A-197F8E53B327}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {681D7EA6-B586-475C-8B51-9ADE681467A4}

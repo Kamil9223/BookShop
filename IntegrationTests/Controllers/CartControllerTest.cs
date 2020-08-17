@@ -1,13 +1,12 @@
 ﻿using Core.Models;
 using DatabaseAccess.MSSQL_BookShop;
-using Infrastructure.Contracts.Requests;
-using Infrastructure.Contracts.Responses;
 using Infrastructure.Services;
 using IntegrationTests.Helpers;
 using Newtonsoft.Json;
+using OrderService.Contracts.Requests;
+using OrderService.Contracts.Responses;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;

@@ -1,7 +1,7 @@
 ﻿using AuthService.ApiContracts.Requests;
+using AuthService.ApiContracts.Responses;
 using Core.Models;
 using DatabaseAccess.MSSQL_BookShop;
-using Infrastructure.Contracts.Responses;
 using Infrastructure.Services;
 using IntegrationTests.Helpers;
 using Newtonsoft.Json;
