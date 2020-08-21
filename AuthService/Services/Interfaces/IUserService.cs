@@ -11,6 +11,6 @@ namespace AuthService.Services.Interfaces
         Task<AuthenticationResult> Login(string login, string password);
         Task<AuthenticationResult> RefreshConnection(string jwtToken, string refreshToken);
         Task Logout();
-        Task<UserResponse> Get(string login);
+        Task<UserInformations> Get(string login);
     }
 }

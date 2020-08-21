@@ -2,7 +2,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
-using AuthService.ApiContracts.Requests;
 using AuthService.ApiContracts.Responses;
 using AuthService.DTO;
 using AuthService.Services.Interfaces;
@@ -28,14 +27,14 @@ namespace AuthService.Services.Implementations
             this.jwtService = jwtService;
         }
 
-        public async Task<UserResponse> Get(string login)
+        public async Task<UserInformations> Get(string login)
         {
             var user = await userRepository.GetUser(login);
             if (user == null)
             {
                 throw new NotFoundException($"user with login: '{login}' does't exist.");
             }
-            var userResponse = new UserResponse()
+            var userResponse = new UserInformations()
             {
                 UserId = user.UserId,
                 Login = user.Login,

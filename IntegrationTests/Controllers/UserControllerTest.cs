@@ -42,7 +42,7 @@ namespace IntegrationTests.Controllers
             var defaultUserLogin = "testLogin";
 
             var response = await httpClient.GetAsync($"/api/user/{defaultUserLogin}/get");
-            var user = await response.Content.ReadAsAsync<UserResponse>();
+            var user = await response.Content.ReadAsAsync<UserInformations>();
 
             response.EnsureSuccessStatusCode();
             Assert.Equal("testLogin", user.Login);

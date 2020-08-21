@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AuthService.ApiContracts.Responses
 {
-    public class UserResponse
+    public class UserInformations
     {
         public Guid UserId { get; set; }
         public string Login { get; set; }
