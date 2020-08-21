@@ -1,4 +1,5 @@
-﻿using BookService.ApiContracts.Requests;
+﻿using API.Requests.BookRequests;
+using BookService.ApiContracts.Requests;
 using FluentValidation;
 
 namespace API.Validators

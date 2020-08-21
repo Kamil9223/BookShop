@@ -1,4 +1,4 @@
-﻿using AuthService.ApiContracts.Requests;
+﻿using API.Requests.AuthRequests;
 using AuthService.ApiContracts.Responses;
 using DatabaseAccess.MSSQL_BookShop;
 using IntegrationTests.Helpers;

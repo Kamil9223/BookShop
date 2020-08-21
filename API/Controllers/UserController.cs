@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using System;
 using AuthService.Services.Interfaces;
-using AuthService.ApiContracts.Requests;
 using AuthService.ApiContracts.Responses;
+using API.Requests.AuthRequests;
 
 namespace API.Controllers
 {

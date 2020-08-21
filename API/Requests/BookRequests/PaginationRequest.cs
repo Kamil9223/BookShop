@@ -1,4 +1,4 @@
-﻿namespace BookService.ApiContracts.Requests
+﻿namespace API.Requests.BookRequests
 {
     public class PaginationRequest
     {

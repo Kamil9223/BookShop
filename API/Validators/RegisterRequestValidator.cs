@@ -1,4 +1,4 @@
-﻿using AuthService.ApiContracts.Requests;
+﻿using API.Requests.AuthRequests;
 using FluentValidation;
 
 namespace API.Validators

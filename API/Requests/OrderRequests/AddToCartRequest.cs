@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OrderService.Contracts.Requests
+namespace API.Requests.OrderRequests
 {
     public class AddToCartRequest
     {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using BookService.Services.Interfaces;
 using BookService.ApiContracts.Requests;
+using API.Requests.BookRequests;
 
 namespace API.Controllers
 {
