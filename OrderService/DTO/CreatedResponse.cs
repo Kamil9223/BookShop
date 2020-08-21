@@ -1,4 +1,4 @@
-﻿namespace OrderService.Contracts.Responses
+﻿namespace OrderService.DTO
 {
     public class CreatedResponse
     {

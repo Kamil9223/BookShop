@@ -5,7 +5,7 @@ using Infrastructure.Services;
 using IntegrationTests.Helpers;
 using Newtonsoft.Json;
 using OrderService.Contracts.Requests;
-using OrderService.Contracts.Responses;
+using OrderService.DTO;
 using System;
 using System.Collections.Generic;
 using System.Net;

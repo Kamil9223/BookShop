@@ -6,8 +6,8 @@ using System.Linq;
 using AuthService.Services.Interfaces;
 using OrderService.OrderServices.Interfaces;
 using OrderService.Contracts.Requests;
-using OrderService.Contracts.Responses;
 using API.Requests.OrderRequests;
+using OrderService.DTO;
 
 namespace API.Controllers
 {
