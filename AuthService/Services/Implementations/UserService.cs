@@ -113,7 +113,7 @@ namespace AuthService.Services.Implementations
             await jwtService.DeactivateCurrentToken();
         }
 
-        public async Task Register(string login, string password, string email, AddressRequest addressRequest = null)
+        public async Task Register(string login, string password, string email, AddressInformations addressRequest = null)
         {
             var user = await userRepository.GetUser(login);
             if (user != null)

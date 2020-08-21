@@ -27,7 +27,16 @@ namespace API.Controllers
             if (request.Address?.City == null && request.Address?.Street == null && request.Address?.ZipCode == null)
                 request.Address = null;
 
-            await userService.Register(request.Login, request.Password, request.Email, request.Address);
+            var addressInfo = request.Address == null ? null : new AddressInformations
+            {
+                City = request.Address.City,
+                FlatNumber = request.Address.FlatNumber,
+                HouseNumber = request.Address.HouseNumber,
+                Street = request.Address.Street,
+                ZipCode = request.Address.ZipCode
+            };
+
+            await userService.Register(request.Login, request.Password, request.Email, addressInfo);
             return Ok();
         }
 

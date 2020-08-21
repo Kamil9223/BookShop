@@ -1,13 +1,12 @@
 ﻿using API.Requests.AuthRequests;
 using AuthService.DTO;
 using DatabaseAccess.MSSQL_BookShop;
-using IntegrationTests.Helpers;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IntegrationTests.Controllers
+namespace IntegrationTests.Helpers
 {
     public class AuthHelper
     {

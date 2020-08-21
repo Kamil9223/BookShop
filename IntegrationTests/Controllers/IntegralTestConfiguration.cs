@@ -1,5 +1,6 @@
 ﻿using API;
 using DatabaseAccess.MSSQL_BookShop;
+using IntegrationTests.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
