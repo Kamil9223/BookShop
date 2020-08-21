@@ -1,5 +1,5 @@
 ﻿using API.Requests.AuthRequests;
-using AuthService.ApiContracts.Responses;
+using AuthService.DTO;
 using Core.Models;
 using DatabaseAccess.MSSQL_BookShop;
 using Infrastructure.Services;

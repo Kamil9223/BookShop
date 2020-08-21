@@ -2,7 +2,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
-using AuthService.ApiContracts.Responses;
 using AuthService.DTO;
 using AuthService.Services.Interfaces;
 using CommonLib.Exceptions;

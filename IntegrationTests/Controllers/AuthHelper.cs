@@ -1,5 +1,5 @@
 ﻿using API.Requests.AuthRequests;
-using AuthService.ApiContracts.Responses;
+using AuthService.DTO;
 using DatabaseAccess.MSSQL_BookShop;
 using IntegrationTests.Helpers;
 using Newtonsoft.Json;

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace BookService.ApiContracts.Responses
+namespace BookService.DTO
 {
-    public class BookHeaderResponse
+    public class BookHeader
     {
         public Guid BookId { get; set; }
         public string Title { get; set; }

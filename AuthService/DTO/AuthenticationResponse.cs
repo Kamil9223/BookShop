@@ -1,4 +1,4 @@
-﻿namespace AuthService.ApiContracts.Responses
+﻿namespace AuthService.DTO
 {
     public class AuthenticationResponse
     {

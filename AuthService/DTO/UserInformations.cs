@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AuthService.ApiContracts.Responses
+namespace AuthService.DTO
 {
     public class UserInformations
     {

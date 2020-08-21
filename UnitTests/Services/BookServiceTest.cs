@@ -1,4 +1,4 @@
-﻿using BookService.ApiContracts.Responses;
+﻿using BookService.DTO;
 using Core.IRepositories;
 using Core.Models;
 using Moq;
@@ -34,7 +34,7 @@ namespace UnitTests.Services
 
             bookRepositoryMock.Setup(x => x.GetBook(It.IsAny<Guid>())).Returns(Task.FromResult<Book>(null));
 
-            Func<Task<BookResponse>> showBookDetails = async () => await bookService.ShowBookDetails(It.IsAny<Guid>());
+            Func<Task<BookDetails>> showBookDetails = async () => await bookService.ShowBookDetails(It.IsAny<Guid>());
 
             await Assert.ThrowsAsync<Exception>(showBookDetails);
         }

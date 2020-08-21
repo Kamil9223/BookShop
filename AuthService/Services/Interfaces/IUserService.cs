@@ -1,5 +1,4 @@
 ﻿using AuthService.ApiContracts.Requests;
-using AuthService.ApiContracts.Responses;
 using AuthService.DTO;
 using System.Threading.Tasks;
 
