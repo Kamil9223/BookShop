@@ -8,14 +8,7 @@ namespace AuthService.Infrastructure
 {
     public class AuthServiceStartup
     {
-        private readonly IUnityContainer unityContainer;
-
-        public AuthServiceStartup(IUnityContainer unityContainer)
-        {
-            this.unityContainer = unityContainer;
-        }
-
-        public void RegisterServices()
+        public static void RegisterServices(IUnityContainer unityContainer)
         {
             unityContainer.RegisterType<IUserRepository, UserRepository>();
             unityContainer.RegisterType<ILoggedUserRepository, LoggedUserRepository>();

@@ -13,12 +13,10 @@ namespace API.Controllers
     public class UserController : Controller
     {
         private readonly IUserService userService;
-        private readonly IMemoryCache memoryCache;
 
-        public UserController(IUserService userService, IMemoryCache memoryCache)
+        public UserController(IUserService userService)
         {
             this.userService = userService;
-            this.memoryCache = memoryCache;
         }
 
         [HttpPost("register")]

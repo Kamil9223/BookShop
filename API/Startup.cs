@@ -21,6 +21,13 @@ using BookService.Services.Interfaces;
 using OrderService.OrderServices.Interfaces;
 using OrderService.OrderServices.Implementations;
 using OrderService.Helpers;
+using API.Infrastructure;
+using Unity.Microsoft.DependencyInjection;
+using AuthService.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Unity;
+using BookService.Infrastructure;
+using OrderService.Infrastructure;
 
 namespace API
 {
@@ -34,7 +41,7 @@ namespace API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
@@ -72,28 +79,28 @@ namespace API
             {
                 options.Filters.Add<ValidationMiddleWare>();
             })
+                .AddControllersAsServices()
                 .AddFluentValidation(conf => conf.RegisterValidatorsFromAssemblyContaining<Startup>());
+
+            var unityContainer = ContainerCreator.Instance();
 
             services.AddDbContext<BookShopContext>(o => o.UseSqlServer(Configuration["ConnectionString:BookShopDB"]));
             services.AddTransient<JwtTokenMiddleWare>();
             services.AddTransient<ErrorsMiddleWare>();
-            //Repositories
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IBookRepository, BookRepository>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<ILoggedUserRepository, LoggedUserRepository>();
-            services.AddScoped<IBooksInOrderRepository, BooksInOrderRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
+
             //Services
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IBookService, BookService.Services.Implementations.BookService>();
-            services.AddSingleton<IEncrypter, Encrypter>();
-            services.AddSingleton<IJwtService, JwtService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<ICart, Cart>();
-            services.AddScoped<IJwtHelper, JwtHelper>();
             services.AddScoped<IHttpSessionWrapper, HttpSessionWrapper>();
-            services.AddScoped<IOrderService, OrderService.OrderServices.Implementations.OrderService>();
+
+            services.AddTransient<IControllerActivator, UnityControllersActivator>();
+
+            var unityProvider = services.BuildServiceProvider(unityContainer);
+
+            AuthServiceStartup.RegisterServices(unityContainer);
+            BookServiceStartup.RegisterServices(unityContainer);
+            OrderServiceStartup.RegisterServices(unityContainer);
+
+            return unityProvider;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
