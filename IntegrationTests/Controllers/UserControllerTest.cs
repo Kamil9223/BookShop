@@ -1,8 +1,8 @@
 ﻿using API.Requests.AuthRequests;
 using AuthService.DTO;
+using AuthService.Services.Implementations;
 using Core.Models;
 using DatabaseAccess.MSSQL_BookShop;
-using Infrastructure.Services;
 using IntegrationTests.Helpers;
 using Newtonsoft.Json;
 using System;

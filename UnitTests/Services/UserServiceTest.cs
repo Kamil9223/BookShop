@@ -3,7 +3,6 @@ using AuthService.Services.Interfaces;
 using CommonLib.Exceptions;
 using Core.IRepositories;
 using Core.Models;
-using Infrastructure.Services;
 using Moq;
 using System;
 using System.Threading.Tasks;

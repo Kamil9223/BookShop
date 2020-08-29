@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using AuthService.Services.Interfaces;
 using CommonLib.Extensions;
 
-namespace Infrastructure.Services
+namespace AuthService.Services.Implementations
 {
     public class Encrypter : IEncrypter
     {

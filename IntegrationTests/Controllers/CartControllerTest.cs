@@ -1,7 +1,7 @@
 ﻿using API.Requests.OrderRequests;
+using AuthService.Services.Implementations;
 using Core.Models;
 using DatabaseAccess.MSSQL_BookShop;
-using Infrastructure.Services;
 using IntegrationTests.Helpers;
 using Newtonsoft.Json;
 using OrderService.DTO;
