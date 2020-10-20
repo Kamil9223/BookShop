@@ -10,16 +10,7 @@ using System.Text;
 using Microsoft.AspNetCore.Http;
 using FluentValidation.AspNetCore;
 using API.MiddleWares;
-using Core.IRepositories;
 using DatabaseAccess.MSSQL_BookShop;
-using AuthService.Repositories;
-using AuthService.Services.Interfaces;
-using AuthService.Services.Implementations;
-using BookService.Repositories;
-using OrderService.Repositories;
-using BookService.Services.Interfaces;
-using OrderService.OrderServices.Interfaces;
-using OrderService.OrderServices.Implementations;
 using OrderService.Helpers;
 using API.Infrastructure;
 using Unity.Microsoft.DependencyInjection;
@@ -41,7 +32,7 @@ namespace API
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
@@ -82,8 +73,6 @@ namespace API
                 .AddControllersAsServices()
                 .AddFluentValidation(conf => conf.RegisterValidatorsFromAssemblyContaining<Startup>());
 
-            var unityContainer = ContainerCreator.Instance();
-
             services.AddDbContext<BookShopContext>(o => o.UseSqlServer(Configuration["ConnectionString:BookShopDB"]));
             services.AddTransient<JwtTokenMiddleWare>();
             services.AddTransient<ErrorsMiddleWare>();
@@ -91,17 +80,15 @@ namespace API
             //Services
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IHttpSessionWrapper, HttpSessionWrapper>();
-
-            services.AddTransient<IControllerActivator, UnityControllersActivator>();
-
-            var unityProvider = services.BuildServiceProvider(unityContainer);
-
-            AuthServiceStartup.RegisterServices(unityContainer);
-            BookServiceStartup.RegisterServices(unityContainer);
-            OrderServiceStartup.RegisterServices(unityContainer);
-
-            return unityProvider;
         }
+
+        public void ConfigureContainer(IUnityContainer container)
+        {
+            AuthServiceStartup.RegisterServices(container);
+            BookServiceStartup.RegisterServices(container);
+            OrderServiceStartup.RegisterServices(container);
+        }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

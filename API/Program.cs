@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Unity.Microsoft.DependencyInjection;
 
 namespace API
 {
@@ -12,6 +13,7 @@ namespace API
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseUnityServiceProvider()
                 .UseStartup<Startup>()
                 .Build();
     }

@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Net.Http;
+using Unity.Microsoft.DependencyInjection;
 
 namespace IntegrationTests.Controllers
 {
@@ -22,6 +23,7 @@ namespace IntegrationTests.Controllers
         public IntegralTestConfiguration()
         {
             testServer = new TestServer(new WebHostBuilder()
+                .UseUnityServiceProvider()
                 .UseConfiguration(GetAppSettings())
                 .UseStartup<Startup>()
                 .ConfigureServices(services =>
