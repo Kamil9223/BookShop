@@ -64,7 +64,7 @@ namespace AuthService.Services.Implementations
             if (loggedUser != null)
                 throw new AlreadyExistException($"User {user.Login} is already logged on");
 
-            var authResult = jwtService.CreateToken(user.Login, "user");
+            var authResult = jwtService.CreateToken(user.Login, user.Role.ToString());
 
             var refreshToken = new LoggedUser
             {
@@ -103,14 +103,11 @@ namespace AuthService.Services.Implementations
         {
             var jwt = jwtService.GetCurrentToken();
             var validatedToken = jwtService.GetPrincipalFromToken(jwt);
-            var login = validatedToken.Claims.Single(x => x.Type == "login").Value;
-            var userId = (await userRepository.GetUser(login)).UserId;
             var JwtId = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 
             await loggedUserRepository.RemoveLoggedUser(JwtId);
-            await loggedUserRepository.SaveChanges();
-
             await jwtService.DeactivateCurrentToken();
+            await loggedUserRepository.SaveChanges();
         }
 
         public async Task Register(string login, string password, string email, AddressInformations addressRequest = null)

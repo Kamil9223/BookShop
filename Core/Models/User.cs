@@ -10,6 +10,7 @@ namespace Core.Models
         public string Email { get; protected set; }
         public string Password { get; protected set; }
         public string Salt { get; protected set; }
+        public UserRole Role { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
         public virtual ICollection<Order> Orders { get; protected set; }
 
@@ -24,5 +25,11 @@ namespace Core.Models
             Salt = salt;
             CreatedAt = DateTime.Now;
         }
+    }
+
+    public enum UserRole
+    {
+        User,
+        Admin
     }
 }

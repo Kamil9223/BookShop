@@ -1,5 +1,6 @@
 ﻿using Core.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DatabaseAccess.MSSQL_BookShop
 {
@@ -41,6 +42,8 @@ namespace DatabaseAccess.MSSQL_BookShop
             modelBuilder.Entity<User>().Property(p => p.Password).HasMaxLength(800).IsRequired();
             modelBuilder.Entity<User>().Property(p => p.Salt).HasMaxLength(800).IsRequired();
             modelBuilder.Entity<User>().Property(p => p.Email).HasMaxLength(40).IsRequired();
+            modelBuilder.Entity<User>().Property(p => p.Role).HasConversion(new EnumToStringConverter<UserRole>())
+                .HasMaxLength(30).IsRequired().HasDefaultValue(UserRole.User);
         }
 
         private void OnOrderCreating(ModelBuilder modelBuilder)

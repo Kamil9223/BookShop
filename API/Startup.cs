@@ -12,10 +12,7 @@ using FluentValidation.AspNetCore;
 using API.MiddleWares;
 using DatabaseAccess.MSSQL_BookShop;
 using OrderService.Helpers;
-using API.Infrastructure;
-using Unity.Microsoft.DependencyInjection;
 using AuthService.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using Unity;
 using BookService.Infrastructure;
 using OrderService.Infrastructure;
@@ -48,7 +45,7 @@ namespace API
             {
                 options.TokenValidationParameters = tokenValidationParameters;
             });
-            services.AddAuthorization(p => p.AddPolicy("admin", pol => pol.RequireRole("admin")));
+            services.AddAuthorization(p => p.AddPolicy("Admin", pol => pol.RequireRole("Admin")));
             services.AddMemoryCache();
 
             services.AddCors(
