@@ -1,7 +1,7 @@
 ﻿using AuthService.Repositories;
 using AuthService.Services.Implementations;
 using AuthService.Services.Interfaces;
-using Core.IRepositories;
+using Core.Repositories;
 using Unity;
 
 namespace AuthService.Infrastructure

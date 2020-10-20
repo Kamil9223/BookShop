@@ -1,7 +1,7 @@
 ﻿using AuthService.Services.Interfaces;
 using CommonLib.Exceptions;
-using Core.IRepositories;
 using Core.Models;
+using Core.Repositories;
 using Microsoft.EntityFrameworkCore.Internal;
 using OrderService.OrderServices.Interfaces;
 using System;

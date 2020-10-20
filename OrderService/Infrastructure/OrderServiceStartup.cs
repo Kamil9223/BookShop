@@ -1,4 +1,4 @@
-﻿using Core.IRepositories;
+﻿using Core.Repositories;
 using OrderService.OrderServices.Implementations;
 using OrderService.OrderServices.Interfaces;
 using OrderService.Repositories;

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core.IRepositories;
 using Core.Models;
 using BookService.Services.Interfaces;
 using BookService.DTO;
+using Core.Repositories;
 
 namespace BookService.Services.Implementations
 {

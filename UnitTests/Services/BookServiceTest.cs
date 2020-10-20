@@ -1,6 +1,6 @@
 ﻿using BookService.DTO;
-using Core.IRepositories;
 using Core.Models;
+using Core.Repositories;
 using Moq;
 using System;
 using System.Threading.Tasks;

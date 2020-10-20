@@ -1,8 +1,8 @@
 ﻿using AuthService.Services.Implementations;
 using AuthService.Services.Interfaces;
 using CommonLib.Exceptions;
-using Core.IRepositories;
 using Core.Models;
+using Core.Repositories;
 using Moq;
 using System;
 using System.Threading.Tasks;

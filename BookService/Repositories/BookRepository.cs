@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Core.Models;
-using Core.IRepositories;
 using DatabaseAccess.MSSQL_BookShop;
+using Core.Repositories;
 
 namespace BookService.Repositories
 {

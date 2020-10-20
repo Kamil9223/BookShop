@@ -1,5 +1,5 @@
-﻿using Core.IRepositories;
-using Core.Models;
+﻿using Core.Models;
+using Core.Repositories;
 using DatabaseAccess.MSSQL_BookShop;
 using Microsoft.EntityFrameworkCore;
 using System;

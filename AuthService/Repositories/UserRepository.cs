@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Core.IRepositories;
 using Core.Models;
 using DatabaseAccess.MSSQL_BookShop;
+using Core.Repositories;
 
 namespace AuthService.Repositories
 {

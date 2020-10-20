@@ -1,6 +1,6 @@
 ﻿using BookService.Repositories;
 using BookService.Services.Interfaces;
-using Core.IRepositories;
+using Core.Repositories;
 using Unity;
 
 namespace BookService.Infrastructure

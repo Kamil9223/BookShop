@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Core.IRepositories
+namespace Core.Repositories
 {
     public interface ILoggedUserRepository
     {
