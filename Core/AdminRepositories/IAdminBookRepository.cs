@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Core.AdminRepositories
 {
-    public interface IAdminBookRepositorys
+    public interface IAdminBookRepository
     {
         Task AddBook(Book book);
         Task UpdateBook(Book book);
