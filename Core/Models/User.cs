@@ -24,6 +24,7 @@ namespace Core.Models
             Password = password;
             Salt = salt;
             CreatedAt = DateTime.Now;
+            Role = UserRole.User;
         }
     }
 

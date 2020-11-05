@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using BookService.Services.Interfaces;
 using API.Requests.BookRequests;
+using BookService.DTO;
+using Microsoft.AspNetCore.Authorization;
+using Core.AdminRepositories;
 
 namespace API.Controllers
 {
@@ -10,10 +13,12 @@ namespace API.Controllers
     public class BookController : Controller
     {
         private readonly IBookService bookService;
+        private readonly IAdminBookRepository adminBookRepository;
 
-        public BookController(IBookService bookService)
+        public BookController(IBookService bookService, IAdminBookRepository adminBookRepository)
         {
             this.bookService = bookService;
+            this.adminBookRepository = adminBookRepository;
         }
 
         [HttpGet("Books")]
@@ -53,6 +58,22 @@ namespace API.Controllers
         {
             var book = await bookService.ShowBookDetails(bookId);
             return new JsonResult(book);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("Books")]
+        public async Task<IActionResult> AddBook([FromBody] BookDetails book)
+        {
+            await adminBookRepository.AddBook(new Core.Models.Book(
+                Guid.NewGuid(),
+                book.Title,
+                book.Price,
+                book.NumberOfPages,
+                "",
+                book.NumberOfPieces,
+                book.CategoryId));
+
+            return Ok();
         }
     }
 }

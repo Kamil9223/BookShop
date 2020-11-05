@@ -1,4 +1,5 @@
 ﻿using BookService.Services.Interfaces;
+using CommonLib.Exceptions;
 using Core.Models;
 using Newtonsoft.Json;
 using OrderService.Helpers;
@@ -63,7 +64,7 @@ namespace OrderService.OrderServices.Implementations
             var position = cart.Find(x => x.Book.BookId == bookId);
 
             if (position == null)
-                return;
+                throw new NotFoundException("can not remove book from cart, because it doesn't exist");
 
             if (position.NumberOfBooks > 1)
                 position.NumberOfBooks--;
