@@ -48,8 +48,8 @@ namespace OrderService.OrderServices.Implementations
             }
 
             await orderRepository.AddOrder(order);
-            await orderRepository.SaveChanges();
             cart.ClearCart(login);
+            await orderRepository.SaveChanges();
 
             return order.OrderId;
         }
