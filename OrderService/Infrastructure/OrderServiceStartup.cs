@@ -10,6 +10,7 @@ namespace OrderService.Infrastructure
     {
         public static void RegisterServices(IUnityContainer unityContainer)
         {
+            unityContainer.RegisterType<IHistoryRepository, HistoryRepository>();
             unityContainer.RegisterType<IBooksInOrderRepository, BooksInOrderRepository>();
             unityContainer.RegisterType<IOrderRepository, OrderRepository>();
             unityContainer.RegisterType<ICart, Cart>();

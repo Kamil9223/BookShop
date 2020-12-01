@@ -14,15 +14,17 @@ namespace OrderService.OrderServices.Implementations
         private readonly ICart cart;
         private readonly IBooksInOrderRepository booksInOrderRepository;
         private readonly IOrderRepository orderRepository;
+        private readonly IHistoryRepository historyRepository;
         private IUserService userService;
 
         public OrderService(ICart cart, IBooksInOrderRepository booksInOrderRepository,
-            IOrderRepository orderRepository, IUserService userService)
+            IOrderRepository orderRepository, IHistoryRepository historyRepository, IUserService userService)
         {
             this.cart = cart;
             this.booksInOrderRepository = booksInOrderRepository;
             this.orderRepository = orderRepository;
             this.userService = userService;
+            this.historyRepository = historyRepository;
         }
 
         public async Task<Guid> CreateOrder(string login)
@@ -45,6 +47,8 @@ namespace OrderService.OrderServices.Implementations
                     cartPosition.NumberOfBooks,
                     cartPosition.Book,
                     order));
+
+                cartPosition.Book.DecreaseAmount(1);
             }
 
             await orderRepository.AddOrder(order);
@@ -54,28 +58,28 @@ namespace OrderService.OrderServices.Implementations
             return order.OrderId;
         }
 
-        public async Task RealizeOrder(Guid orderId)
+        public async Task AcceptOrder(Guid orderId)
         {
+            var order = await orderRepository.GetOrder(orderId);
+            if (order.Status == Status.New)
+                order.ChangeStatus(Status.InProgress);
 
+            await orderRepository.SaveChanges();
         }
 
-        public async Task TakeOrder(Guid orderId)
+        public async Task RealizeOrder(Guid orderId)
         {
-            //simple implementation first
             var order = await orderRepository.GetOrder(orderId);
+            if (order.Status != Status.InProgress)
+                return;
 
-            if (order.Status != Status.New)
-                throw new Exception("Wrong status. Can take only new statuses");
+            order.ChangeStatus(Status.Realized);
 
-            foreach (var bookInOrder in order.BooksInOrder)
-            {
-                if (bookInOrder.NumberOfBooks > bookInOrder.Book.NumberOfPieces)
-                {
-                    throw new Exception($"Cannot take order with id = {order.OrderId}. " +
-                        $"Not enought books in warehouse.");
-                }
-                bookInOrder.Book.DecreaseAmount(bookInOrder.NumberOfBooks);
-            }
+            await historyRepository.Add(new History(
+                DateTime.Now,
+                0, //TODO
+                order.User.Login,
+                order.OrderId));
 
             await orderRepository.SaveChanges();
         }

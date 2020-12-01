@@ -21,14 +21,18 @@ namespace Core.Models
             Date = DateTime.Now;
             Status = Status.New;
         }
+
+        public void ChangeStatus(Status status)
+        {
+            Status = Status;
+        }
     }
 
     public enum Status
     {
         New,
-        Accepted,
-        WaitingForDelivery,
         InProgress,
+        Sent,
         Realized
     }
 }
