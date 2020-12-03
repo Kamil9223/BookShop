@@ -12,16 +12,13 @@ namespace OrderService.OrderServices.Implementations
     public class OrderService : IOrderService
     {
         private readonly ICart cart;
-        private readonly IBooksInOrderRepository booksInOrderRepository;
         private readonly IOrderRepository orderRepository;
         private readonly IHistoryRepository historyRepository;
         private IUserService userService;
 
-        public OrderService(ICart cart, IBooksInOrderRepository booksInOrderRepository,
-            IOrderRepository orderRepository, IHistoryRepository historyRepository, IUserService userService)
+        public OrderService(ICart cart, IOrderRepository orderRepository, IHistoryRepository historyRepository, IUserService userService)
         {
             this.cart = cart;
-            this.booksInOrderRepository = booksInOrderRepository;
             this.orderRepository = orderRepository;
             this.userService = userService;
             this.historyRepository = historyRepository;
@@ -38,7 +35,7 @@ namespace OrderService.OrderServices.Implementations
 
             foreach (var cartPosition in userCart)
             {
-                if (cartPosition.Book.NumberOfPieces <= 0)
+                if (cartPosition.Book.NumberOfPieces < cartPosition.NumberOfBooks)
                     throw new NotFoundException($"Book '{cartPosition.Book.Title}' is not available");
 
                 order.BooksInOrder.Add(new BookInOrder(
@@ -48,7 +45,7 @@ namespace OrderService.OrderServices.Implementations
                     cartPosition.Book,
                     order));
 
-                cartPosition.Book.DecreaseAmount(1);
+                cartPosition.Book.DecreaseAmount(cartPosition.NumberOfBooks);
             }
 
             await orderRepository.AddOrder(order);

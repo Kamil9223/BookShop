@@ -10,7 +10,12 @@ namespace Core.Models
         public Status Status { get; protected set; }
         public virtual Guid UserId { get; protected set; }
         public virtual User User { get; protected set; }
-        public virtual ICollection<BookInOrder> BooksInOrder { get; protected set; }
+        public virtual ICollection<BookInOrder> BooksInOrder
+        {
+            get => booksInOrder ?? (booksInOrder = new List<BookInOrder>());
+        }
+
+        private ICollection<BookInOrder> booksInOrder;
 
         protected Order() { }
 
@@ -24,7 +29,7 @@ namespace Core.Models
 
         public void ChangeStatus(Status status)
         {
-            Status = Status;
+            Status = status;
         }
     }
 
